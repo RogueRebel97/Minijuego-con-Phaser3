@@ -1,6 +1,6 @@
 # Documentación de Anteproyecto
 
-### Titulo: Videojuego con Phaser 3, Viking Quest (Nombre Temporal)
+### Titulo: Videojuego con Phaser 3,(Nombre Temporal)
 ### Autor: Adrian Ruiz Diaz
 ### Introduccion
 Mi proyecto para este Curso sera crear un videojuego para navegadores usando como herramienta principal el Framework Phaser 3. El proyecto esta enfocado sobretodo el TypeScript y Programacion Orientada a Objetos.  
