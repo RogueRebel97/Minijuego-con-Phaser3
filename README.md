@@ -1,9 +1,10 @@
 # Documentación de Anteproyecto
 
-### Titulo: Videojuego con Phaser 3,(Nombre Temporal)
+### Titulo: Mini-Juego con Phaser 3 y Angular,(Nombre Temporal)
 ### Autor: Adrian Ruiz Diaz
 ### Introduccion
-Mi proyecto para este Curso sera crear un videojuego para navegadores usando como herramienta principal el Framework Phaser 3. El proyecto esta enfocado sobretodo el TypeScript y Programacion Orientada a Objetos.  
+Mi proyecto para este Curso sera crear un videojuego para navegadores usando como herramienta principal el Framework Phaser 3. El proyecto esta enfocado sobretodo el TypeScript y Programacion Orientada a Objetos. 
+Tendra una pagina principal hecha con Angular, donde el usuario podra registrarse, iniciar sesión, cerrar sesión y editar perfil. 
 * * *
 ### Finalidad
 Desarrollar mi primer videojuego para poder subirlo a internet y que la gente se divierta jugando.
@@ -14,7 +15,8 @@ Los objetivos que pretendo lograr con este proyecto son:
   - Mover el personaje, saltar, recoger objetos, ganar puntuacion, enemigos NPC(controlados por la IA)
   - Recorrer un nivel 2D recogiendo objetos para ganar puntos y esquivando o derrotando enemigos a la vez que evitas las trampas que te eliminan.
 + Desarrollar al menos 2 niveles distintos
-+ Añadir un sistema de Registro de Usuarios
++ Crear una pagina web donde arrojar el mini-juego.
+  - Sistema de Registro e Inicio de Sesión.
   - Guardar puntuaciones de los Usuarios
   - Posibilidad de consultar tu Puntuacion en una Tabla
 - Comparar puntuacion con la de otros jugadores
@@ -27,10 +29,10 @@ Assets, Arte, Musica y Soni
 + TypeScript 
 ### Herramientas y Entornos
 + Vscode, editor de codigo
-+ Node.js, entorno para el lado servidor
++ Angular, como framework para construit la Web.
 + npm, gestor de paquetes
 + Phasen 3, Framework para desarrollar el videojuego
-+ Express.js, Framework para el back-end
++ PhP, para el back-end
 + Varias herramientas para diseñar e implementar los Assets para el videojuego
   - Tiled, TexturePackerGUI, audacity ... (Aun no las tengo elegidas definitivamente)
 + El Hardware que usare sera unicamente mi PC
@@ -39,9 +41,9 @@ Assets, Arte, Musica y Soni
 Todos los Assets graficos y sonidos que usare son de licencia gratuita, Pasher cuenta en su pagina web con varias de estas cosas a disposicion de los desarrolladores.
 * * *
 ## Planificacion
- 
 + Lo primero que hare sera terminar de formarme con unos tutoriales de las herramientas que voy a utilizar. 
-Esto me deberia llevar entre unas 6 y 10 horas
+Esto me deberia llevar entre unas 6 y 10 horas.
++ Crear la pagina web donde alojare el videojuego, asi como hacer que el sistema de Usuarios funcione correctamente.
 + Crear la estructura del proyecto, la logica de los niveles, el personaje y los enemigos.
 + Cuando desarrolle cada parte a nivel de programacion buscare o diseñare los Assets graficos, no pretendo crear de 0 cada Asset ya que cuento con muchas paginas que ofrecen material gratuito y de licencia abierta
 + Desarrollar 2 niveles del videojuego, al personaje, los objetos, algunos enemigos y diseñar las mecanicas del videojuego me deberia llevar 1 mes y medio aproximadamente.
