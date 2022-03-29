@@ -8,6 +8,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { LandingComponent } from './landing/landing.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MinijuegoComponent } from './minijuego/minijuego.component';
 
 
 
@@ -17,7 +18,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     UserComponent,
     SigninComponent,
-    LandingComponent
+    LandingComponent,
+    MinijuegoComponent
   ],
   imports: [
     BrowserModule,
