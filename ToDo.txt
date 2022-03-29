@@ -1,0 +1,26 @@
+frontend: 
+angular componentes de usuario: registrarse, logearse (y editar)
+
+
+backend: 
+Put
+Post
+get
+
+
+
+Añadir validacion de emails Unico
+
+mejorar la validacion del formulario de registro
+
+Añadir campo email a la BD.
+Añadir aceptar condiciones?¿
+Añadir aceptar recibir emails ?¿
+Añadir Mantener sesion iniciada
+
+añadir logout solo para usuarios logeados./Cambiar el boton de login.
+
+
+logout:
+Solo aparece para usuarios ya Logeados.
+Elimina la id de la Cookie y te redirige a la pantalla de login.

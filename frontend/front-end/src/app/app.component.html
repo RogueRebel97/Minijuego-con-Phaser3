@@ -1,0 +1,9 @@
+
+
+<ul><li> <a routerLink="/signin" >Signin</a> </li>
+  <li><a routerLink="/login">Login</a></li>
+  <li><a routerLink="/landing">Landing</a></li>
+  <li *ngIf="logged()"><a (click)="logout()">Logout</a></li>
+  </ul>
+
+  <router-outlet> </router-outlet>

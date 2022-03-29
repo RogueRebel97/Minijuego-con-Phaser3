@@ -1,0 +1,29 @@
+<div>
+    <form (ngSubmit)="submit()" > 
+
+        <input type="text" name="user" id="user" placeholder="Nombre de Usuario" [(ngModel)]="user"(keyup)="validate($event)" >
+        <span id="userError" style="color: red;"> </span>
+        
+        <!-- (keyup)="validate($event)" -->
+       <br>
+       <input type="text" name="password" id="password" placeholder="Contraseña"  [(ngModel)]="password" (keyup)="validate($event)" >
+       <span id="passError" style="color: red;"></span>
+       <br>
+       <input type="text" name="reRassword" id="rePassword" placeholder="Repite la contraseña" [(ngModel)]="repassword" (keyup)="validate($event)" >
+       <span id="rePassError" style="color: red;"></span>
+       <br>
+       <!-- <input type="text" name="email" id="email" placeholder="Correo electronico">
+        <br>
+        <label><input type="checkbox"  id="check"value="Confirmar" (change)="onChange()"> Confirmo</label>
+        <span id="checkError" style="color: red;"></span>
+        <br>
+        <label><input type="checkbox" name="" id=""value="Aceptar" > Acepto</label>--->
+
+        <br>
+        <button type="submit" id="registrarte"  >
+         
+            Registrarte
+        </button>
+        
+        </form>
+</div>
