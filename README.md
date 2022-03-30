@@ -29,12 +29,14 @@ Assets, Arte, Musica y Soni
 + TypeScript 
 ### Herramientas y Entornos
 + Vscode, editor de codigo
++ node.js
 + Angular, como framework para construit la Web.
 + npm, gestor de paquetes
 + Phasen 3, Framework para desarrollar el videojuego
 + PhP, para el back-end
++ Bootstrap y Css para la apariencia de la web.
 + Varias herramientas para diseñar e implementar los Assets para el videojuego
-  - Tiled, TexturePackerGUI, audacity ... (Aun no las tengo elegidas definitivamente)
+  - Tiled, TexturePackerGUI, audacity ...
 + El Hardware que usare sera unicamente mi PC
   
 ## Assets, Arte y Sonidos
