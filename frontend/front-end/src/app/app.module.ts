@@ -8,9 +8,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { LandingComponent } from './landing/landing.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MinijuegoComponent } from './minijuego/minijuego.component';
-
-
+import { GameComponent } from './game/game.component';
+import { MainMenu } from './game/scenes/MainMenu';
 
 
 @NgModule({
@@ -19,7 +18,8 @@ import { MinijuegoComponent } from './minijuego/minijuego.component';
     UserComponent,
     SigninComponent,
     LandingComponent,
-    MinijuegoComponent
+    GameComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -27,7 +27,7 @@ import { MinijuegoComponent } from './minijuego/minijuego.component';
     HttpClientModule,
     FormsModule
   ],
-  providers: [CookieService],
+  providers: [CookieService, MainMenu],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

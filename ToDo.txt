@@ -21,7 +21,10 @@ Añadir Mantener sesion iniciada
 añadir logout solo para usuarios logeados./Cambiar el boton de login.
 
 
-logout:
-Solo aparece para usuarios ya Logeados.
-Elimina la id de la Cookie y te redirige a la pantalla de login.
-crear un servicio de logout con una funcion que compruebe si existe una cookie service id y en dicho caso mostrar el boton logout.
+Escenas:
+
+- Pantalla de Carga: Carga de Assets con barra de progreso.
+
+- Menu Inicial: Jugar, Continuar(?), Seleccionar nivel (?), Scoreboard
+
+- nivel1
