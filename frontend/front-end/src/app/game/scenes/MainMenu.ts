@@ -5,9 +5,9 @@ export class MainMenu extends Phaser.Scene {
 
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
 
-  constructor() {
-    super({ key: 'MainMenu' });
-  }
+    constructor() {
+      super({ key: 'MainMenu' });
+    }
   init() {
     this.cursors = this.input.keyboard.createCursorKeys();
   }
@@ -16,7 +16,7 @@ export class MainMenu extends Phaser.Scene {
     this.load.image('sky', 'assets/graphics/sky.png');
     this.load.image(
       'glass-panel',
-      'assets/graphics/uiAssets/PNG/glassPanel.png'
+      'assets/graphics/uiAssets/PNG/metalPanel_red.png'
     );
     this.load.image(
       'cursor-hand',
@@ -32,7 +32,7 @@ export class MainMenu extends Phaser.Scene {
       .image(width * 0.5, height * 0.6, 'glass-panel')
       .setDisplaySize(150, 50);
 
-    this.add.text(playButton.x, playButton.y, 'Jugar').setOrigin(0.5);
+    this.add.text(playButton.x, playButton.y, 'Jugar', {color:"black"}).setOrigin(0.5);
 
     // Settings button
     const settingsButton = this.add
@@ -44,7 +44,7 @@ export class MainMenu extends Phaser.Scene {
       .setDisplaySize(150, 50);
 
     this.add
-      .text(settingsButton.x, settingsButton.y, 'Opciones')
+      .text(settingsButton.x, settingsButton.y, 'Opciones',  {color:"black"})
       .setOrigin(0.5);
 
     // Credits button
@@ -56,7 +56,7 @@ export class MainMenu extends Phaser.Scene {
       )
       .setDisplaySize(150, 50);
 
-    this.add.text(creditsButton.x, creditsButton.y, 'Creditos').setOrigin(0.5);
+    this.add.text(creditsButton.x, creditsButton.y, 'Creditos',  {color:"black"}).setOrigin(0.5);
 
     this.buttons.push(playButton);
     this.buttons.push(settingsButton);
@@ -71,9 +71,10 @@ export class MainMenu extends Phaser.Scene {
     //   playButton.off('selected')
     //   // ...
     // })
-    
+
     playButton.on('selected', () => {
       console.log('play')
+      this.scene.start("Scene1");
     })
   
     settingsButton.on('selected', () => {
@@ -86,17 +87,15 @@ export class MainMenu extends Phaser.Scene {
   }
 
   override update() {
-    const upJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.up!);
-    const downJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.down!);
-    const spaceJustPressed = Phaser.Input.Keyboard.JustDown(
-      this.cursors.space!
-    );
+    const pressUp = Phaser.Input.Keyboard.JustDown(this.cursors.up!);
+    const pressDown = Phaser.Input.Keyboard.JustDown(this.cursors.down!);
+    const pressSpace = Phaser.Input.Keyboard.JustDown(this.cursors.space!);
 
-    if (upJustPressed) {
+    if (pressUp) {
       this.selectNextButton(-1);
-    } else if (downJustPressed) {
+    } else if (pressDown) {
       this.selectNextButton(1);
-    } else if (spaceJustPressed) {
+    } else if (pressSpace) {
       this.confirmSelection();
     }
   }

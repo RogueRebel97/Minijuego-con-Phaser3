@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GameComponent } from './game/game.component';
 import { MainMenu } from './game/scenes/MainMenu';
+import { Scene1 } from './game/scenes/Scene1';
 
 
 @NgModule({
@@ -27,7 +28,7 @@ import { MainMenu } from './game/scenes/MainMenu';
     HttpClientModule,
     FormsModule
   ],
-  providers: [CookieService, MainMenu],
+  providers: [CookieService, MainMenu, Scene1],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

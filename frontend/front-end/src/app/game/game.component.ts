@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Phaser from 'phaser';
 import { MainMenu } from './scenes/MainMenu';
+import { Scene1 } from './scenes/Scene1';
 
 @Component({
   selector: 'app-game',
@@ -17,7 +18,7 @@ export class GameComponent implements OnInit {
     this.config = {
    type:Phaser.AUTO,
    backgroundColor: "#125555",
-   scene:[MainMenu],
+   scene:[MainMenu, Scene1],
   
    parent:'gameScreen',
    scale: {
@@ -32,6 +33,7 @@ export class GameComponent implements OnInit {
     width: 1600,
     height: 1200
 },
+
   }
     };
   }
