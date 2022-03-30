@@ -71,6 +71,7 @@ export class MainMenu extends Phaser.Scene {
     //   playButton.off('selected')
     //   // ...
     // })
+    
     playButton.on('selected', () => {
       console.log('play')
     })
