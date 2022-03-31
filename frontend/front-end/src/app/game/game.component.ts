@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import Phaser from 'phaser';
+import * as Phaser from 'phaser';
 import { MainMenu } from './scenes/MainMenu';
 import { Scene1 } from './scenes/Scene1';
+import { LoadingScreen } from './scenes/LoadingScreen';
+import { UserService } from '../user/user.service';
+
+
+
 
 @Component({
   selector: 'app-game',
@@ -14,26 +19,20 @@ export class GameComponent implements OnInit {
   phaserGame!: Phaser.Game;
   config: Phaser.Types.Core.GameConfig;
 
+  private score:number=0;
+
   constructor() {
+   
     this.config = {
    type:Phaser.AUTO,
    backgroundColor: "#125555",
-   scene:[MainMenu, Scene1],
+   scene:[Scene0, MainMenu, Scene1],
   
    parent:'gameScreen',
    scale: {
     width:800,
     height:600,
     autoCenter: Phaser.Scale.CENTER_BOTH,
-    min: {
-      width: 800,
-      height: 600
-  },
-  max: {
-    width: 1600,
-    height: 1200
-},
-
   }
     };
   }
@@ -42,12 +41,16 @@ export class GameComponent implements OnInit {
    
 
   ngOnInit(): void {
-  
-      
       this.phaserGame = new Phaser.Game(this.config); 
     
-   
-    
   }
-    
+  
+}
+
+
+
+
+export class Scene0 extends Phaser.Scene{
+ 
+
 }

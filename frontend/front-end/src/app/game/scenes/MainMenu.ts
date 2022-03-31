@@ -1,15 +1,38 @@
+
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { UserService } from "src/app/user/user.service";
+// import { CookieService } from "ngx-cookie-service";
+
+// Angular context
+
+
+
+@Injectable({
+  providedIn: 'root'
+
+})
+
 export class MainMenu extends Phaser.Scene {
   private buttons: Phaser.GameObjects.Image[] = [];
   private selectedButtonIndex = 0;
   private buttonSelector!: Phaser.GameObjects.Image;
+  private score:number=0;  
+  
+
 
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
 
-    constructor() {
+    constructor(private http:HttpClient,  private userService:UserService )  {
       super({ key: 'MainMenu' });
+    
+      
     }
+
   init() {
     this.cursors = this.input.keyboard.createCursorKeys();
+   
+    
   }
   preload() {
     //Carga de Assets
@@ -22,11 +45,21 @@ export class MainMenu extends Phaser.Scene {
       'cursor-hand',
       'assets/graphics/uiAssets/PNG/cursor_hand.png'
     );
+
   }
+
   create() {
     this.add.image(400, 300, 'sky');
-    const { width, height } = this.scale;
 
+    var txt = this.add.text(16, 16, 'SCORE:', { fontSize: '32px', color: '#000' });
+
+    if(this.userService.isLogged()){
+      console.log("hola hola");
+      
+    }
+   
+    
+    const { width, height } = this.scale;
     // Play button
     const playButton = this.add
       .image(width * 0.5, height * 0.6, 'glass-panel')
@@ -66,24 +99,37 @@ export class MainMenu extends Phaser.Scene {
 
     this.selectButton(0)
 
-    // Cada .on() tiene que tener un .off para limpiar el evento
-    // this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-    //   playButton.off('selected')
-    //   // ...
-    // })
+    
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      playButton.off('selected')
+     
+    })
 
     playButton.on('selected', () => {
       console.log('play')
+      
       this.scene.start("Scene1");
+      // this.scene.stop;
+    })
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      playButton.off('selected')
+     
     })
   
     settingsButton.on('selected', () => {
       console.log('settings')
+      
+
+    
+    
     })
   
     creditsButton.on('selected', () => {
       console.log('credits')
     })
+
+
   }
 
   override update() {
@@ -142,4 +188,7 @@ export class MainMenu extends Phaser.Scene {
 	// emit the 'selected' event
 	button.emit('selected')
   }
+
+
+  
 }

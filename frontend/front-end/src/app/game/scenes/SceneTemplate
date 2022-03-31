@@ -1,0 +1,18 @@
+import * as phaser from "phaser";
+
+export class SceneName extends Phaser.Scene{
+
+    //propiedades
+
+
+    // constructor(){
+
+    // }
+
+
+
+
+
+
+
+}
