@@ -34,5 +34,10 @@ export class UserService {
         return this.cookieService.get("id")
   }
 
+  public showscore(score:number){
+console.log("Puntuacion enviada al servicio: "+score);
+
+  }
+
 }
 

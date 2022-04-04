@@ -5,19 +5,20 @@ import { UserService } from "src/app/user/user.service";
 // import { CookieService } from "ngx-cookie-service";
 
 // Angular context
-
-
+let contexto:any;
 
 @Injectable({
   providedIn: 'root'
 
 })
 
-export class MainMenu extends Phaser.Scene {
+class MainMenu extends Phaser.Scene {
+
   private buttons: Phaser.GameObjects.Image[] = [];
   private selectedButtonIndex = 0;
   private buttonSelector!: Phaser.GameObjects.Image;
   private score:number=0;  
+  private scoreTxT!: Phaser.GameObjects.Text;
   
 
 
@@ -31,35 +32,26 @@ export class MainMenu extends Phaser.Scene {
 
   init() {
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.score = parseInt(localStorage.getItem('score')!) || 0;
+    console.log("mainMenu Corriendo");
    
     
   }
   preload() {
-    //Carga de Assets
-    this.load.image('sky', 'assets/graphics/sky.png');
-    this.load.image(
-      'glass-panel',
-      'assets/graphics/uiAssets/PNG/metalPanel_red.png'
-    );
-    this.load.image(
-      'cursor-hand',
-      'assets/graphics/uiAssets/PNG/cursor_hand.png'
-    );
-
+    console.log("mainMenu perload Corriendo");
+  
   }
 
   create() {
+    console.log("mainMenu Create Corriendo");
+    this.cameras.main.fadeIn(100, 0, 0, 0)
     this.add.image(400, 300, 'sky');
 
-    var txt = this.add.text(16, 16, 'SCORE:', { fontSize: '32px', color: '#000' });
-
-    if(this.userService.isLogged()){
-      console.log("hola hola");
-      
-    }
-   
+    this.scoreTxT =  this.add.text(16, 16, 'SCORE: ' +this.score, { fontSize: '32px', color: '#000' });
     
+ 
     const { width, height } = this.scale;
+
     // Play button
     const playButton = this.add
       .image(width * 0.5, height * 0.6, 'glass-panel')
@@ -109,7 +101,9 @@ export class MainMenu extends Phaser.Scene {
       console.log('play')
       
       this.scene.start("Scene1");
-      // this.scene.stop;
+      
+
+
     })
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
@@ -119,7 +113,13 @@ export class MainMenu extends Phaser.Scene {
   
     settingsButton.on('selected', () => {
       console.log('settings')
+      this.score+=10;
+      console.log(this.score);
       
+      this.scoreTxT.setText('SCORE: '+this.score);
+
+      localStorage.setItem('score',this.score.toString(),)
+      contexto.userservice.showscore(this.score);
 
     
     
@@ -136,6 +136,9 @@ export class MainMenu extends Phaser.Scene {
     const pressUp = Phaser.Input.Keyboard.JustDown(this.cursors.up!);
     const pressDown = Phaser.Input.Keyboard.JustDown(this.cursors.down!);
     const pressSpace = Phaser.Input.Keyboard.JustDown(this.cursors.space!);
+
+   
+    
 
     if (pressUp) {
       this.selectNextButton(-1);
@@ -189,6 +192,14 @@ export class MainMenu extends Phaser.Scene {
 	button.emit('selected')
   }
 
-
+  
   
 }
+
+export const startMenu = (ctx:any)=>{
+  contexto=ctx
+  return MainMenu;
+}
+
+
+  

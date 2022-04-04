@@ -9,7 +9,6 @@ import { LandingComponent } from './landing/landing.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GameComponent } from './game/game.component';
-import { MainMenu } from './game/scenes/MainMenu';
 import { Scene1 } from './game/scenes/Scene1';
 import { LoadingScreen } from './game/scenes/LoadingScreen';
 
@@ -29,7 +28,7 @@ import { LoadingScreen } from './game/scenes/LoadingScreen';
     HttpClientModule,
     FormsModule
   ],
-  providers: [CookieService, MainMenu, Scene1, LoadingScreen],
+  providers: [CookieService, Scene1, LoadingScreen],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

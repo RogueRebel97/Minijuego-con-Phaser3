@@ -8,11 +8,11 @@ export class Scene1 extends Phaser.Scene {
   }
  
   // init, preload, create, update
-  init() {}
+  init() {console.log("Scene1 Corriendo");}
 
   
   preload() {
-    this.load.image('star', 'assets/graphics/star.png');
+   
     
   }
 
@@ -23,16 +23,20 @@ export class Scene1 extends Phaser.Scene {
      console.log("me estas pulsando");
      
     // this.scene.stop;
-    console.log("cambio de escena");
+   
     
-    this.scene.start("MainMenu");
+    // this.scene.start("MainMenu");
+    this.scene.start('MainMenu')
+    
+    
+    
    });
 
 
   }
 
-  override update() {}
-
+  override update() { }
+ 
 
 }
 
