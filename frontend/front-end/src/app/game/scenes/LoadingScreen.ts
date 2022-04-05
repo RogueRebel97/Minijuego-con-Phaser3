@@ -1,9 +1,14 @@
+import { Injectable } from '@angular/core';
 import * as Phaser from 'phaser';
-import WebFont from 'webfontloader';
-import WebFontLoader from 'webfontloader';
+import { UserService } from 'src/app/user/user.service';
 
+let contexto: any;
+
+@Injectable({
+  providedIn: 'root',
+})
 export class LoadingScreen extends Phaser.Scene {
-  constructor() {
+  constructor(private userService: UserService) {
     super({ key: 'LoadingScreen' });
   }
 
@@ -80,7 +85,7 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/graphics/gameIcons/PNG/Black/1x/gear.png'
     );
 
-    for (var i = 0; i < 250; i++) {
+    for (var i = 0; i < 2; i++) {
       //Carga muchas veces el logo para probar la Barra de progureso
       this.load.image('logo' + i, 'assets/graphics/Logo.jpg');
     }
@@ -115,6 +120,9 @@ export class LoadingScreen extends Phaser.Scene {
   }
 
   create() {
+    // contexto.closeScenes('MainMenu');
+    this.scene.stop('MainMenu');
+
     var width = this.cameras.main.width;
     var height = this.cameras.main.height;
 
@@ -134,19 +142,31 @@ export class LoadingScreen extends Phaser.Scene {
     startTxT.setText('Pulsa la tecla espacio para comenzar');
 
     this.input.keyboard.once('keydown-SPACE', () => {
+      console.log('estas pulsando espacio');
+
       // fade to black
-      this.cameras.main.fadeOut(150, 0, 0, 0);
+      this.cameras.main.fadeOut(1000, 0, 0, 0);
+      this.scene.stop('Scene1');
+      this.scene.start('MainMenu');
     });
 
     this.cameras.main.once(
       Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
       (cam: any, effect: any) => {
-        this.scene.start('ui');
+        // this.scene.start('ui');
         // this.scene.bringToTop('ui');
         this.scene.start('MainMenu');
+        console.log('fadeout');
       }
     );
   }
 
-  override update() {}
+  override update() {
+    console.log('LoadingScreen esta corriendo');
+  }
 }
+
+// export const loadingCtx = (ctx: any) => {
+//   contexto = ctx;
+//   return LoadingScreen;
+// };

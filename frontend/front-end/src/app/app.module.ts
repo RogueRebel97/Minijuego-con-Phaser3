@@ -11,7 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GameComponent } from './game/game.component';
 import { Scene1 } from './game/scenes/Scene1';
 import { LoadingScreen } from './game/scenes/LoadingScreen';
-
+import { MainMenu } from './game/scenes/MainMenu';
 
 @NgModule({
   declarations: [
@@ -20,15 +20,9 @@ import { LoadingScreen } from './game/scenes/LoadingScreen';
     SigninComponent,
     LandingComponent,
     GameComponent,
-    
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule
-  ],
-  providers: [CookieService, Scene1, LoadingScreen],
-  bootstrap: [AppComponent]
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
+  providers: [CookieService, MainMenu, Scene1, LoadingScreen],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

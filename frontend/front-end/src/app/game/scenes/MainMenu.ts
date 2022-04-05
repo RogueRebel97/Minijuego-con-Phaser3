@@ -1,55 +1,45 @@
-
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { UserService } from "src/app/user/user.service";
-// import { CookieService } from "ngx-cookie-service";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { UserService } from 'src/app/user/user.service';
 
 // Angular context
-let contexto:any;
+let contexto: any;
 
 @Injectable({
-  providedIn: 'root'
-
+  providedIn: 'root',
 })
-
-class MainMenu extends Phaser.Scene {
-
+export class MainMenu extends Phaser.Scene {
   private buttons: Phaser.GameObjects.Image[] = [];
   private selectedButtonIndex = 0;
   private buttonSelector!: Phaser.GameObjects.Image;
-  private score:number=0;  
+  private score: number = 0;
   private scoreTxT!: Phaser.GameObjects.Text;
-  
-
 
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
 
-    constructor(private http:HttpClient,  private userService:UserService )  {
-      super({ key: 'MainMenu' });
-    
-      
-    }
+  constructor(private http: HttpClient, private userService: UserService) {
+    super({ key: 'MainMenu' });
+  }
 
   init() {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.score = parseInt(localStorage.getItem('score')!) || 0;
-    console.log("mainMenu Corriendo");
-   
-    
+    console.log('mainMenu Corriendo');
   }
   preload() {
-    console.log("mainMenu perload Corriendo");
-  
+    console.log('mainMenu preload Corriendo');
   }
 
   create() {
-    console.log("mainMenu Create Corriendo");
-    this.cameras.main.fadeIn(100, 0, 0, 0)
+    console.log('mainMenu Create Corriendo');
+    // this.cameras.main.fadeIn(1000, 0, 0, 0);
     this.add.image(400, 300, 'sky');
 
-    this.scoreTxT =  this.add.text(16, 16, 'SCORE: ' +this.score, { fontSize: '32px', color: '#000' });
-    
- 
+    this.scoreTxT = this.add.text(16, 16, 'SCORE: ' + this.score, {
+      fontSize: '32px',
+      color: '#000',
+    });
+
     const { width, height } = this.scale;
 
     // Play button
@@ -57,7 +47,9 @@ class MainMenu extends Phaser.Scene {
       .image(width * 0.5, height * 0.6, 'glass-panel')
       .setDisplaySize(150, 50);
 
-    this.add.text(playButton.x, playButton.y, 'Jugar', {color:"black"}).setOrigin(0.5);
+    this.add
+      .text(playButton.x, playButton.y, 'Jugar', { color: 'black' })
+      .setOrigin(0.5);
 
     // Settings button
     const settingsButton = this.add
@@ -69,7 +61,7 @@ class MainMenu extends Phaser.Scene {
       .setDisplaySize(150, 50);
 
     this.add
-      .text(settingsButton.x, settingsButton.y, 'Opciones',  {color:"black"})
+      .text(settingsButton.x, settingsButton.y, 'Opciones', { color: 'black' })
       .setOrigin(0.5);
 
     // Credits button
@@ -81,7 +73,9 @@ class MainMenu extends Phaser.Scene {
       )
       .setDisplaySize(150, 50);
 
-    this.add.text(creditsButton.x, creditsButton.y, 'Creditos',  {color:"black"}).setOrigin(0.5);
+    this.add
+      .text(creditsButton.x, creditsButton.y, 'Creditos', { color: 'black' })
+      .setOrigin(0.5);
 
     this.buttons.push(playButton);
     this.buttons.push(settingsButton);
@@ -89,56 +83,46 @@ class MainMenu extends Phaser.Scene {
 
     this.buttonSelector = this.add.image(0, 0, 'cursor-hand');
 
-    this.selectButton(0)
-
-    
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-      playButton.off('selected')
-     
-    })
+    this.selectButton(0);
 
     playButton.on('selected', () => {
-      console.log('play')
-      
-      this.scene.start("Scene1");
-      
+      console.log('play');
 
-
-    })
-
+      this.scene.start('Scene1');
+      this.scene.stop('MainMenu');
+    });
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-      playButton.off('selected')
-     
-    })
-  
+      playButton.off('selected');
+      settingsButton.off('selected');
+      creditsButton.off('selected');
+      console.log('EVENTOS CERRADOS');
+    });
+
     settingsButton.on('selected', () => {
-      console.log('settings')
-      this.score+=10;
+      console.log('settings');
+      this.score += 10;
       console.log(this.score);
-      
-      this.scoreTxT.setText('SCORE: '+this.score);
 
-      localStorage.setItem('score',this.score.toString(),)
-      contexto.userservice.showscore(this.score);
+      this.scoreTxT.setText('SCORE: ' + this.score);
 
-    
-    
-    })
-  
+      localStorage.setItem('score', this.score.toString());
+      // contexto.userservice.showscore(this.score);
+    });
+
     creditsButton.on('selected', () => {
-      console.log('credits')
-    })
+      console.log('credits');
+      this.scene.stop(this.scene.key);
+    });
 
-
+    this.selectNextButton(0);
+    this.selectButton(0);
   }
 
   override update() {
     const pressUp = Phaser.Input.Keyboard.JustDown(this.cursors.up!);
     const pressDown = Phaser.Input.Keyboard.JustDown(this.cursors.down!);
     const pressSpace = Phaser.Input.Keyboard.JustDown(this.cursors.space!);
-
-   
-    
+    console.log('MainMenu Corriendo');
 
     if (pressUp) {
       this.selectNextButton(-1);
@@ -150,6 +134,8 @@ class MainMenu extends Phaser.Scene {
   }
 
   selectButton(index: number) {
+    console.log('selectButton');
+
     const currentButton = this.buttons[this.selectedButtonIndex];
 
     // set the current selected button to a white tint
@@ -169,37 +155,32 @@ class MainMenu extends Phaser.Scene {
   }
 
   selectNextButton(change = 1) {
-    let index = this.selectedButtonIndex + change
+    console.log('selecnextButton');
 
-	// wrap the index to the front or end of array
-	if (index >= this.buttons.length)
-	{
-		index = 0
-	}
-	else if (index < 0)
-	{
-		index = this.buttons.length - 1
-	}
+    let index = this.selectedButtonIndex + change;
 
-	this.selectButton(index)
+    // wrap the index to the front or end of array
+    if (index >= this.buttons.length) {
+      index = 0;
+    } else if (index < 0) {
+      index = this.buttons.length - 1;
+    }
+
+    this.selectButton(index);
   }
 
   confirmSelection() {
+    console.log('confirmSelection');
+
     // get the currently selected button
-	const button = this.buttons[this.selectedButtonIndex]
+    const button = this.buttons[this.selectedButtonIndex];
 
-	// emit the 'selected' event
-	button.emit('selected')
+    // emit the 'selected' event
+    button.emit('selected');
   }
-
-  
-  
 }
 
-export const startMenu = (ctx:any)=>{
-  contexto=ctx
-  return MainMenu;
-}
-
-
-  
+// export const startMenu = (ctx: any) => {
+//   contexto = ctx;
+//   return MainMenu;
+// };
