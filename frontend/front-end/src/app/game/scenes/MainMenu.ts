@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UserService } from 'src/app/user/user.service';
 
 // Angular context
 let contexto: any;
@@ -12,18 +11,18 @@ export class MainMenu extends Phaser.Scene {
   private buttons: Phaser.GameObjects.Image[] = [];
   private selectedButtonIndex = 0;
   private buttonSelector!: Phaser.GameObjects.Image;
-  private score: number = 0;
-  private scoreTxT!: Phaser.GameObjects.Text;
 
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
 
-  constructor(private http: HttpClient, private userService: UserService) {
+  private timeEvent!: any;
+  private timeText!: any;
+
+  constructor() {
     super({ key: 'MainMenu' });
   }
 
   init() {
     this.cursors = this.input.keyboard.createCursorKeys();
-    this.score = parseInt(localStorage.getItem('score')!) || 0;
     console.log('mainMenu Corriendo');
   }
   preload() {
@@ -32,13 +31,11 @@ export class MainMenu extends Phaser.Scene {
 
   create() {
     console.log('mainMenu Create Corriendo');
-    // this.cameras.main.fadeIn(1000, 0, 0, 0);
-    this.add.image(400, 300, 'sky');
+    this.cameras.main.fadeIn(3000, 0, 0, 0);
 
-    this.scoreTxT = this.add.text(16, 16, 'SCORE: ' + this.score, {
-      fontSize: '32px',
-      color: '#000',
-    });
+    this.add.image(400, 300, 'sky');
+    // this.timeText = this.add.text(32, 32, 'Event.progress: ');
+    // this.timeEvent = this.time.delayedCall(3000, Event, [], this);
 
     const { width, height } = this.scale;
 
@@ -100,18 +97,10 @@ export class MainMenu extends Phaser.Scene {
 
     settingsButton.on('selected', () => {
       console.log('settings');
-      this.score += 10;
-      console.log(this.score);
-
-      this.scoreTxT.setText('SCORE: ' + this.score);
-
-      localStorage.setItem('score', this.score.toString());
-      // contexto.userservice.showscore(this.score);
     });
 
     creditsButton.on('selected', () => {
       console.log('credits');
-      this.scene.stop(this.scene.key);
     });
 
     this.selectNextButton(0);
@@ -123,6 +112,10 @@ export class MainMenu extends Phaser.Scene {
     const pressDown = Phaser.Input.Keyboard.JustDown(this.cursors.down!);
     const pressSpace = Phaser.Input.Keyboard.JustDown(this.cursors.space!);
     console.log('MainMenu Corriendo');
+
+    // this.timeText.setText(
+    //   'Event.progress: ' + this.timeEvent.getProgress().toString().substr(0, 4)
+    // );
 
     if (pressUp) {
       this.selectNextButton(-1);
@@ -179,8 +172,3 @@ export class MainMenu extends Phaser.Scene {
     button.emit('selected');
   }
 }
-
-// export const startMenu = (ctx: any) => {
-//   contexto = ctx;
-//   return MainMenu;
-// };

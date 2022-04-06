@@ -4,8 +4,10 @@ import { Scene1 } from './scenes/Scene1';
 import { LoadingScreen } from './scenes/LoadingScreen';
 // import { MainMenu, startMenu } from './scenes/MainMenu';
 import { UserService } from '../user/user.service';
-// import { loadingCtx } from './scenes/LoadingScreen';
 import { MainMenu } from './scenes/MainMenu';
+import Settings from './scenes/Settings';
+import UIScene from './scenes/UIScene';
+import { Plugin as NineSlicePlugin } from 'phaser3-nineslice';
 
 @Component({
   selector: 'app-game',
@@ -22,7 +24,7 @@ export class GameComponent implements OnInit, OnDestroy {
     this.config = {
       type: Phaser.AUTO,
       backgroundColor: '#ef9324',
-      scene: [LoadingScreen, MainMenu, Scene1],
+      scene: [LoadingScreen, UIScene, MainMenu, Scene1],
 
       parent: 'gameScreen',
       scale: {
@@ -30,8 +32,12 @@ export class GameComponent implements OnInit, OnDestroy {
         height: 600,
         autoCenter: Phaser.Scale.CENTER_BOTH,
       },
+      plugins: {
+        global: [NineSlicePlugin.DefaultCfg],
+      },
     };
   }
+
   ngOnDestroy(): void {
     this.phaserGame.destroy(true);
   }
@@ -41,9 +47,5 @@ export class GameComponent implements OnInit, OnDestroy {
 
     this.score = parseInt(localStorage.getItem('score')!) || 0;
     console.log('puntuacion del localStorage:' + this.score);
-  }
-
-  closeScenes(key: string) {
-    this.phaserGame.scene.stop(key);
   }
 }

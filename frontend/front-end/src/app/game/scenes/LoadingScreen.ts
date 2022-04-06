@@ -2,13 +2,11 @@ import { Injectable } from '@angular/core';
 import * as Phaser from 'phaser';
 import { UserService } from 'src/app/user/user.service';
 
-let contexto: any;
-
 @Injectable({
   providedIn: 'root',
 })
 export class LoadingScreen extends Phaser.Scene {
-  constructor(private userService: UserService) {
+  constructor() {
     super({ key: 'LoadingScreen' });
   }
 
@@ -17,8 +15,8 @@ export class LoadingScreen extends Phaser.Scene {
   preload() {
     var width = this.cameras.main.width;
     var height = this.cameras.main.height;
-
     console.log('loadingScreen');
+
     // Barra de Carga
     var progressBar = this.add.graphics();
     var progressBox = this.add.graphics();
@@ -75,7 +73,10 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/graphics/uiAssets/PNG/cursor_hand.png'
     );
 
-    this.load.image('ui_panel', 'assets/graphics/uiAssets2/PNG/grey_panel.png');
+    this.load.image(
+      'setting_panel',
+      'assets/graphics/uiAssets2/PNG/grey_panel.png'
+    );
     this.load.image(
       'small_button',
       'assets/graphics/uiAssets2/PNG/grey_button07.png'
@@ -84,9 +85,13 @@ export class LoadingScreen extends Phaser.Scene {
       'option_button',
       'assets/graphics/gameIcons/PNG/Black/1x/gear.png'
     );
+    this.load.image(
+      'checkmark',
+      'assets/graphics/uiAssets2/PNG/blue_checkmark.png'
+    );
 
     for (var i = 0; i < 2; i++) {
-      //Carga muchas veces el logo para probar la Barra de progureso
+      //Carga muchas veces el logo para probar la Barra de progreso
       this.load.image('logo' + i, 'assets/graphics/Logo.jpg');
     }
     this.load.image('star', 'assets/graphics/star.png');
@@ -95,7 +100,6 @@ export class LoadingScreen extends Phaser.Scene {
 
     // Rellenar la barra de carga
     this.load.on('progress', function (value: any) {
-      // console.log(value);
       percentText.setText(Math.round(value * 100) + '%');
       progressBar.clear();
       progressBar.fillStyle(0x00ff00, 1);
@@ -104,7 +108,6 @@ export class LoadingScreen extends Phaser.Scene {
 
     // leer los archivos cargados
     this.load.on('fileprogress', function (file: any) {
-      // console.log(file.src);
       assetText.setText('Cargando assets: ' + file.key);
     });
 
@@ -142,21 +145,16 @@ export class LoadingScreen extends Phaser.Scene {
     startTxT.setText('Pulsa la tecla espacio para comenzar');
 
     this.input.keyboard.once('keydown-SPACE', () => {
-      console.log('estas pulsando espacio');
-
       // fade to black
-      this.cameras.main.fadeOut(1000, 0, 0, 0);
-      this.scene.stop('Scene1');
-      this.scene.start('MainMenu');
+      this.cameras.main.fadeOut(1500, 0, 0, 0);
     });
 
     this.cameras.main.once(
       Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
       (cam: any, effect: any) => {
-        // this.scene.start('ui');
-        // this.scene.bringToTop('ui');
+        this.scene.launch('ui-scene');
+        this.scene.bringToTop('ui-scene');
         this.scene.start('MainMenu');
-        console.log('fadeout');
       }
     );
   }
