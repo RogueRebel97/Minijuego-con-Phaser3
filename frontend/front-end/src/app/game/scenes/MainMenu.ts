@@ -58,7 +58,9 @@ export class MainMenu extends Phaser.Scene {
       .setDisplaySize(150, 50);
 
     this.add
-      .text(settingsButton.x, settingsButton.y, 'Opciones', { color: 'black' })
+      .text(settingsButton.x, settingsButton.y, 'Puntuaciones', {
+        color: 'black',
+      })
       .setOrigin(0.5);
 
     // Credits button

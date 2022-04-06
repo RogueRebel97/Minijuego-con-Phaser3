@@ -47,20 +47,24 @@ export default class UIScene extends Phaser.Scene {
         settingButton.setTint(0xffffff);
         if (this.SettingMenu.isOpen) {
           this.SettingMenu.hide();
-
-          for (let i = 1; i <= this.scene.manager.scenes.length - 1; i++) {
-            console.log(this.scene.manager.scenes[i].scene.key);
+          // Resume Scene
+          for (let i = 0; i <= this.scene.manager.scenes.length - 1; i++) {
+            // console.log('Escena: ' + this.scene.manager.scenes[i].scene.key);
+            if (this.scene.manager.scenes[i].scene.key == 'ui-scene') {
+            } else {
+              this.scene.resume(this.scene.manager.scenes[i].scene.key);
+            }
           }
-
-          //   console.log(this.scene.manager.scenes[1].scene.key);
-
-          this.scene.resume(this.scene.manager.scenes[1].scene.key);
         } else {
+          //Pause Scene
           this.SettingMenu.show();
-          //   for (let i = 2; i <= this.scene.manager.scenes.length; i++) {
-          //     this.scene.pause(this.scene.manager.scenes[i]);
-          //   }
-          this.scene.pause(this.scene.manager.scenes[1].scene.key);
+          for (let i = 0; i <= this.scene.manager.scenes.length - 1; i++) {
+            // console.log('Escena: ' + this.scene.manager.scenes[i].scene.key);
+            if (this.scene.manager.scenes[i].scene.key == 'ui-scene') {
+            } else {
+              this.scene.pause(this.scene.manager.scenes[i].scene.key);
+            }
+          }
         }
       });
   }
