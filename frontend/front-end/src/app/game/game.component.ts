@@ -5,9 +5,9 @@ import { LoadingScreen } from './scenes/LoadingScreen';
 // import { MainMenu, startMenu } from './scenes/MainMenu';
 import { UserService } from '../user/user.service';
 import { MainMenu } from './scenes/MainMenu';
-import Settings from './scenes/Settings';
-import UIScene from './scenes/UIScene';
 import { Plugin as NineSlicePlugin } from 'phaser3-nineslice';
+import SettingsMenu from './scenes/SettingsMenu';
+import UIScene from './scenes/UIScene';
 
 @Component({
   selector: 'app-game',
@@ -31,6 +31,13 @@ export class GameComponent implements OnInit, OnDestroy {
         width: 800,
         height: 600,
         autoCenter: Phaser.Scale.CENTER_BOTH,
+      },
+      physics: {
+        default: 'arcade',
+        arcade: {
+          gravity: { y: 300 },
+          debug: true,
+        },
       },
       plugins: {
         global: [NineSlicePlugin.DefaultCfg],

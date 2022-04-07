@@ -90,11 +90,56 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/graphics/uiAssets2/PNG/blue_checkmark.png'
     );
 
-    for (var i = 0; i < 2; i++) {
-      //Carga muchas veces el logo para probar la Barra de progreso
-      this.load.image('logo' + i, 'assets/graphics/Logo.jpg');
-    }
+    this.load.image('logo', 'assets/graphics/Logo.jpg');
+
     this.load.image('star', 'assets/graphics/star.png');
+
+    this.load.image(
+      'forestBckgr-1',
+      'assets/SpritesSheets/oak_woods_v1.0/background/background_layer_1.png'
+    );
+    this.load.image(
+      'forestBckgr-2',
+      'assets/SpritesSheets/oak_woods_v1.0/background/background_layer_2.png'
+    );
+    this.load.image(
+      'forestBckgr-3',
+      'assets/SpritesSheets/oak_woods_v1.0/background/background_layer_3.png'
+    );
+
+    this.load.image('basicPlataform', 'assets/graphics/platform.png');
+    this.load.spritesheet('dude', 'assets/graphics/dude.png', {
+      frameWidth: 32,
+      frameHeight: 48,
+    });
+    // SpriteSheets del caballero
+
+    this.load.spritesheet(
+      'knight',
+      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Idle.png',
+      { frameWidth: 120, frameHeight: 80 }
+    );
+    this.load.spritesheet(
+      'run',
+      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Run.png',
+      { frameWidth: 120, frameHeight: 80 }
+    );
+    this.load.spritesheet(
+      'jump',
+      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Jump.png',
+      { frameWidth: 120, frameHeight: 80 }
+    );
+    this.load.spritesheet(
+      'turn',
+      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_TurnAround.png',
+      { frameWidth: 120, frameHeight: 80 }
+    );
+
+    this.load.spritesheet(
+      'fall',
+      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_fall.png',
+      { frameWidth: 120, frameHeight: 80 }
+    );
 
     // fin de Assets
 
@@ -129,7 +174,7 @@ export class LoadingScreen extends Phaser.Scene {
     var width = this.cameras.main.width;
     var height = this.cameras.main.height;
 
-    var logo = this.add.image(400, 300, 'logo1');
+    var logo = this.add.image(400, 300, 'logo');
 
     var startTxT = this.make.text({
       x: width / 2,
@@ -154,7 +199,8 @@ export class LoadingScreen extends Phaser.Scene {
       (cam: any, effect: any) => {
         this.scene.launch('ui-scene');
         this.scene.bringToTop('ui-scene');
-        this.scene.start('MainMenu');
+        this.scene.start('Scene1');
+        // this.scene.start('MainMenu');
       }
     );
   }

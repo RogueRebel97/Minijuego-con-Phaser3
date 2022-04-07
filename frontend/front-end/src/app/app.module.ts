@@ -12,7 +12,7 @@ import { GameComponent } from './game/game.component';
 import { Scene1 } from './game/scenes/Scene1';
 import { LoadingScreen } from './game/scenes/LoadingScreen';
 import { MainMenu } from './game/scenes/MainMenu';
-import Settings from './game/scenes/Settings';
+import Settings from './game/scenes/SettingsMenu';
 
 @NgModule({
   declarations: [

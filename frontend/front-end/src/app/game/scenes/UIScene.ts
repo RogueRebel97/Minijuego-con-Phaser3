@@ -1,7 +1,7 @@
 //imports
 import * as Phaser from 'phaser';
 import { MainMenu } from './MainMenu';
-import Settings from './Settings';
+import Settings from './SettingsMenu';
 
 //Angular context
 let contexto: any;
