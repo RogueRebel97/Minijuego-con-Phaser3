@@ -7,10 +7,10 @@ import { LandingComponent } from './landing/landing.component';
 import { GameComponent } from './game/game.component';
 
 const routes: Routes = [
-  {path:"login", component:UserComponent, },
-  {path:"signin", component:SigninComponent, }, 
-  {path:"landing", component:LandingComponent,canActivate:[AuthGuard]},
-  {path:"minijuego", component:GameComponent,canActivate:[AuthGuard]},
+  { path: "login", component: UserComponent, },
+  { path: "signin", component: SigninComponent, },
+  { path: "landing", component: LandingComponent },
+  { path: "minijuego", component: GameComponent },
 ];
 
 // canActivate:[AuthGuard] añadir a todas las rutas salvo login y signin. Comprueba si estas logedo antes de acceder a la ruta

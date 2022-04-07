@@ -17,7 +17,7 @@ export class Scene1 extends Phaser.Scene {
     console.log('Scene1 Corriendo');
   }
 
-  preload() {}
+  preload() { }
 
   create() {
     this.cameras.main.setBounds(0, 0, 5000, 600);
@@ -75,7 +75,7 @@ export class Scene1 extends Phaser.Scene {
       this.knight.height * 0.5
     );
 
-    this.knight.setBounce(0.2);
+    this.knight.setBounce(0.05);
     this.knight.setCollideWorldBounds(true);
 
     //Animaciones
@@ -85,6 +85,12 @@ export class Scene1 extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers('knight', { start: 0, end: 9 }),
       frameRate: 20,
       repeat: -1,
+    });
+    this.anims.create({
+      key: 'turn',
+      frames: this.anims.generateFrameNumbers('turn', { start: 0, end: 2 }),
+      frameRate: 20,
+
     });
 
     this.anims.create({
@@ -96,23 +102,18 @@ export class Scene1 extends Phaser.Scene {
 
     this.anims.create({
       key: 'jump',
-      frames: [{ key: 'jump', frame: 1 }],
-      frameRate: 10,
-      repeat: -1,
-    });
-    // this.anims.create({
-    //   key: 'fall',
-    //   frames: [{ key: 'fall', frame: 0 }],
-    //   frameRate: 10,
-    //   repeat: -1,
-    // });
+      frames: this.anims.generateFrameNumbers('jump', { start: 0, end: 2 }),
+      frameRate: 20,
 
+    });
     this.anims.create({
       key: 'fall',
-      frames: [{ key: 'dude', frame: 1 }],
-      frameRate: 10,
-      repeat: -1,
+      frames: this.anims.generateFrameNumbers('fall', { start: 0, end: 2 }),
+      frameRate: 20,
+
     });
+
+
 
     this.anims.create({
       key: 'right',
@@ -126,42 +127,61 @@ export class Scene1 extends Phaser.Scene {
 
     //Colliders
     this.physics.add.collider(this.knight, this.ground);
+
+
+
   }
 
   override update() {
+
+    // <==
     if (this.cursors.left.isDown) {
+      this.knight.anims.play('turn', 20, false);
+      // Left Speed
       this.knight.setVelocityX(-200);
+      //Animation
       if (this.knight.body.blocked.down) {
         this.knight.anims.play('left', true);
       }
+      // hitbox adjust
       this.knight.body.setOffset(
         this.knight.width * 0.5 - 5,
         this.knight.height * 0.5
       );
+      // turn left
       this.knight.flipX = true;
+      // ==>
     } else if (this.cursors.right.isDown) {
+      this.knight.anims.play('turn', 20, false);
+      // Right speed
       this.knight.setVelocityX(200);
       if (this.knight.body.blocked.down) {
+        //Animation
         this.knight.anims.play('right', true);
       }
       this.knight.flipX = false;
+      // hitbox adjust
       this.knight.body.setOffset(
         this.knight.width * 0.5 - 15,
         this.knight.height * 0.5
       );
-    } else {
+    } else if (this.knight.body.blocked.down) {
+
       this.knight.setVelocityX(0);
       this.knight.anims.play('idle', true);
     }
     if (this.cursors.up.isDown && this.knight.body.blocked.down) {
+
       this.knight.anims.stop();
       this.knight.setVelocityY(-330);
       this.knight.anims.play('jump');
       console.log(this.knight.body.velocity.y);
-    }
-    if (this.knight.body.velocity.y > -200 && this.knight.body.blocked.up) {
+    } if (this.knight.body.angle >= 0 && !this.knight.body.blocked.down) {
+
       this.knight.anims.stop();
       this.knight.anims.play('fall');
     }
+
+
   }
 }

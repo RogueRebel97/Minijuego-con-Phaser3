@@ -32,6 +32,7 @@ export class GameComponent implements OnInit, OnDestroy {
         height: 600,
         autoCenter: Phaser.Scale.CENTER_BOTH,
       },
+      pixelArt: true,
       physics: {
         default: 'arcade',
         arcade: {
