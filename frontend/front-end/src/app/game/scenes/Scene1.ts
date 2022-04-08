@@ -10,6 +10,10 @@ export class Scene1 extends Phaser.Scene {
   private allowMove = true;
   private shiftKey!: any;
 
+
+  private forest1!: Phaser.GameObjects.Image;
+  // private forest2!: Phaser.GameObjects.TileSprite;
+  private forest3!: Phaser.GameObjects.Image;
   constructor() {
     super({ key: 'Scene1' });
   }
@@ -21,46 +25,36 @@ export class Scene1 extends Phaser.Scene {
   preload() { }
 
   create() {
-    this.cameras.main.setBounds(0, 0, 5000, 600);
+
 
     //background layer 1
-    let forest1 = this.add.image(
-      this.cameras.main.width / 2,
-      this.cameras.main.height / 2,
-      'forestBckgr-1'
-    );
-    let scaleX = this.cameras.main.width / forest1.width;
-    let scaleY = this.cameras.main.height / forest1.height;
-    let scale = Math.max(scaleX, scaleY);
-    forest1.setScale(scale).setScrollFactor(0);
+    this.forest1 = this.add.image(0, 0, 'forestBckgr-1').setOrigin(0)
 
-    //Background layer 2
-    let forest2 = this.add.image(
-      this.cameras.main.width / 2,
-      this.cameras.main.height / 2,
-      'forestBckgr-2'
-    );
+    this.forest1.displayWidth = this.sys.canvas.width;
+    this.forest1.displayHeight = this.sys.canvas.height;
+    this.forest1.scrollFactorX = 0
 
-    let scaleX2 = this.cameras.main.width / forest2.width;
-    let scaleY2 = this.cameras.main.height / forest2.height;
-    let scale2 = Math.max(scaleX2, scaleY2);
-    forest2.setScale(scale2).setScrollFactor(0);
+    //background layer 2
 
-    //Background layer 3
-    let forest3 = this.add.image(
-      this.cameras.main.width / 2,
-      this.cameras.main.height / 2,
-      'forestBckgr-3'
-    );
-    let scaleX3 = this.cameras.main.width / forest3.width;
-    let scaleY3 = this.cameras.main.height / forest3.height;
-    let scale3 = Math.max(scaleX3, scaleY3);
-    forest3.setScale(scale3).setScrollFactor(0);
+    this.createBackground(this, 'forestBckgr-2', 3, 0.5)
+    // // this.forest2 = this.add.image(400, 300, 'forestBckgr-2')
+    // this.forest2 = this.add.tileSprite(400, 300, this.sys.canvas.width, this.sys.canvas.height, 'forestBckgr-2')
+    // this.forest2.displayWidth = this.sys.canvas.width;
+    // this.forest2.displayHeight = this.sys.canvas.height;
+    // this.forest2.scrollFactorX = 0.5
+
+
+    //background layer 3
+    this.forest3 = this.add.image(400, 300, 'forestBckgr-3')
+    this.forest3.displayWidth = this.sys.canvas.width;
+    this.forest3.displayHeight = this.sys.canvas.height;
+    this.forest3.scrollFactorX = 1
 
     // groundtiles (temporal)
     this.ground = this.physics.add.staticGroup();
 
     this.ground.create(400, 568, 'basicPlataform').setScale(2).refreshBody();
+    this.ground.create(1200, 568, 'basicPlataform').setScale(2).refreshBody();
 
     this.ground.create(600, 400, 'basicPlataform');
     this.ground.create(50, 250, 'basicPlataform');
@@ -68,7 +62,7 @@ export class Scene1 extends Phaser.Scene {
 
     //jugador y fisicas
 
-    this.knight = this.physics.add.sprite(100, 450, 'knight').play('idle');
+    this.knight = this.physics.add.sprite(100, 450, 'knight');
     this.knight.displayWidth = 240;
     this.knight.displayHeight = 160;
     this.knight.body.setSize(20, 38);
@@ -77,8 +71,10 @@ export class Scene1 extends Phaser.Scene {
       this.knight.height * 0.5
     );
 
+    // this.cameras.main.startFollow(this.knight)
+    // this.cameras.main.
     this.knight.setBounce(0.05);
-    this.knight.setCollideWorldBounds(true);
+    // this.knight.setCollideWorldBounds(true);
 
     //Animaciones
     this.anims.create({
@@ -132,6 +128,12 @@ export class Scene1 extends Phaser.Scene {
 
     //Colliders
     this.physics.add.collider(this.knight, this.ground);
+
+
+    // Camera
+
+
+
   }
 
   override update() {
@@ -140,8 +142,10 @@ export class Scene1 extends Phaser.Scene {
     if (this.allowMove) {
       // <== Left
       if (this.cursors.left.isDown) {
+
         // Left Speed
         this.knight.setVelocityX(-200);
+        this.cameras.main.scrollX -= 3
         //Animation
         if (this.knight.flipX && this.knight.body.blocked.down) {
 
@@ -163,6 +167,7 @@ export class Scene1 extends Phaser.Scene {
       } else if (this.cursors.right.isDown) {
         // Right speed
         this.knight.setVelocityX(200);
+        this.cameras.main.scrollX += 3
         if (!this.knight.flipX && this.knight.body.blocked.down) {
           //Animation
 
@@ -224,7 +229,16 @@ export class Scene1 extends Phaser.Scene {
     }, [], this)
   }
 
+  createBackground(scene: Phaser.Scene, texture: string, count: number, scrollFactor: number) {
+    scene.add.image(0, scene.scale.height, texture)
+      .setOrigin(0, 1).setScrollFactor(scrollFactor)
+  }
 
+
+
+
+  // this.forest2.displayWidth = this.sys.canvas.width;
+  // this.forest2.displayHeight = this.sys.canvas.height;
 
 
 
