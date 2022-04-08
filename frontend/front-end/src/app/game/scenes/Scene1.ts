@@ -28,27 +28,17 @@ export class Scene1 extends Phaser.Scene {
 
 
     //background layer 1
-    this.forest1 = this.add.image(0, 0, 'forestBckgr-1').setOrigin(0)
-
-    this.forest1.displayWidth = this.sys.canvas.width;
-    this.forest1.displayHeight = this.sys.canvas.height;
-    this.forest1.scrollFactorX = 0
+    this.createBackground(this, 'forestBckgr-1', 3, 0)
 
     //background layer 2
 
     this.createBackground(this, 'forestBckgr-2', 3, 0.5)
-    // // this.forest2 = this.add.image(400, 300, 'forestBckgr-2')
-    // this.forest2 = this.add.tileSprite(400, 300, this.sys.canvas.width, this.sys.canvas.height, 'forestBckgr-2')
-    // this.forest2.displayWidth = this.sys.canvas.width;
-    // this.forest2.displayHeight = this.sys.canvas.height;
-    // this.forest2.scrollFactorX = 0.5
+
 
 
     //background layer 3
-    this.forest3 = this.add.image(400, 300, 'forestBckgr-3')
-    this.forest3.displayWidth = this.sys.canvas.width;
-    this.forest3.displayHeight = this.sys.canvas.height;
-    this.forest3.scrollFactorX = 1
+    this.createBackground(this, 'forestBckgr-3', 3, 1)
+
 
     // groundtiles (temporal)
     this.ground = this.physics.add.staticGroup();
@@ -230,8 +220,14 @@ export class Scene1 extends Phaser.Scene {
   }
 
   createBackground(scene: Phaser.Scene, texture: string, count: number, scrollFactor: number) {
-    scene.add.image(0, scene.scale.height, texture)
-      .setOrigin(0, 1).setScrollFactor(scrollFactor)
+    let x = 0;
+    for (let i = 0; i < count; i++) {
+      const m = scene.add.image(x, scene.scale.height, texture)
+        .setOrigin(0, 1).setScrollFactor(scrollFactor)
+      m.displayWidth = this.sys.canvas.width;
+      m.displayHeight = this.sys.canvas.height;
+      x += m.width
+    }
   }
 
 
