@@ -9,6 +9,7 @@ export class Scene1 extends Phaser.Scene {
   private cursors!: any;
   private allowMove = true;
   private shiftKey!: any;
+  private spaceKey!: any;
 
 
   private forest1!: Phaser.GameObjects.Image;
@@ -110,10 +111,20 @@ export class Scene1 extends Phaser.Scene {
       frameRate: 30
     });
 
+    this.anims.create({
+      key: 'downSwing',
+      frames: this.anims.generateFrameNumbers('downAttack', { start: 0, end: 3 }),
+      frameRate: 20,
+    });
+
     //  Input Events
     this.cursors = this.input.keyboard.createCursorKeys();
     this.shiftKey = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.SHIFT
+    );
+
+    this.spaceKey = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.SPACE
     );
 
     //Colliders
@@ -191,6 +202,11 @@ export class Scene1 extends Phaser.Scene {
       if (this.knight.body.angle >= 0 && !this.knight.body.blocked.down) {
         this.knight.anims.stop();
         this.knight.anims.play('fall');
+      }
+      if (Phaser.Input.Keyboard.JustDown(this.spaceKey)) {
+        this.knight.anims.stop();
+        this.blockMove(200)
+        this.knight.anims.play('downSwing');
       }
     }
 

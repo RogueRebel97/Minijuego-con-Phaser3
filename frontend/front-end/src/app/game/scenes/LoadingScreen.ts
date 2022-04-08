@@ -10,7 +10,7 @@ export class LoadingScreen extends Phaser.Scene {
     super({ key: 'LoadingScreen' });
   }
 
-  init() {}
+  init() { }
 
   preload() {
     var width = this.cameras.main.width;
@@ -144,6 +144,12 @@ export class LoadingScreen extends Phaser.Scene {
     this.load.spritesheet(
       'dash',
       'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Dash.png',
+      { frameWidth: 120, frameHeight: 80 }
+    );
+
+    this.load.spritesheet(
+      'downAttack',
+      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Attack.png',
       { frameWidth: 120, frameHeight: 80 }
     );
 
