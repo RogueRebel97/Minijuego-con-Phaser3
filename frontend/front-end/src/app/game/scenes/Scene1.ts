@@ -1,4 +1,5 @@
 import { Game, Physics, Scene } from 'phaser';
+import { delay } from 'rxjs';
 import Settings from './SettingsMenu';
 
 export class Scene1 extends Phaser.Scene {
@@ -6,8 +7,8 @@ export class Scene1 extends Phaser.Scene {
   private ground!: any;
   private knight!: any;
   private cursors!: any;
-
-  private right = true;
+  private allowMove = true;
+  private shiftKey!: any;
 
   constructor() {
     super({ key: 'Scene1' });
@@ -39,6 +40,7 @@ export class Scene1 extends Phaser.Scene {
       this.cameras.main.height / 2,
       'forestBckgr-2'
     );
+
     let scaleX2 = this.cameras.main.width / forest2.width;
     let scaleY2 = this.cameras.main.height / forest2.height;
     let scale2 = Math.max(scaleX2, scaleY2);
@@ -79,7 +81,6 @@ export class Scene1 extends Phaser.Scene {
     this.knight.setCollideWorldBounds(true);
 
     //Animaciones
-
     this.anims.create({
       key: 'idle',
       frames: this.anims.generateFrameNumbers('knight', { start: 0, end: 9 }),
@@ -90,7 +91,6 @@ export class Scene1 extends Phaser.Scene {
       key: 'turn',
       frames: this.anims.generateFrameNumbers('turn', { start: 0, end: 2 }),
       frameRate: 20,
-
     });
 
     this.anims.create({
@@ -103,17 +103,13 @@ export class Scene1 extends Phaser.Scene {
     this.anims.create({
       key: 'jump',
       frames: this.anims.generateFrameNumbers('jump', { start: 0, end: 2 }),
-      frameRate: 20,
-
+      frameRate: 10,
     });
     this.anims.create({
       key: 'fall',
       frames: this.anims.generateFrameNumbers('fall', { start: 0, end: 2 }),
-      frameRate: 20,
-
+      frameRate: 10,
     });
-
-
 
     this.anims.create({
       key: 'right',
@@ -122,66 +118,114 @@ export class Scene1 extends Phaser.Scene {
       repeat: -1,
     });
 
+    this.anims.create({
+      key: 'dash',
+      frames: this.anims.generateFrameNumbers('dash', { start: 0, end: 1 }),
+      frameRate: 30
+    });
+
     //  Input Events
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.shiftKey = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.SHIFT
+    );
 
     //Colliders
     this.physics.add.collider(this.knight, this.ground);
-
-
-
   }
 
   override update() {
+    console.log(this.allowMove);
 
-    // <==
-    if (this.cursors.left.isDown) {
-      this.knight.anims.play('turn', 20, false);
-      // Left Speed
-      this.knight.setVelocityX(-200);
-      //Animation
-      if (this.knight.body.blocked.down) {
-        this.knight.anims.play('left', true);
-      }
-      // hitbox adjust
-      this.knight.body.setOffset(
-        this.knight.width * 0.5 - 5,
-        this.knight.height * 0.5
-      );
-      // turn left
-      this.knight.flipX = true;
-      // ==>
-    } else if (this.cursors.right.isDown) {
-      this.knight.anims.play('turn', 20, false);
-      // Right speed
-      this.knight.setVelocityX(200);
-      if (this.knight.body.blocked.down) {
+    if (this.allowMove) {
+      // <== Left
+      if (this.cursors.left.isDown) {
+        // Left Speed
+        this.knight.setVelocityX(-200);
         //Animation
-        this.knight.anims.play('right', true);
+        if (this.knight.flipX && this.knight.body.blocked.down) {
+
+          this.knight.anims.play('left', true);
+        } else {
+          // turn left
+          this.knight.anims.stop();
+
+          this.knight.flipX = true;
+        }
+        // hitbox adjust
+        this.knight.body.setOffset(
+          this.knight.width * 0.5 - 5,
+          this.knight.height * 0.5
+        );
+
+
+        // Right ==>
+      } else if (this.cursors.right.isDown) {
+        // Right speed
+        this.knight.setVelocityX(200);
+        if (!this.knight.flipX && this.knight.body.blocked.down) {
+          //Animation
+
+          this.knight.anims.play('right', true);
+        }
+        else {
+          //turn right
+          this.knight.anims.stop();
+          this.knight.flipX = false;
+        }
+
+
+        // hitbox adjust
+        this.knight.body.setOffset(
+          this.knight.width * 0.5 - 15,
+          this.knight.height * 0.5
+        );
+
+
+
+      } else if (this.knight.body.blocked.down) {
+        this.knight.setVelocityX(0);
+        this.knight.anims.play('idle', true);
       }
-      this.knight.flipX = false;
-      // hitbox adjust
-      this.knight.body.setOffset(
-        this.knight.width * 0.5 - 15,
-        this.knight.height * 0.5
-      );
-    } else if (this.knight.body.blocked.down) {
+      if (this.cursors.up.isDown && this.knight.body.blocked.down) {
+        this.knight.anims.stop();
+        this.knight.setVelocityY(-300);
+        this.knight.anims.play('jump');
 
-      this.knight.setVelocityX(0);
-      this.knight.anims.play('idle', true);
+      }
+      if (this.knight.body.angle >= 0 && !this.knight.body.blocked.down) {
+        this.knight.anims.stop();
+        this.knight.anims.play('fall');
+      }
     }
-    if (this.cursors.up.isDown && this.knight.body.blocked.down) {
 
-      this.knight.anims.stop();
-      this.knight.setVelocityY(-330);
-      this.knight.anims.play('jump');
-      console.log(this.knight.body.velocity.y);
-    } if (this.knight.body.angle >= 0 && !this.knight.body.blocked.down) {
 
+    //Right Dash
+    if (Phaser.Input.Keyboard.JustDown(this.shiftKey) && this.knight.body.blocked.down) {
       this.knight.anims.stop();
-      this.knight.anims.play('fall');
+      this.blockMove(300)
+      if (this.knight.flipX) {
+        this.knight.setVelocityX(-400);
+      } else {
+        this.knight.setVelocityX(400);
+      }
+      this.knight.anims.play('dash');
     }
 
 
   }
+
+  blockMove(timeMs: number) {
+    this.allowMove = false
+
+    this.time.delayedCall(timeMs, () => {
+
+      this.allowMove = true
+    }, [], this)
+  }
+
+
+
+
+
 }
