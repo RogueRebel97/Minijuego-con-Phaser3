@@ -14,6 +14,7 @@ import UIScene from './scenes/UIScene';
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss'],
 })
+
 export class GameComponent implements OnInit, OnDestroy {
   phaserGame!: Phaser.Game;
   config: Phaser.Types.Core.GameConfig;

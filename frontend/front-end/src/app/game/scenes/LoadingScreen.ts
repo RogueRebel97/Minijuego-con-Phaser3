@@ -153,6 +153,20 @@ export class LoadingScreen extends Phaser.Scene {
       { frameWidth: 120, frameHeight: 80 }
     );
 
+    this.load.spritesheet(
+      'slide',
+      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_SlideFull.png',
+      { frameWidth: 120, frameHeight: 80 }
+    );
+    this.load.spritesheet(
+      'slideFrame1',
+      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/__SlideTransitionEnd.png',
+      { frameWidth: 120, frameHeight: 80 }
+    );
+
+
+
+
     // fin de Assets
 
     // Rellenar la barra de carga

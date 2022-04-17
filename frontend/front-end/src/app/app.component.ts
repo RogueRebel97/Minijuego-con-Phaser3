@@ -13,30 +13,27 @@ export class AppComponent {
 
 
 
-  constructor(private router: Router, private userService:UserService, private cookieService:CookieService) {}
+  constructor(private router: Router, private userService: UserService, private cookieService: CookieService) { }
 
 
-  public logged()
-  {
-  if(this.userService.isLogged()){
-    
-    return true;
-  
-  }
-  else
-  {
-   
-    return false;
-  }
+  public logged() {
+    if (this.userService.isLogged()) {
+
+      return true;
+
+    }
+    else {
+
+      return false;
+    }
   }
 
-public logout()
-{
-this.cookieService.delete("id");
-alert("logout")
-this.router.navigate(["/login"])
+  public logout() {
+    this.cookieService.delete("id");
+    alert("logout")
+    this.router.navigate(["/login"])
 
-}
+  }
 
 
 }

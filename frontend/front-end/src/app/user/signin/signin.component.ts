@@ -16,9 +16,9 @@ export class SigninComponent implements OnInit {
   private _userError: string = '';
   private _check: boolean = false;
 
-  constructor(private router: Router, private signinService: SigninService, private userService:UserService) {}
+  constructor(private router: Router, private signinService: SigninService, private userService: UserService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   public submit() {
     // console.log(
@@ -28,33 +28,33 @@ export class SigninComponent implements OnInit {
 
     if (this.validar()) {
       if (this.signinService.userAvailible(this.user).subscribe((data) => {
-          if (data == '0') { 
-            alert('Usuario no disponible');
-            userInput.focus();
-          } else {
-            this.signinService.signin(this.user, this.password).subscribe(data=>{
-              console.log(data);
-              alert('Usuario creado correctamente');
-            this.userService.userLogin(this.user, this.password).subscribe(data=>{
-              if(data.nombre){
-     
+        if (data == '0') {
+          alert('Usuario no disponible');
+          userInput.focus();
+        } else {
+          this.signinService.signin(this.user, this.password).subscribe(data => {
+            console.log(data);
+            alert('Usuario creado correctamente');
+            this.userService.userLogin(this.user, this.password).subscribe(data => {
+              if (data.nombre) {
+
                 this.router.navigate(["/landing"]);
               }
 
             });
-        
-            });
-           
-            
-          }
-        })) {
+
+          });
+
+
+        }
+      })) {
       }
     } else {
       alert('Rellena correctamente todos los campos');
     }
   }
 
-   public validate(event:Event){
+  public validate(event: Event) {
 
     var userError: any = document.getElementById('userError');
     var passError: any = document.getElementById('passError');
@@ -62,53 +62,45 @@ export class SigninComponent implements OnInit {
 
     console.log(this.user.length);
 
-  var target = event.target as HTMLTextAreaElement;
-  console.log(target.id);
-  // console.log(target);
-  // console.log(event);
+    var target = event.target as HTMLTextAreaElement;
+    console.log(target.id);
+    // console.log(target);
+    // console.log(event);
 
-    if(target.id=="user")
-    {
-     if(target.value.length<3)
-     {
+    if (target.id == "user") {
+      if (target.value.length < 3) {
 
-      userError.textContent="El Usuario debe contener al menos 3 caracteres";
+        userError.textContent = "El Usuario debe contener al menos 3 caracteres";
 
-     }
-     else
-     {
-      userError.textContent="";
-
-     }
-    }
-    if(target.id =="password")
-    {
-      if(target.value.length<3)
-      {
-
-       passError.textContent="La contraseña debe tener al menos 3 caracteres.";
       }
-      else
-      {
-       passError.textContent="";
+      else {
+        userError.textContent = "";
+
+      }
+    }
+    if (target.id == "password") {
+      if (target.value.length < 3) {
+
+        passError.textContent = "La contraseña debe tener al menos 3 caracteres.";
+      }
+      else {
+        passError.textContent = "";
 
       }
 
     }
-    if(target.id =="rePassword"){
-      if(this.repassword!=this.password)
-      {
+    if (target.id == "rePassword") {
+      if (this.repassword != this.password) {
 
-        repassError.textContent="Ambas contraseñas deben coincicidir";
+        repassError.textContent = "Ambas contraseñas deben coincicidir";
       }
-      else
-      {
-        repassError.textContent="";
+      else {
+        repassError.textContent = "";
 
       }
     }
 
-    }
+  }
 
   public onChange() {
     const check: any = document.getElementById('check');

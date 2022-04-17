@@ -11,10 +11,6 @@ export class Scene1 extends Phaser.Scene {
   private shiftKey!: any;
   private spaceKey!: any;
 
-
-  private forest1!: Phaser.GameObjects.Image;
-  // private forest2!: Phaser.GameObjects.TileSprite;
-  private forest3!: Phaser.GameObjects.Image;
   constructor() {
     super({ key: 'Scene1' });
   }
@@ -112,6 +108,12 @@ export class Scene1 extends Phaser.Scene {
     });
 
     this.anims.create({
+      key: 'slide',
+      frames: this.anims.generateFrameNumbers('slide', { start: 0, end: 3 }),
+      frameRate: 30
+    });
+
+    this.anims.create({
       key: 'downSwing',
       frames: this.anims.generateFrameNumbers('downAttack', { start: 0, end: 3 }),
       frameRate: 20,
@@ -132,6 +134,9 @@ export class Scene1 extends Phaser.Scene {
 
 
     // Camera
+    this.cameras.main.startFollow(this.knight).setFollowOffset(0, 180)
+    this.cameras.main.setBounds
+
 
 
 
@@ -146,7 +151,7 @@ export class Scene1 extends Phaser.Scene {
 
         // Left Speed
         this.knight.setVelocityX(-200);
-        this.cameras.main.scrollX -= 3
+
         //Animation
         if (this.knight.flipX && this.knight.body.blocked.down) {
 
@@ -168,7 +173,7 @@ export class Scene1 extends Phaser.Scene {
       } else if (this.cursors.right.isDown) {
         // Right speed
         this.knight.setVelocityX(200);
-        this.cameras.main.scrollX += 3
+
         if (!this.knight.flipX && this.knight.body.blocked.down) {
           //Animation
 
@@ -204,23 +209,26 @@ export class Scene1 extends Phaser.Scene {
         this.knight.anims.play('fall');
       }
       if (Phaser.Input.Keyboard.JustDown(this.spaceKey)) {
+        this.knight.setVelocityX(0);
         this.knight.anims.stop();
-        this.blockMove(200)
+        this.blockMove(300)
         this.knight.anims.play('downSwing');
+
       }
+
     }
 
 
     //Right Dash
     if (Phaser.Input.Keyboard.JustDown(this.shiftKey) && this.knight.body.blocked.down) {
       this.knight.anims.stop();
-      this.blockMove(300)
+      this.blockMove(500)
       if (this.knight.flipX) {
         this.knight.setVelocityX(-400);
       } else {
         this.knight.setVelocityX(400);
       }
-      this.knight.anims.play('dash');
+      this.knight.anims.play('slide');
     }
 
 
@@ -245,6 +253,8 @@ export class Scene1 extends Phaser.Scene {
       x += m.width
     }
   }
+
+
 
 
 
