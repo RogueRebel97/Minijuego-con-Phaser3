@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as Phaser from 'phaser';
-import { UserService } from 'src/app/user/user.service';
+import Constants from '../Constants';
 
 @Injectable({
   providedIn: 'root',
@@ -115,7 +115,7 @@ export class LoadingScreen extends Phaser.Scene {
     // SpriteSheets del caballero
 
     this.load.spritesheet(
-      'knight',
+      Constants.PLAYER.ID,
       'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Idle.png',
       { frameWidth: 120, frameHeight: 80 }
     );
@@ -127,11 +127,6 @@ export class LoadingScreen extends Phaser.Scene {
     this.load.spritesheet(
       'jump',
       'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Jump.png',
-      { frameWidth: 120, frameHeight: 80 }
-    );
-    this.load.spritesheet(
-      'turn',
-      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_TurnAround.png',
       { frameWidth: 120, frameHeight: 80 }
     );
 
@@ -158,13 +153,11 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_SlideFull.png',
       { frameWidth: 120, frameHeight: 80 }
     );
-    this.load.spritesheet(
-      'slideFrame1',
-      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/__SlideTransitionEnd.png',
-      { frameWidth: 120, frameHeight: 80 }
-    );
 
 
+    //Map
+    this.load.tilemapTiledJSON(Constants.MAPS.LEVEL1.TILEMAPJSON, 'assets/tileMaps/testMap.json');
+    this.load.image(Constants.MAPS.TILESET, 'assets/graphics/tileSets/basicTerrain.png')
 
 
     // fin de Assets
