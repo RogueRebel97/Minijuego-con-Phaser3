@@ -173,7 +173,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 this.anims.stop();
                 this.setVelocityY(-300);
                 this.anims.play('jump');
-                // this.cooldown++
+
 
             }
             if (this.body.velocity.y >= 0 && !this.body.blocked.down) {
@@ -183,10 +183,16 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
 
             if (Phaser.Input.Keyboard.JustDown(this.spaceKey) && this.attackCD) {
-                this.setCooldown(5000, this.attackCD)
+
                 this.setVelocityX(0);
                 this.anims.stop();
                 this.blockMove(300)
+                this.attackCD = false
+
+                this.currentScene.time.delayedCall(5000, () => {
+
+                    this.attackCD = true
+                }, [], this)
                 this.anims.play('downSwing');
 
 
