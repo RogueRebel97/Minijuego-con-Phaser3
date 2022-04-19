@@ -11,9 +11,13 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
     //Actions Booleans
     private attackCD = true;
+    private slideCD = true;
+    private jumpCd = true;
     private allowMove = true;
-
+    private playerIsDead = false;
     private currentScene!: Phaser.Scene;
+
+
 
 
 
@@ -37,14 +41,15 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         );
 
 
+
         this.cursors = this.currentScene.input.keyboard.createCursorKeys();
         this.WASD = this.currentScene.input.keyboard.addKeys('W,A,S,D');
         this.shiftKey = this.currentScene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
         this.spaceKey = this.currentScene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
+
+
         this.play(Constants.PLAYER.ANIMATION.IDLE);
-
-
     }
 
     create() {
@@ -109,11 +114,23 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             frames: this.currentScene.anims.generateFrameNumbers('downAttack', { start: 0, end: 3 }),
             frameRate: 20,
         });
+
+        this.anims.create({
+            key: 'hit',
+            frames: this.currentScene.anims.generateFrameNumbers('hit', { start: 0 }),
+            frameRate: 20,
+            repeat: -1,
+        });
+
+
+        this.anims.create({
+            key: 'death',
+            frames: this.currentScene.anims.generateFrameNumbers('death', { start: 0, end: 9 }),
+            frameRate: 20,
+        });
     }
 
     override update() {
-
-
 
         //Moveset
         if (this.allowMove) {
@@ -155,8 +172,6 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                     this.anims.stop();
                     this.flipX = false;
                 }
-
-
                 // hitbox adjust
                 this.body.setOffset(
                     this.width * 0.5 - 15,
@@ -169,6 +184,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 this.setVelocityX(0);
                 this.anims.play('idle', true);
             }
+
             if ((this.cursors.up.isDown || this.WASD.W.isDown) && this.body.blocked.down) {
                 this.anims.stop();
                 this.setVelocityY(-300);
@@ -181,40 +197,73 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('fall');
             }
 
+            // attack: Down Swing
+            if (Phaser.Input.Keyboard.JustDown(this.spaceKey) && this.body.blocked.down && this.attackCD) {
 
-            if (Phaser.Input.Keyboard.JustDown(this.spaceKey) && this.attackCD) {
+                this.setVelocityX(0); //parar el pj
+                this.anims.stop(); // detener animaciones en curso
+                this.blockMove(300) // bloquear otros inputs de usuario por x milisegundos
 
-                this.setVelocityX(0);
-                this.anims.stop();
-                this.blockMove(300)
-                this.attackCD = false
+                this.attackCD = false // impedir que se vuelva a ejecutar otro ataque
 
-                this.currentScene.time.delayedCall(5000, () => {
+                this.currentScene.time.delayedCall(700, () => { // Cooldown hasta el siguiente ataque
 
                     this.attackCD = true
                 }, [], this)
+
                 this.anims.play('downSwing');
 
+            }
+            //Slide
+            if (Phaser.Input.Keyboard.JustDown(this.shiftKey) && this.body.blocked.down &&
+                (this.cursors.right.isDown || this.cursors.left.isDown
+                    || this.WASD.A.isDown || this.WASD.D.isDown) && this.slideCD) {
 
+                this.anims.stop();
+                this.blockMove(500)
+
+                this.slideCD = false;
+
+                if (this.flipX) {
+                    this.setVelocityX(-400);
+                } else {
+                    this.setVelocityX(400);
+                }
+
+
+                this.currentScene.time.delayedCall(1200, () => {
+
+                    this.slideCD = true
+                }, [], this)
+
+                this.anims.play('slide');
             }
 
         }
 
 
-        //Slide
-        if (Phaser.Input.Keyboard.JustDown(this.shiftKey) && this.body.blocked.down &&
-            (this.cursors.right.isDown || this.cursors.left.isDown
-                || this.WASD.A.isDown || this.WASD.D.isDown)) {
+
+
+
+
+    }
+
+    playerDead() {
+        console.log("player morido");
+
+        if (!this.playerIsDead) {
+            this.playerIsDead = true;
+            console.log("morido");
+            this.playerDead()
+
+        } else {
             this.anims.stop();
-            this.blockMove(500)
-            if (this.flipX) {
-                this.setVelocityX(-400);
-            } else {
-                this.setVelocityX(400);
-            }
-            this.anims.play('slide');
-        }
+            this.setVelocityX(0);
+            this.anims.play('death');
 
+            this.allowMove = false;
+
+        }
 
     }
 
@@ -229,16 +278,16 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     }
 
     setCooldown(timeMs: number, action: boolean) {
-        console.log("hola hola");
-        console.log(`accion entrante ${action}`);
+
 
 
         action = false
-        console.log(`accion puesta en negativo ${action}`);
+
         this.currentScene.time.delayedCall(timeMs, () => {
 
             action = true
-            console.log(`accion vuelta a verdadero ${action}`);
+
         }, [], this)
     }
 }
+

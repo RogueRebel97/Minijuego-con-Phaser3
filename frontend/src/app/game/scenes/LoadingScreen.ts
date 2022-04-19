@@ -5,6 +5,9 @@ import Constants from '../Constants';
 @Injectable({
   providedIn: 'root',
 })
+
+
+
 export class LoadingScreen extends Phaser.Scene {
   constructor() {
     super({ key: 'LoadingScreen' });
@@ -154,6 +157,28 @@ export class LoadingScreen extends Phaser.Scene {
       { frameWidth: 120, frameHeight: 80 }
     );
 
+    this.load.spritesheet(
+      'death',
+      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Death.png',
+      { frameWidth: 120, frameHeight: 80 }
+    );
+
+    this.load.spritesheet(
+      'hit',
+      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Hit.png',
+      { frameWidth: 120, frameHeight: 80 }
+    );
+
+
+    // Enemies
+
+    this.load.spritesheet(
+      'slime',
+      'assets/SpritesSheets/Enemies/Slime/Idle-Run.png',
+      { frameWidth: 44, frameHeight: 30 }
+    );
+
+
 
     //Map
     this.load.tilemapTiledJSON(Constants.MAPS.LEVEL1.TILEMAPJSON, 'assets/tileMaps/testMap.json');
@@ -219,6 +244,8 @@ export class LoadingScreen extends Phaser.Scene {
         this.scene.launch('ui-scene');
         this.scene.bringToTop('ui-scene');
         this.scene.start('Scene1');
+        this.scene.launch('hud');
+        this.scene.bringToTop('hud')
         // this.scene.start('MainMenu');
       }
     );

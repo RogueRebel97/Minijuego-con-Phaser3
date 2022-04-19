@@ -1,4 +1,13 @@
 const Constants = {
+    EVENTS: {
+        HEALTH: 'alterHealth',
+        SCORE: 'alterScore'
+    },
+    HUD: {
+        MAXHEALTH: 'maxHealth',
+        HEALTH: 'healthValue'
+    },
+
     MAPS: {
         LEVEL1: {
             TILEMAPJSON: 'level1Map',
@@ -20,6 +29,10 @@ const Constants = {
             }
 
         }
+    },
+    REGISTRY: {
+        MAXHEALTH: 'maxHealth',
+        HEALTH: 'healthValue'
     }
 
 

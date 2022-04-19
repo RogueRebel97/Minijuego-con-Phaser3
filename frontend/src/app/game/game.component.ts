@@ -11,6 +11,7 @@ import Config from './config';
 export class GameComponent implements OnInit, OnDestroy {
   phaserGame!: Phaser.Game;
   private score: number = 0;
+
   constructor() {
   }
 

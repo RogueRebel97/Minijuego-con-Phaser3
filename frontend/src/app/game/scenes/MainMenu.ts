@@ -88,7 +88,9 @@ export class MainMenu extends Phaser.Scene {
       console.log('play');
 
       this.scene.start('Scene1');
-      this.scene.stop('MainMenu');
+      this.scene.start('hud');
+      this.scene.bringToTop('hud')
+      // this.scene.stop('MainMenu');
     });
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       playButton.off('selected');

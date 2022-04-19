@@ -8,12 +8,24 @@ export class Scene1 extends Phaser.Scene {
   // Propiedades
   private player!: Knight;
 
+  private slime!: Phaser.Physics.Arcade.Sprite
   private width!: number;
   private height!: number;
 
   private tileMap!: Phaser.Tilemaps.Tilemap;
   private tileSet!: Phaser.Tilemaps.Tileset;
   private tileMapLayer!: Phaser.Tilemaps.TilemapLayer;
+
+
+  private maxHealth!: number;
+  private healthValue!: number;
+
+
+  private dmgButton!: Phaser.GameObjects.Text;
+  private slimemove: boolean = true;
+
+
+  private gameOver = false;
 
   constructor() {
     super({ key: 'Scene1' });
@@ -23,6 +35,15 @@ export class Scene1 extends Phaser.Scene {
     console.log('Scene1 Corriendo');
     this.width = this.cameras.main.width;
     this.height = this.cameras.main.height;
+
+    //Inicializar variables globales
+    this.maxHealth = 100
+    this.healthValue = this.maxHealth;
+
+    this.registry.set(Constants.REGISTRY.MAXHEALTH, this.maxHealth)
+    this.registry.set(Constants.REGISTRY.HEALTH, this.healthValue)
+
+
   }
 
   preload() { }
@@ -62,66 +83,69 @@ export class Scene1 extends Phaser.Scene {
     this.tileMapLayer = this.tileMap.createLayer(Constants.MAPS.LEVEL1.PLATAFORMLAYER, this.tileSet);
     this.tileMapLayer.setCollisionByExclusion([-1]);
 
-    this.physics.add.collider(this.player, this.tileMapLayer);
 
 
 
-    //Animaciones
-    // this.anims.create({
-    //   key: 'idle',
-    //   frames: this.anims.generateFrameNumbers('knight', { start: 0, end: 9 }),
-    //   frameRate: 20,
-    //   repeat: -1,
-    // });
+    this.dmgButton = this.add.text(this.width - 50, 20, 'Daño', { fontSize: '20px', color: '#FFFFFF' }).setInteractive();
 
-    // this.anims.create({
-    //   key: 'left',
-    //   frames: this.anims.generateFrameNumbers('run', { start: 0, end: 9 }),
-    //   frameRate: 20,
-    //   repeat: -1,
-    // });
 
-    // this.anims.create({
-    //   key: 'jump',
-    //   frames: this.anims.generateFrameNumbers('jump', { start: 0, end: 2 }),
-    //   frameRate: 10,
-    // });
-    // this.anims.create({
-    //   key: 'fall',
-    //   frames: this.anims.generateFrameNumbers('fall', { start: 0, end: 2 }),
-    //   frameRate: 10,
-    // });
+    // Test dmg function
+    this.dmgButton.on('pointerdown', () => {
+      this.healthValue = this.healthValue - 10
 
-    // this.anims.create({
-    //   key: 'right',
-    //   frames: this.anims.generateFrameNumbers('run', { start: 0, end: 9 }),
-    //   frameRate: 20,
-    //   repeat: -1,
-    // });
+      if (this.healthValue <= 0 && !this.gameOver) {
+        this.gameOver = true;
+        this.player.playerDead();
+      }
 
-    // this.anims.create({
-    //   key: 'dash',
-    //   frames: this.anims.generateFrameNumbers('dash', { start: 0, end: 1 }),
-    //   frameRate: 30
-    // });
+      if (this.registry.get(Constants.REGISTRY.HEALTH) > 0) {
+        this.registry.set(Constants.REGISTRY.HEALTH, this.healthValue);
+        this.events.emit(Constants.EVENTS.HEALTH);
+      }
 
-    // this.anims.create({
-    //   key: 'slide',
-    //   frames: this.anims.generateFrameNumbers('slide', { start: 0, end: 3 }),
-    //   frameRate: 60
-    // });
+    });
 
-    // this.anims.create({
-    //   key: 'downSwing',
-    //   frames: this.anims.generateFrameNumbers('downAttack', { start: 0, end: 3 }),
-    //   frameRate: 20,
-    // });
 
+
+
+
+    this.anims.create({
+      key: 'idleSlime',
+      frames: this.anims.generateFrameNumbers('slime', { start: 0, end: 9 }),
+      frameRate: 20,
+      repeat: -1,
+    });
+
+
+    // Enemie Test
+
+    this.slime = this.physics.add.sprite(695, 505, 'slime').play('idleSlime')
+    this.slime.body.immovable = true
+
+
+
+
+    const damaged = () => {
+      console.log(this.player);
+
+    }
   }
 
   override update() {
+    this.physics.add.collider(this.player, this.tileMapLayer);
+    this.physics.add.collider(this.slime, this.tileMapLayer);
+    this.physics.add.collider(this.slime, this.player, this.getDamaged);
+
+
+
 
     this.player.update();
+
+
+
+
+
+
 
   }
 
@@ -137,10 +161,17 @@ export class Scene1 extends Phaser.Scene {
     }
   }
 
+  // GameOver() {
 
 
 
+  // }
 
+  getDamaged(slime: any, player: any) {
+    player.setVelocityX(200);
+    // player.anims('hit')
+
+  }
 
 
 
