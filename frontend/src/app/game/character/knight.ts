@@ -13,17 +13,20 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     private attackCD = true;
     private slideCD = true;
     private jumpCd = true;
-    private allowMove = true;
-    private playerIsDead = false;
+    private allowMove: boolean;
+    private playerIsDead: boolean;
     private currentScene!: Phaser.Scene;
 
+    private salud: number;
 
 
-
+    private saludMaxima: number;
 
     constructor(config: any) {
         super(config.currentScene, config.x, config.y, config.texture);
 
+        this.allowMove = true;
+        this.playerIsDead = false;
         this.currentScene = config.currentScene;
         this.currentScene.physics.world.enable(this);
         this.currentScene.add.existing(this);
@@ -40,7 +43,12 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             this.height * 0.5
         );
 
+        this.saludMaxima = 100;
+        this.salud = this.saludMaxima;
 
+
+        this.currentScene.registry.set(Constants.PLAYER.STATS.MAXHEALTH, this.saludMaxima)
+        this.currentScene.registry.set(Constants.PLAYER.STATS.HEALTH, this.salud)
 
         this.cursors = this.currentScene.input.keyboard.createCursorKeys();
         this.WASD = this.currentScene.input.keyboard.addKeys('W,A,S,D');
@@ -132,8 +140,11 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
     override update() {
 
+
         //Moveset
-        if (this.allowMove) {
+        if (this.allowMove && !this.playerIsDead) {
+
+
             // <== Left
             if (this.cursors.left.isDown || this.WASD.A.isDown) {
 
@@ -242,52 +253,76 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         }
 
 
-
-
-
+        if (this.playerIsDead) {
+            this.allowMove = false;
+        }
 
     }
 
-    playerDead() {
-        console.log("player morido");
 
-        if (!this.playerIsDead) {
-            this.playerIsDead = true;
-            console.log("morido");
-            this.playerDead()
+    checkIsDead() {
+        var health = this.currentScene.registry.get(Constants.REGISTRY.HEALTH);
 
-        } else {
+        if (health <= 0 && !this.playerIsDead && this.allowMove) {
+            this.currentScene.physics.world.removeCollider(this.currentScene.registry.get(Constants.REGISTRY.COLLIDERS.ENEMY))
+            this.playerIsDead = true //boolean to check players Death
             this.anims.stop();
             this.setVelocityX(0);
             this.anims.play('death');
-
-            this.allowMove = false;
-
         }
+
+    }
+
+    getDamage() {
+        var health = this.currentScene.registry.get(Constants.REGISTRY.HEALTH);
+
+        if (health > 0 && !this.playerIsDead) {
+
+            this.blockMove(550)
+            this.anims.stop
+
+            if (this.body.blocked.left) {
+                this.setVelocityX(200)
+                this.setVelocityY(-150)
+                this.anims.play('hit')
+
+            } else if (this.body.blocked.right) {
+
+                this.setVelocityX(-200)
+                this.setVelocityY(-150)
+                this.anims.play('hit')
+
+            } else if (this.body.blocked.down) {
+                var random = Math.floor(Math.random() * 2) + 1;
+
+                if (random == 1) {
+                    console.log(random);
+                    this.setVelocityY(-150)
+                    this.setVelocityX(250)
+                    this.anims.play('hit')
+                } else {
+                    this.setVelocityY(-150)
+                    this.setVelocityX(-250)
+                    this.anims.play('hit')
+                }
+            }
+
+            health = health - 10;
+            this.currentScene.registry.set(Constants.REGISTRY.HEALTH, health)
+            this.currentScene.events.emit(Constants.EVENTS.HEALTH)
+        }
+
 
     }
 
 
     blockMove(timeMs: number) {
         this.allowMove = false
-
         this.currentScene.time.delayedCall(timeMs, () => {
-
             this.allowMove = true
         }, [], this)
     }
 
-    setCooldown(timeMs: number, action: boolean) {
 
-
-
-        action = false
-
-        this.currentScene.time.delayedCall(timeMs, () => {
-
-            action = true
-
-        }, [], this)
-    }
 }
 

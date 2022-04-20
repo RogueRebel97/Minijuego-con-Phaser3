@@ -27,12 +27,18 @@ const Constants = {
             ATTACK: {
                 DOWNSWING: 'downAttack'
             }
-
+        },
+        STATS: {
+            MAXHEALTH: 'maxHealth',
+            HEALTH: 'healthValue'
         }
     },
     REGISTRY: {
         MAXHEALTH: 'maxHealth',
-        HEALTH: 'healthValue'
+        HEALTH: 'healthValue',
+        COLLIDERS: {
+            ENEMY: 'enemyCollider'
+        }
     }
 
 

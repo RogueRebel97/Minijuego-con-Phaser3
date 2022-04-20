@@ -33,6 +33,9 @@ export default class HUD extends Phaser.Scene {
 
     create() {
 
+        console.log(this.registry.get(Constants.REGISTRY.MAXHEALTH));
+        console.log(this.registry.get(Constants.REGISTRY.HEALTH));
+
         const scene: Phaser.Scene = this.scene.get('Scene1')
         scene.events.on(Constants.EVENTS.HEALTH, this.alterHealth, this)
 
