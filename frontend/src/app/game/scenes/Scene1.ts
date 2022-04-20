@@ -4,6 +4,7 @@ import Settings from './SettingsMenu';
 import Knight from '../character/knight';
 import Constants from '../Constants';
 
+
 export class Scene1 extends Phaser.Scene {
   // Propiedades
   private player!: Knight;
@@ -21,7 +22,8 @@ export class Scene1 extends Phaser.Scene {
   private healthValue!: number;
 
 
-  private enemyCollider!: Phaser.Physics.Arcade.Collider
+  private enemyCollider!: Phaser.Physics.Arcade.Collider;
+  private invulnerable = false;
 
   constructor() {
     super({ key: 'Scene1' });
@@ -82,7 +84,6 @@ export class Scene1 extends Phaser.Scene {
     this.tileMapLayer.setCollisionByExclusion([-1]);
 
 
-
     // Enemie Test
     this.anims.create({
       key: 'idleSlime',
@@ -100,7 +101,25 @@ export class Scene1 extends Phaser.Scene {
     this.physics.add.collider(this.slime, this.tileMapLayer);
 
     this.enemyCollider = this.physics.add.collider(this.slime, this.player, (player, slime) => {
-      if (this.registry.get(Constants.REGISTRY.HEALTH) > 0) {
+      if (this.registry.get(Constants.REGISTRY.HEALTH) > 0 && !this.invulnerable) {
+        this.invulnerable = true
+        this.tweens.add({
+          targets: this.player,
+          alpha: { from: 1, to: 0 },
+          ease: 'Sine.InOut',
+          duration: 55,
+          repeat: 10,
+          yoyo: true
+        });
+
+
+        this.time.delayedCall(1500, () => {
+          this.invulnerable = false
+
+        }, [], this)
+
+
+
         this.player.getDamage();
       }
     });

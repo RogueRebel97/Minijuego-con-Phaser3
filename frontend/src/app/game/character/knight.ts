@@ -22,6 +22,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
     private saludMaxima: number;
 
+
     constructor(config: any) {
         super(config.currentScene, config.x, config.y, config.texture);
 
@@ -275,16 +276,23 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
     getDamage() {
         var health = this.currentScene.registry.get(Constants.REGISTRY.HEALTH);
+        this.blockMove(550)
+        this.anims.stop
+        this.setVelocityX(0)
+        this.setVelocityY(0)
+
+
+
 
         if (health > 0 && !this.playerIsDead) {
 
-            this.blockMove(550)
-            this.anims.stop
+
 
             if (this.body.blocked.left) {
                 this.setVelocityX(200)
                 this.setVelocityY(-150)
                 this.anims.play('hit')
+
 
             } else if (this.body.blocked.right) {
 
@@ -296,13 +304,15 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 var random = Math.floor(Math.random() * 2) + 1;
 
                 if (random == 1) {
-                    console.log(random);
-                    this.setVelocityY(-150)
+
                     this.setVelocityX(250)
+                    this.setVelocityY(-150)
+
                     this.anims.play('hit')
                 } else {
-                    this.setVelocityY(-150)
                     this.setVelocityX(-250)
+                    this.setVelocityY(-150)
+
                     this.anims.play('hit')
                 }
             }
@@ -322,6 +332,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             this.allowMove = true
         }, [], this)
     }
+
 
 
 }
