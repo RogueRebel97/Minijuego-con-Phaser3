@@ -67,6 +67,8 @@ export class LoadingScreen extends Phaser.Scene {
 
     //Assets a cargar
     this.load.image('sky', 'assets/graphics/sky.png');
+
+    // Assets for Menu
     this.load.image(
       'glass-panel',
       'assets/graphics/uiAssets/PNG/metalPanel_red.png'
@@ -76,9 +78,13 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/graphics/uiAssets/PNG/cursor_hand.png'
     );
 
+    // this.load.image(
+    //   'setting_panel',
+    //   'assets/graphics/uiAssets2/PNG/grey_panel.png'
+    // );
     this.load.image(
       'setting_panel',
-      'assets/graphics/uiAssets2/PNG/grey_panel.png'
+      'assets/graphics/uiAssets/PNG/metalPanel_blueCorner.png'
     );
     this.load.image(
       'small_button',
@@ -92,11 +98,16 @@ export class LoadingScreen extends Phaser.Scene {
       'checkmark',
       'assets/graphics/uiAssets2/PNG/blue_checkmark.png'
     );
+    this.load.image(
+      'longButton',
+      'assets/graphics/uiAssets2/PNG/blue_button13.png'
+    );
 
     this.load.image('logo', 'assets/graphics/Logo.jpg');
 
-    this.load.image('star', 'assets/graphics/star.png');
 
+
+    // Assets for Map
     this.load.image(
       'forestBckgr-1',
       'assets/SpritesSheets/oak_woods_v1.0/background/background_layer_1.png'
@@ -252,7 +263,7 @@ export class LoadingScreen extends Phaser.Scene {
   }
 
   override update() {
-    console.log('LoadingScreen esta corriendo');
+
   }
 }
 

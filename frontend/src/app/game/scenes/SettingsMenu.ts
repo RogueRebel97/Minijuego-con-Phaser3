@@ -18,74 +18,84 @@ export default class SettingsMenu {
     return this.open;
   }
 
-  constructor(escena: any) {
-    this.activeScene = escena;
-    const { width } = escena.scale;
+  constructor(scene: Phaser.Scene) {
 
-    this.container = escena.add.container(width + 300, 100);
-    const panel = escena.add
-      .nineslice(0, 0, 200, 80, 'setting_panel', 24)
-      .setOrigin(1, 0);
+    console.log('Escena:' + scene);
+    console.log('Abierto:' + this.open);
 
-    const toggleButton = escena.add
-      .image(-panel.width + 10, 15, 'small_button')
-      .setOrigin(0, 0);
 
-    this.checkmark = escena.add.image(
-      toggleButton.x + toggleButton.width * 0.5,
-      toggleButton.y + toggleButton.height * 0.5,
-      'checkmark'
-    );
+    this.activeScene = scene;
 
-    const text = escena.add.text(
-      toggleButton.x + toggleButton.width + 10,
-      toggleButton.y + 14,
-      'Sonido',
-      {
-        color: 'black',
-        fontFamily: 'pixel',
-        fontSize: '14px',
-      }
-    );
+    const screenCenterX = this.activeScene.cameras.main.worldView.x + this.activeScene.cameras.main.width / 2;
+    const screenCenterY = this.activeScene.cameras.main.worldView.y + this.activeScene.cameras.main.height / 2;
+    const { width } = scene.scale;
+
+    this.container = scene.add.container(width + 300, screenCenterY - 250); // Comienza escondido en la Derecha (width+300)
+    const panel = scene.add.nineslice(0, 0, 340, 250, 'setting_panel', 24).setOrigin(0.5, 0);
+
+    // const toggleButton = scene.add
+    //   .image(-panel.width + 10, 15, 'small_button')
+    //   .setOrigin(0, 0);
+
+    // this.checkmark = scene.add.image(
+    //   toggleButton.x + toggleButton.width * 0.5,
+    //   toggleButton.y + toggleButton.height * 0.5,
+    //   'checkmark'
+    // );
+
+    // const soundText = scene.add.text(
+    //   toggleButton.x + toggleButton.width + 10,
+    //   toggleButton.y + 14,
+    //   'Sonido',
+    //   {
+    //     color: 'black',
+    //     fontFamily: 'pixel',
+    //     fontSize: '14px',
+    //   }
+    // );
+
+    // const restartButton = scene.add.image(-panel.width + 10, 75, 'longButton').setOrigin(0, 0)
 
     this.container.add(panel);
-    this.container.add(toggleButton);
-    this.container.add(this.checkmark);
-    this.container.add(text);
+    // this.container.add(toggleButton);
+    // this.container.add(this.checkmark);
+    // this.container.add(soundText);
+    // this.container.add(restartButton);
 
-    toggleButton
-      .setInteractive()
-      .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
-        toggleButton.setTint(0xe0e0e0);
-      })
-      .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, () => {
-        toggleButton.setTint(0xffffff);
-      })
-      .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
-        toggleButton.setTint(0xffffff);
+    // toggleButton
+    //   .setInteractive()
+    //   .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
+    //     toggleButton.setTint(0xe0e0e0);
+    //   })
+    //   .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, () => {
+    //     toggleButton.setTint(0xffffff);
+    //   })
+    //   .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+    //     toggleButton.setTint(0xffffff);
 
-        this.toggleSound();
-      });
+    //     this.toggleSound();
+    //   });
   }
 
   // Mostrar y Ocultar Menu
+  // si esta abierto no hacer nada.
   show() {
+    const { width, height } = this.activeScene.scale;
+
     if (this.open) {
       return;
     }
-
-    const { width, height } = this.activeScene.scale;
-
     //Animacion de desplazamiento para mostrar
     this.activeScene.tweens.add({
       targets: this.container,
-      x: width - 10,
+      x: (width / 2),
       duration: 300,
       ease: Phaser.Math.Easing.Sine.InOut,
     });
 
     this.open = true;
   }
+
   hide() {
     if (!this.open) {
       return;
@@ -103,6 +113,11 @@ export default class SettingsMenu {
     this.open = false;
   }
   // Fin Mostrar y ocultar Menu
+
+
+
+
+
 
   // Funcion para Sonido
   private toggleSound() {
