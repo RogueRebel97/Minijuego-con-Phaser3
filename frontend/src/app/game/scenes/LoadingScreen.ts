@@ -78,10 +78,6 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/graphics/uiAssets/PNG/cursor_hand.png'
     );
 
-    // this.load.image(
-    //   'setting_panel',
-    //   'assets/graphics/uiAssets2/PNG/grey_panel.png'
-    // );
     this.load.image(
       'setting_panel',
       'assets/graphics/uiAssets/PNG/metalPanel_blueCorner.png'
@@ -99,9 +95,14 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/graphics/uiAssets2/PNG/blue_checkmark.png'
     );
     this.load.image(
-      'longButton',
-      'assets/graphics/uiAssets2/PNG/blue_button13.png'
+      'menuButton-1',
+      'assets/graphics/uiAssets2/PNG/grey_button03.png'
     );
+    this.load.image(
+      'menuButton-2',
+      'assets/graphics/uiAssets2/PNG/grey_button04.png'
+    );
+
 
     this.load.image('logo', 'assets/graphics/Logo.jpg');
 
@@ -252,11 +253,11 @@ export class LoadingScreen extends Phaser.Scene {
     this.cameras.main.once(
       Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
       (cam: any, effect: any) => {
-        this.scene.launch('ui-scene');
-        this.scene.bringToTop('ui-scene');
+        // this.scene.launch('ui-scene');
+        // this.scene.bringToTop('ui-scene');
         this.scene.start('Scene1');
-        this.scene.launch('hud');
-        this.scene.bringToTop('hud')
+        // this.scene.launch('hud');
+        // this.scene.bringToTop('hud')
         // this.scene.start('MainMenu');
       }
     );

@@ -33,8 +33,22 @@ export default class SettingsMenu {
     this.container = scene.add.container(width + 300, screenCenterY - 250); // Comienza escondido en la Derecha (width+300)
     const panel = scene.add.nineslice(0, 0, 340, 250, 'setting_panel', 24).setOrigin(0.5, 0);
 
+
+    const pauseText = scene.add.text
+      ((panel.x - (panel.width / 2)) + 10, panel.y + 10, 'PAUSA',
+        { color: 'black', fontFamily: 'pixel', fontSize: '24px' });
+
+
+    const resumeButton = scene.add.image
+      (panel.x / 2, panel.y + 80, 'menuButton-1')
+
+    const resumeText = scene.add.text
+      (resumeButton.x / 2, resumeButton.y - 10, 'RESET', {
+        color: 'black', fontFamily: 'pixel', fontSize: '18px'
+      }).setOrigin(0.5, 0);
+
     // const toggleButton = scene.add
-    //   .image(-panel.width + 10, 15, 'small_button')
+    //   .image(-panel.width + 10, 250, 'small_button')
     //   .setOrigin(0, 0);
 
     // this.checkmark = scene.add.image(
@@ -54,9 +68,12 @@ export default class SettingsMenu {
     //   }
     // );
 
-    // const restartButton = scene.add.image(-panel.width + 10, 75, 'longButton').setOrigin(0, 0)
+
 
     this.container.add(panel);
+    this.container.add(pauseText);
+    this.container.add(resumeButton)
+    this.container.add(resumeText)
     // this.container.add(toggleButton);
     // this.container.add(this.checkmark);
     // this.container.add(soundText);
@@ -75,6 +92,25 @@ export default class SettingsMenu {
 
     //     this.toggleSound();
     //   });
+
+    resumeButton.setInteractive()
+      .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
+        resumeButton.setTint(0xe0e0e0);
+      })
+      .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, () => {
+        resumeButton.setTint(0xffffff);
+      })
+      .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+        resumeButton.setTint(0xe0e0e0);
+        resumeButton.setTexture('menuButton-2')
+
+        this.activeScene.scene.restart
+      }).on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+        resumeButton.setTint(0xffffff);
+        resumeButton.setTexture('menuButton-1')
+        this.activeScene.scene.start('MainMenu')
+      })
+
   }
 
   // Mostrar y Ocultar Menu

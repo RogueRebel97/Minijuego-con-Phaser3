@@ -3,9 +3,11 @@ import * as Phaser from 'phaser';
 import { MainMenu } from './MainMenu';
 import Settings from './SettingsMenu';
 
+
 export default class UIScene extends Phaser.Scene {
   // Propiedades
   private SettingMenu!: Settings;
+
 
   constructor() {
     super({ key: 'ui-scene' });
@@ -15,8 +17,9 @@ export default class UIScene extends Phaser.Scene {
     console.log('UI');
     this.SettingMenu = new Settings(this);
 
-    const { width } = this.scale;
 
+
+    const { width } = this.scale;
     // Boton de Pausa
     const settingButton = this.add
       .image(width - 10, 10, 'small_button')

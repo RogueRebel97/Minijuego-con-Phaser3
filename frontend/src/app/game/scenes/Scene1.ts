@@ -3,15 +3,19 @@ import { delay } from 'rxjs';
 import Settings from './SettingsMenu';
 import Knight from '../character/knight';
 import Constants from '../Constants';
+import HUD from './Ui';
 
 
 export class Scene1 extends Phaser.Scene {
   // Propiedades
   private player!: Knight;
+  private hud!: HUD
+  private setting!: Settings
 
   private slime!: Phaser.Physics.Arcade.Sprite
   private width!: number;
   private height!: number;
+  private spaceKey!: any
 
   private tileMap!: Phaser.Tilemaps.Tilemap;
   private tileSet!: Phaser.Tilemaps.Tileset;
@@ -27,10 +31,20 @@ export class Scene1 extends Phaser.Scene {
 
   constructor() {
     super({ key: 'Scene1' });
+
+
   }
 
   init() {
     console.log('Scene1 Corriendo');
+
+    // this.scene.launch('hud');
+    // this.scene.bringToTop('hud')
+    this.scene.launch('ui-scene')
+    this.scene.bringToTop('ui-scene')
+
+
+
     this.width = this.cameras.main.width;
     this.height = this.cameras.main.height;
 
@@ -44,11 +58,12 @@ export class Scene1 extends Phaser.Scene {
 
   }
 
-  preload() { }
-
   create() {
     // console.log(this.registry.get(Constants.REGISTRY.MAXHEALTH));
     // console.log(this.registry.get(Constants.REGISTRY.HEALTH));
+
+
+
     //background layer 1
     this.createBackground(this, 'forestBckgr-1', 12, 0)
 
@@ -126,9 +141,22 @@ export class Scene1 extends Phaser.Scene {
     this.registry.set(Constants.REGISTRY.COLLIDERS.ENEMY, this.enemyCollider)
 
 
+
+    // this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+    // this.spaceKey.on('up', () => {
+    //   console.log("holaaaa");
+
+    //   this.scene.resume(this);
+    // })
+
+
+
+    this.hud = new HUD(this)
   }
 
   override update() {
+    console.log('Nivel 1 corriendo');
 
 
 
@@ -149,7 +177,11 @@ export class Scene1 extends Phaser.Scene {
       x += m.width
     }
   }
+  // unpause() {
+  //   console.log("ejecutnado unpause");
 
+  //   this.scene.resume(this)
+  // }
 
 
 
