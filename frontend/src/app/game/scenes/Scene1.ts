@@ -3,7 +3,7 @@ import { delay } from 'rxjs';
 import Settings from './SettingsMenu';
 import Knight from '../character/knight';
 import Constants from '../Constants';
-import HUD from './Ui';
+import HUD from './hud';
 
 
 export class Scene1 extends Phaser.Scene {
@@ -20,11 +20,6 @@ export class Scene1 extends Phaser.Scene {
   private tileMap!: Phaser.Tilemaps.Tilemap;
   private tileSet!: Phaser.Tilemaps.Tileset;
   private tileMapLayer!: Phaser.Tilemaps.TilemapLayer;
-
-
-  private maxHealth!: number;
-  private healthValue!: number;
-
 
   private enemyCollider!: Phaser.Physics.Arcade.Collider;
   private invulnerable = false;
@@ -43,26 +38,13 @@ export class Scene1 extends Phaser.Scene {
     this.scene.launch('ui-scene')
     this.scene.bringToTop('ui-scene')
 
-
-
     this.width = this.cameras.main.width;
     this.height = this.cameras.main.height;
-
-    //Inicializar variables globales
-    this.maxHealth = 20
-    this.healthValue = this.maxHealth;
-
-    this.registry.set(Constants.REGISTRY.MAXHEALTH, this.maxHealth)
-    this.registry.set(Constants.REGISTRY.HEALTH, this.healthValue)
 
 
   }
 
   create() {
-    // console.log(this.registry.get(Constants.REGISTRY.MAXHEALTH));
-    // console.log(this.registry.get(Constants.REGISTRY.HEALTH));
-
-
 
     //background layer 1
     this.createBackground(this, 'forestBckgr-1', 12, 0)
@@ -72,6 +54,8 @@ export class Scene1 extends Phaser.Scene {
 
     //background layer 3
     this.createBackground(this, 'forestBckgr-3', 14, 1)
+
+
 
     //load tile map
     this.tileMap = this.make.tilemap({ key: Constants.MAPS.LEVEL1.TILEMAPJSON, tileWidth: 16, tileHeight: 16 });
@@ -87,6 +71,9 @@ export class Scene1 extends Phaser.Scene {
       });
     });
     this.player.create();
+
+    //create hud
+    this.hud = new HUD(this)
 
     //camera
     this.cameras.main.setBounds(0, 0, this.tileMap.widthInPixels, this.tileMap.heightInPixels);
@@ -115,44 +102,15 @@ export class Scene1 extends Phaser.Scene {
     this.physics.add.collider(this.player, this.tileMapLayer);
     this.physics.add.collider(this.slime, this.tileMapLayer);
 
-    this.enemyCollider = this.physics.add.collider(this.slime, this.player, (player, slime) => {
+    this.enemyCollider = this.physics.add.overlap(this.slime, this.player, (player, slime) => {
       if (this.registry.get(Constants.REGISTRY.HEALTH) > 0 && !this.invulnerable) {
-        this.invulnerable = true
-        this.tweens.add({
-          targets: this.player,
-          alpha: { from: 1, to: 0 },
-          ease: 'Sine.InOut',
-          duration: 55,
-          repeat: 10,
-          yoyo: true
-        });
-
-
-        this.time.delayedCall(1500, () => {
-          this.invulnerable = false
-
-        }, [], this)
-
-
-
-        this.player.getDamage();
+        // this.player.getInvulnerable(1500)
+        this.player.getDamage(10);
       }
     });
     this.registry.set(Constants.REGISTRY.COLLIDERS.ENEMY, this.enemyCollider)
 
 
-
-    // this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-
-    // this.spaceKey.on('up', () => {
-    //   console.log("holaaaa");
-
-    //   this.scene.resume(this);
-    // })
-
-
-
-    this.hud = new HUD(this)
   }
 
   override update() {
@@ -177,11 +135,8 @@ export class Scene1 extends Phaser.Scene {
       x += m.width
     }
   }
-  // unpause() {
-  //   console.log("ejecutnado unpause");
 
-  //   this.scene.resume(this)
-  // }
+
 
 
 

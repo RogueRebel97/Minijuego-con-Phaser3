@@ -108,7 +108,19 @@ export default class SettingsMenu {
       }).on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
         resumeButton.setTint(0xffffff);
         resumeButton.setTexture('menuButton-1')
-        this.activeScene.scene.start('MainMenu')
+
+
+        for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) {
+          if (this.activeScene.scene.manager.scenes[i].scene.key == 'ui-scene') {
+          } else if (this.activeScene.scene.manager.scenes[i].scene.isPaused()) {
+            // this.activeScene.scene.resume(this.activeScene.scene.manager.scenes[i].scene.key);
+            console.log('this.activeScene.scene.manager.scenes[i]');
+
+            this.activeScene.scene.manager.scenes[i].scene.start('MainMenu')
+            this.hide()
+          }
+        }
+
       })
 
   }
@@ -117,6 +129,9 @@ export default class SettingsMenu {
   // si esta abierto no hacer nada.
   show() {
     const { width, height } = this.activeScene.scale;
+
+
+
 
     if (this.open) {
       return;
@@ -127,9 +142,10 @@ export default class SettingsMenu {
       x: (width / 2),
       duration: 300,
       ease: Phaser.Math.Easing.Sine.InOut,
-    });
+    }).complete;
 
     this.open = true;
+
   }
 
   hide() {
@@ -137,7 +153,6 @@ export default class SettingsMenu {
       return;
     }
     const { width, height } = this.activeScene.scale;
-
     //Animacion de desplazamiento para ocultar
     this.activeScene.tweens.add({
       targets: this.container,
@@ -147,6 +162,7 @@ export default class SettingsMenu {
     });
 
     this.open = false;
+
   }
   // Fin Mostrar y ocultar Menu
 
@@ -167,11 +183,11 @@ export default class SettingsMenu {
   }
 
   // funcion para pausar
-  pause(key: string) {
-    this.show();
-  }
+  // pause(key: string) {
+  //   this.show();
+  // }
 
-  resume(key: string) {
-    this.hide();
-  }
+  // resume(key: string) {
+  //   this.hide();
+  // }
 }

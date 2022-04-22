@@ -1,65 +1,74 @@
-import Constants from '../Constants';
-import * as Phaser from 'phaser';
-import Knight from '../character/knight';
+import Constants from "../Constants";
+import Settings from "./SettingsMenu";
+import Phaser from "phaser";
+import UIScene from "./UIScene";
 
 
+export default class HUD {
 
-export default class HUD extends Phaser.Scene {
 
+    private container!: Phaser.GameObjects.Container;
+    private activeScene: Phaser.Scene;
     private healthTxT!: Phaser.GameObjects.Text;
+    private width: number;
+    private height: number;
+    // private SettingMenu: Settings;
+    private settingUI!: UIScene
 
 
-    private width!: number;
-    private height!: number;
-    private currentScene!: Phaser.Scene;
-
-    // scene: Phaser.Scene
-    constructor() {
-        super('hud')
-
-        // this.currentScene = scene;
-    }
-
-    init() {
-        this.width = this.cameras.main.width;
-        this.height = this.cameras.main.height;
 
 
-        // console.log(this.scene);
 
 
+    constructor(scene: Phaser.Scene) {
+
+
+        this.activeScene = scene;
+        this.width = this.activeScene.cameras.main.width;
+        this.height = this.activeScene.cameras.main.height;
+
+
+        const screenCenterX = this.activeScene.cameras.main.worldView.x + this.activeScene.cameras.main.width / 2;
+        const screenCenterY = this.activeScene.cameras.main.worldView.y + this.activeScene.cameras.main.height / 2;
+        const { width } = scene.scale;
+
+        this.container = scene.add.container(width, screenCenterY - 250);
+
+
+        this.create()
+
+
+
+
+
+
+
+
+
+        this.container.add(this.healthTxT)
     }
 
 
     create() {
+        this.activeScene.events.on(Constants.EVENTS.HEALTH, this.alterHealth, this)
 
-        console.log(this.registry.get(Constants.REGISTRY.MAXHEALTH));
-        console.log(this.registry.get(Constants.REGISTRY.HEALTH));
+        this.healthTxT = this.activeScene.add.text
+            ((this.container.width / 2) - 750, this.height - 625,
+                this.activeScene.registry.get(Constants.REGISTRY.HEALTH) + '/' + this.activeScene.registry.get(Constants.REGISTRY.MAXHEALTH),
+                { fontSize: '24px', color: '#FFFFFF', fontFamily: 'pixel' }).setScrollFactor(0);
 
-        const scene: Phaser.Scene = this.scene.get('Scene1')
-        scene.events.on(Constants.EVENTS.HEALTH, this.alterHealth, this)
 
-        this.healthTxT = this.add.text(20, 20, this.registry.get(Constants.REGISTRY.HEALTH) + '/' + this.registry.get(Constants.REGISTRY.MAXHEALTH), { fontSize: '32px', color: '#FFFFFF' });
-
-    }
-
-    override update() {
 
 
     }
 
-
-    private alterHealth() {
-        this.healthTxT.text = this.registry.get(Constants.REGISTRY.HEALTH) + '/' + this.registry.get(Constants.REGISTRY.MAXHEALTH)
+    alterHealth() {
+        this.healthTxT.text = this.activeScene.registry.get(Constants.REGISTRY.HEALTH) + '/' + this.activeScene.registry.get(Constants.REGISTRY.MAXHEALTH)
     }
 
 
-
-
-
-    private alterScore() {
-
+    getCurrentScene() {
+        return this.activeScene;
     }
+
 }
-
-

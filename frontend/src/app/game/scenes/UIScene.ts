@@ -2,11 +2,14 @@
 import * as Phaser from 'phaser';
 import { MainMenu } from './MainMenu';
 import Settings from './SettingsMenu';
+import HUD from './hud';
 
 
 export default class UIScene extends Phaser.Scene {
   // Propiedades
   private SettingMenu!: Settings;
+  private hud!: HUD;
+  private ESC!: any
 
 
   constructor() {
@@ -16,7 +19,7 @@ export default class UIScene extends Phaser.Scene {
   create() {
     console.log('UI');
     this.SettingMenu = new Settings(this);
-
+    this.ESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
 
     const { width } = this.scale;
@@ -41,28 +44,43 @@ export default class UIScene extends Phaser.Scene {
       })
       .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {  // reset color
         settingButton.setTint(0xffffff);
-        if (this.SettingMenu.isOpen) {
-          this.SettingMenu.hide();
-          // Resume Scene
-          for (let i = 0; i <= this.scene.manager.scenes.length - 1; i++) {
-            if (this.scene.manager.scenes[i].scene.key == 'ui-scene') {
-            } else {
-              this.scene.resume(this.scene.manager.scenes[i].scene.key);
-            }
-          }
-        } else {
-          //Pause Scene
-          this.SettingMenu.show();
-          for (let i = 0; i <= this.scene.manager.scenes.length - 1; i++) {
-
-            if (this.scene.manager.scenes[i].scene.key == 'ui-scene') {
-            } else {
-              this.scene.pause(this.scene.manager.scenes[i].scene.key);
-            }
-          }
-        }
+        this.pauseResume()
       });
+
+
+
+
+    this.ESC.on('up', () => {
+      this.pauseResume()
+    })
+
   }
 
   override update() { }
+
+
+  pauseResume() {
+    if (this.SettingMenu.isOpen) {
+      this.SettingMenu.hide();
+      // Resume Scene
+      for (let i = 0; i <= this.scene.manager.scenes.length - 1; i++) {
+        if (this.scene.manager.scenes[i].scene.key == 'ui-scene') {
+        } else if (this.scene.manager.scenes[i].scene.isPaused()) {
+          this.scene.resume(this.scene.manager.scenes[i].scene.key);
+        }
+      }
+    } else {
+      //Pause Scene
+      this.SettingMenu.show();
+      for (let i = 0; i <= this.scene.manager.scenes.length - 1; i++) {
+
+        if (this.scene.manager.scenes[i].scene.key == 'ui-scene') {
+        } else if (this.scene.manager.scenes[i].scene.isActive()) {
+          this.scene.pause(this.scene.manager.scenes[i].scene.key);
+        }
+      }
+    }
+
+  }
+
 }

@@ -264,6 +264,7 @@ export class LoadingScreen extends Phaser.Scene {
   }
 
   override update() {
+    console.log('loading...');
 
   }
 }
