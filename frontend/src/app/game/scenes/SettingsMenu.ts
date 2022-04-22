@@ -10,6 +10,12 @@ export default class SettingsMenu {
   private activeScene!: Phaser.Scene;
   private container!: Phaser.GameObjects.Container;
   private checkmark!: Phaser.GameObjects.Image;
+  private panel: any
+
+  private pauseText: Phaser.GameObjects.Text
+  private resumeButton: Phaser.GameObjects.Image
+
+
 
   private open = false;
 
@@ -31,19 +37,38 @@ export default class SettingsMenu {
     const { width } = scene.scale;
 
     this.container = scene.add.container(width + 300, screenCenterY - 250); // Comienza escondido en la Derecha (width+300)
-    const panel = scene.add.nineslice(0, 0, 340, 250, 'setting_panel', 24).setOrigin(0.5, 0);
+    this.panel = scene.add.nineslice(0, 0, 340, 260, 'setting_panel', 24).setOrigin(0.5, 0);
 
 
-    const pauseText = scene.add.text
-      ((panel.x - (panel.width / 2)) + 10, panel.y + 10, 'PAUSA',
+    this.pauseText = scene.add.text
+      ((this.panel.x - (this.panel.width / 2)) + 10, this.panel.y + 10, 'PAUSA',
         { color: 'black', fontFamily: 'pixel', fontSize: '24px' });
 
 
-    const resumeButton = scene.add.image
-      (panel.x / 2, panel.y + 80, 'menuButton-1')
+    this.resumeButton = scene.add.image
+      (this.panel.x / 2, this.panel.y + 80, 'menuButton-1')
 
-    const resumeText = scene.add.text
-      (resumeButton.x / 2, resumeButton.y - 10, 'RESET', {
+    this.resumeText = scene.add.text
+      (this.resumeButton.x / 2, this.resumeButton.y - 10, 'RESUME', {
+        color: 'black', fontFamily: 'pixel', fontSize: '18px'
+      }).setOrigin(0.5, 0);
+
+
+    this.activeSceneoptionButton = scene.add.image
+      (this.panel.x / 2, this.resumeButton.y + 69, 'menuButton-1')
+
+    this.optionText = scene.add.text
+      (this.activeSceneoptionButton.x / 2, this.activeSceneoptionButton.y - 10, 'OPTIONS', {
+        color: 'black', fontFamily: 'pixel', fontSize: '18px'
+      }).setOrigin(0.5, 0);
+
+
+
+    this.backToMenuButton = scene.add.image
+      (this.panel.x / 2, this.activeSceneoptionButton.y + 69, 'menuButton-1')
+
+    this.backText = scene.add.text
+      (this.backToMenuButton.x / 2, this.backToMenuButton.y - 10, 'Main Menu', {
         color: 'black', fontFamily: 'pixel', fontSize: '18px'
       }).setOrigin(0.5, 0);
 
@@ -70,10 +95,14 @@ export default class SettingsMenu {
 
 
 
-    this.container.add(panel);
-    this.container.add(pauseText);
-    this.container.add(resumeButton)
-    this.container.add(resumeText)
+    this.container.add(this.panel);
+    this.container.add(this.pauseText);
+    this.container.add(this.resumeButton)
+    this.container.add(this.resumeText)
+    this.container.add(this.activeSceneoptionButton)
+    this.container.add(this.optionText)
+    this.container.add(this.backToMenuButton)
+    this.container.add(this.backText)
     // this.container.add(toggleButton);
     // this.container.add(this.checkmark);
     // this.container.add(soundText);
@@ -93,34 +122,23 @@ export default class SettingsMenu {
     //     this.toggleSound();
     //   });
 
-    resumeButton.setInteractive()
+    this.resumeButton.setInteractive()
       .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
-        resumeButton.setTint(0xe0e0e0);
+        this.resumeButton.setTint(0xe0e0e0);
       })
       .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, () => {
-        resumeButton.setTint(0xffffff);
+        this.resumeButton.setTint(0xffffff);
       })
       .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-        resumeButton.setTint(0xe0e0e0);
-        resumeButton.setTexture('menuButton-2')
+        this.resumeButton.setTint(0xe0e0e0);
+        this.resumeButton.setTexture('menuButton-2')
 
-        this.activeScene.scene.restart
+
       }).on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
-        resumeButton.setTint(0xffffff);
-        resumeButton.setTexture('menuButton-1')
-
-
-        for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) {
-          if (this.activeScene.scene.manager.scenes[i].scene.key == 'ui-scene') {
-          } else if (this.activeScene.scene.manager.scenes[i].scene.isPaused()) {
-            // this.activeScene.scene.resume(this.activeScene.scene.manager.scenes[i].scene.key);
-            console.log('this.activeScene.scene.manager.scenes[i]');
-
-            this.activeScene.scene.manager.scenes[i].scene.start('MainMenu')
-            this.hide()
-          }
-        }
-
+        this.resumeButton.setTint(0xffffff);
+        this.resumeButton.setTexture('menuButton-1')
+        // this.hide()
+        this.resume()
       })
 
   }
@@ -180,6 +198,26 @@ export default class SettingsMenu {
     this.activeScene.sound.mute = isMute;
 
     this.checkmark.visible = isMute;
+  }
+
+
+
+  resume() {
+    if (this.isOpen) {
+      this.hide();
+      // Resume Scene
+      for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) {
+        if (this.activeScene.scene.manager.scenes[i].scene.key == 'ui-scene') {
+        } else if (this.activeScene.scene.manager.scenes[i].scene.isPaused()) {
+          this.activeScene.scene.resume(this.activeScene.scene.manager.scenes[i].scene.key);
+        }
+      }
+    }
+  }
+
+  pressed() {
+    // Under construction
+    // recive un boton, lo pone interactive y le añade las animaciones de hover y presionado
   }
 
   // funcion para pausar
