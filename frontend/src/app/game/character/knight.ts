@@ -12,11 +12,12 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     private actions: any = {
         attack: { state: true, duration: 300, cooldown: 525 },
         slide: { state: true, duration: 300, cooldown: 800 },
-        damage: { state: true, duration: 500 }
+        damage: { state: true, duration: 500, cooldown: 1500 },
+        invulnerable: { state: true, cooldown: 325 }
     }
     private allowMove: boolean = true;
     private playerIsDead: boolean = false;
-    private invulnerable = false;
+    // private allowDamage: boolean = true;
 
     // Key controlls
     private controlls!: any;
@@ -178,7 +179,12 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             if ((key.JustDown(this.controlls.UP) || key.JustDown(this.controlls.W)) && this.body.blocked.down) {
                 this.anims.stop();
                 this.setVelocityY(-this.vJump);
+                // this.setVelocityX(390   )
                 this.anims.play('jump');
+                if (this.flipX) {
+                    this.setVelocityX(0)
+                }
+
             }
 
             // Fall
@@ -203,6 +209,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
                 this.blockMove('slide'); // bloquear otros inputs de usuario por x milisegundos
                 this.cooldown('slide'); // impide que se vuelva a ejecutar otro slide durante x ms
+                this.cooldown('invulnerable')
                 this.anims.stop();  // detener animaciones en curso
                 this.anims.play('slide');
 
@@ -241,15 +248,10 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
     getDamage(damage: number) {
         var health = this.currentScene.registry.get(Constants.REGISTRY.HEALTH);
-
-        this.blockMove('damage');
-        // this.anims.stop;
-        // this.setVelocityX(0);
-        // this.setVelocityY(0);
-
-        if (health > 0 && !this.playerIsDead && !this.invulnerable) {
+        if (health > 0 && !this.playerIsDead && this.actions.damage.state && this.actions.invulnerable.state) {
 
             this.blockMove('damage');
+            this.cooldown('damage')
             this.getInvulnerable(1500)
 
             if (this.body.blocked.left) {
@@ -266,20 +268,15 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('hit')
 
 
-            } else if (this.body.blocked.down) {
+            } else if (this.body.touching.down) {
                 var random = Math.floor(Math.random() * 2) + 1;
-
+                this.anims.stop;
+                this.setVelocityY(-150)
                 if (random == 1) {
-
                     this.setVelocityX(250)
-                    this.setVelocityY(-150)
-
                     this.anims.play('hit')
-
                 } else {
                     this.setVelocityX(-250)
-                    this.setVelocityY(-150)
-
                     this.anims.play('hit')
                 }
             }
@@ -291,7 +288,6 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     }
 
     getInvulnerable(time: number) {
-        this.invulnerable = true
         this.currentScene.tweens.add({
             targets: this,
             alpha: { from: 1, to: 0 },
@@ -301,8 +297,6 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             yoyo: true
         });
         this.currentScene.time.delayedCall(time, () => {
-            this.invulnerable = false
-
         }, [], this)
 
     }
