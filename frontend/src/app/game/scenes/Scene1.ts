@@ -2,6 +2,7 @@ import { Game, Physics, Scene } from 'phaser';
 import { delay } from 'rxjs';
 import Settings from './SettingsMenu';
 import Knight from '../character/knight';
+import Slime from '../enemies/slime';
 import Constants from '../Constants';
 import HUD from './hud';
 
@@ -10,12 +11,11 @@ export class Scene1 extends Phaser.Scene {
   // Propiedades
   private player!: Knight;
   private hud!: HUD
-  private setting!: Settings
+  private slime!: Slime
 
-  private slime!: Phaser.Physics.Arcade.Sprite
+  private slimeHPText!: Phaser.GameObjects.Text
   private width!: number;
   private height!: number;
-  private spaceKey!: any
 
   private tileMap!: Phaser.Tilemaps.Tilemap;
   private tileSet!: Phaser.Tilemaps.Tileset;
@@ -87,23 +87,45 @@ export class Scene1 extends Phaser.Scene {
 
 
     // Enemie Test
-    this.anims.create({
-      key: 'idleSlime',
-      frames: this.anims.generateFrameNumbers('slime', { start: 0, end: 9 }),
-      frameRate: 20,
-      repeat: -1,
+    this.tileMap.findObject(Constants.ENEMIES.SLIME.ID, (d: any) => {
+      this.slime = new Slime({
+        currentScene: this,
+        x: d.x,
+        y: d.y,
+        texture: Constants.ENEMIES.SLIME.ID
+      });
     });
+    this.slime.create()
 
-    this.slime = this.physics.add.sprite(695, 505, 'slime').play('idleSlime')
-    this.slime.body.immovable = true
+    // this.anims.create({
+    //   key: 'idleSlime',
+    //   frames: this.anims.generateFrameNumbers('slime', { start: 0, end: 9 }),
+    //   frameRate: 20,
+    //   repeat: -1,
+    // });
+
+    // this.anims.create({
+    //   key: 'slimeHit',
+    //   frames: this.anims.generateFrameNumbers('slimeHit', { start: 0, end: 4 }),
+    //   frameRate: 20,
+    //   repeat: 0,
+    // });
+
+    // this.slimeHP = 100;
+    // this.slime = this.physics.add.sprite(695, 505, 'slime').play('idleSlime')
+    // this.slime.body.immovable = true
+    // this.slimeHPText = this.add.text(this.slime.x, this.slime.y - 20, `HP:${Constants.ENEMIES.SLIME.STATS.HEALTH}`,
+    //   { fontSize: '14px', color: '#FFFFFF', fontFamily: 'pixel' })
+
 
 
 
     this.physics.add.collider(this.player, this.tileMapLayer);
     this.physics.add.collider(this.slime, this.tileMapLayer);
+    this.player.attack(this.slime)
 
     this.enemyCollider = this.physics.add.overlap(this.slime, this.player, (player, slime) => {
-      if (this.registry.get(Constants.REGISTRY.HEALTH) > 0 && !this.invulnerable) {
+      if (this.registry.get(Constants.PLAYER.STATS.HEALTH) > 0 && !this.invulnerable) {
         // this.player.getInvulnerable(1500)
         this.player.getDamage(10);
       }

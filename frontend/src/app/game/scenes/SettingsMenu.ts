@@ -11,10 +11,16 @@ export default class SettingsMenu {
   private container!: Phaser.GameObjects.Container;
   private checkmark!: Phaser.GameObjects.Image;
   private panel: any
+  private cross: Phaser.GameObjects.Image;
+
 
   private pauseText: Phaser.GameObjects.Text
   private resumeButton: Phaser.GameObjects.Image
-
+  private resumeText: Phaser.GameObjects.Text;
+  private optionButton: Phaser.GameObjects.Image;
+  private optionText: Phaser.GameObjects.Text
+  private backToMenuButton: Phaser.GameObjects.Image;
+  private backText: Phaser.GameObjects.Text
 
 
   private open = false;
@@ -37,12 +43,14 @@ export default class SettingsMenu {
     const { width } = scene.scale;
 
     this.container = scene.add.container(width + 300, screenCenterY - 250); // Comienza escondido en la Derecha (width+300)
-    this.panel = scene.add.nineslice(0, 0, 340, 260, 'setting_panel', 24).setOrigin(0.5, 0);
+    this.panel = scene.add.nineslice(0, 0, 340, 300, 'setting_panel', 24).setOrigin(0.5, 0);
 
 
     this.pauseText = scene.add.text
       ((this.panel.x - (this.panel.width / 2)) + 10, this.panel.y + 10, 'PAUSA',
         { color: 'black', fontFamily: 'pixel', fontSize: '24px' });
+
+    this.cross = scene.add.image((this.panel.x - (this.panel.width / 2)) + 317, this.panel.y + 20, 'cross')
 
 
     this.resumeButton = scene.add.image
@@ -54,18 +62,18 @@ export default class SettingsMenu {
       }).setOrigin(0.5, 0);
 
 
-    this.activeSceneoptionButton = scene.add.image
+    this.optionButton = scene.add.image
       (this.panel.x / 2, this.resumeButton.y + 69, 'menuButton-1')
 
     this.optionText = scene.add.text
-      (this.activeSceneoptionButton.x / 2, this.activeSceneoptionButton.y - 10, 'OPTIONS', {
+      (this.optionButton.x / 2, this.optionButton.y - 10, 'OPTIONS', {
         color: 'black', fontFamily: 'pixel', fontSize: '18px'
       }).setOrigin(0.5, 0);
 
 
 
     this.backToMenuButton = scene.add.image
-      (this.panel.x / 2, this.activeSceneoptionButton.y + 69, 'menuButton-1')
+      (this.panel.x / 2, this.optionButton.y + 69, 'menuButton-1')
 
     this.backText = scene.add.text
       (this.backToMenuButton.x / 2, this.backToMenuButton.y - 10, 'Main Menu', {
@@ -97,9 +105,10 @@ export default class SettingsMenu {
 
     this.container.add(this.panel);
     this.container.add(this.pauseText);
+    this.container.add(this.cross);
     this.container.add(this.resumeButton)
     this.container.add(this.resumeText)
-    this.container.add(this.activeSceneoptionButton)
+    this.container.add(this.optionButton)
     this.container.add(this.optionText)
     this.container.add(this.backToMenuButton)
     this.container.add(this.backText)

@@ -63,7 +63,7 @@ export default class HUD {
     }
 
     alterHealth() {
-        this.healthTxT.text = this.activeScene.registry.get(Constants.REGISTRY.HEALTH) + '/' + this.activeScene.registry.get(Constants.REGISTRY.MAXHEALTH)
+        this.healthTxT.text = this.activeScene.registry.get(Constants.PLAYER.STATS.HEALTH) + '/' + this.activeScene.registry.get(Constants.PLAYER.STATS.MAXHEALTH)
     }
 
 

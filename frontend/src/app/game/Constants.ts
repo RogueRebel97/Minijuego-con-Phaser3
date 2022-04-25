@@ -33,6 +33,18 @@ const Constants = {
             HEALTH: 'healthValue'
         }
     },
+    ENEMIES: {
+        SLIME: {
+            ID: 'slime',
+            ANIMATIONS: {
+
+            },
+            STATS: {
+                MAXHEALTH: 'maxHealth',
+                HEALTH: 'healthValue'
+            }
+        }
+    },
     REGISTRY: {
         MAXHEALTH: 'maxHealth',
         HEALTH: 'healthValue',

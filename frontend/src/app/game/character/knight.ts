@@ -3,7 +3,7 @@ import Constants from "../Constants";
 export default class Knight extends Phaser.Physics.Arcade.Sprite {
     // Attributes
     private vRun: number = 250;
-    private vJump: number = 300;
+    private vJump: number = 330;
     private vSlide: number = 500;
     private maxHealth: number = 100;
     private health: number = this.maxHealth;
@@ -25,6 +25,8 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     // Current Game Scene
     private currentScene!: Phaser.Scene;
 
+    //Sword Hitbox
+    private swordHitbox: Phaser.GameObjects.Rectangle
 
     constructor(config: any) {
         super(config.currentScene, config.x, config.y, config.texture);
@@ -32,9 +34,8 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.currentScene = config.currentScene;
 
         //Register global Variables
-
-        this.currentScene.registry.set(Constants.REGISTRY.MAXHEALTH, this.maxHealth)
-        this.currentScene.registry.set(Constants.REGISTRY.HEALTH, this.health)
+        this.currentScene.registry.set(Constants.PLAYER.STATS.MAXHEALTH, this.maxHealth)
+        this.currentScene.registry.set(Constants.PLAYER.STATS.HEALTH, this.health)
 
         // Player Controls
         this.controlls = this.currentScene.input.keyboard.addKeys({
@@ -58,6 +59,15 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.displayWidth = 240;
         this.displayHeight = 160;
         this.body.setOffset(this.width * 0.5 - 15, this.height * 0.5);
+
+
+        // Initialize Sword
+        this.swordHitbox = this.currentScene.add.rectangle(this.x, this.y, 80, 98, 0xFF0000, 0)
+        this.currentScene.physics.add.existing(this.swordHitbox, true)
+
+
+
+        // as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody
     }
 
     create() { // Character animations
@@ -127,6 +137,9 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             frames: this.currentScene.anims.generateFrameNumbers('death', { start: 0, end: 9 }),
             frameRate: 20,
         });
+
+        // Sword Hitbox
+
     }
 
     override update() {
@@ -138,7 +151,8 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         if (this.allowMove) {
 
             // Displace
-            if (this.controlls.LEFT.isDown || this.controlls.A.isDown) { // Left <==
+            if ((this.controlls.LEFT.isDown || this.controlls.A.isDown)) { // Left <==
+
 
                 // Left Speed
                 this.setVelocityX(-this.vRun);
@@ -154,7 +168,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 // hitbox adjust
                 this.body.setOffset(this.width * 0.5 - 5, this.height * 0.5);
 
-            } else if (this.controlls.RIGHT.isDown || this.controlls.D.isDown) { // Right ==>
+            } else if ((this.controlls.RIGHT.isDown || this.controlls.D.isDown)) { // Right ==>
 
                 // Right speed
                 this.setVelocityX(this.vRun);
@@ -179,13 +193,22 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             if ((key.JustDown(this.controlls.UP) || key.JustDown(this.controlls.W)) && this.body.blocked.down) {
                 this.anims.stop();
                 this.setVelocityY(-this.vJump);
-                // this.setVelocityX(390   )
                 this.anims.play('jump');
-                if (this.flipX) {
-                    this.setVelocityX(0)
-                }
+                // if ((this.controlls.LEFT.isDown || this.controlls.A.isDown) && !this.body.blocked.down) {
+                //     this.setVelocityX(-this.vRun * 0.5);
+                // } else if ((this.controlls.RIGHT.isDown || this.controlls.D.isDown) && !this.body.blocked.down) {
+                //     this.setVelocityX(this.vRun * 0.5);
+                // }
 
             }
+
+            // X speed on Air conservation
+            // if (this.body.velocity.x != 0 && !this.body.blocked.down) { }
+            // {
+            //     this.setVelocityX(this.body.velocity.x)
+            // }
+
+
 
             // Fall
             if (this.body.velocity.y >= 0 && !this.body.blocked.down) {
@@ -199,7 +222,16 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 this.cooldown('attack'); // impide que se vuelva a ejecutar otro ataque durante x ms
                 this.anims.stop(); // detener animaciones en curso
                 this.anims.play('downSwing');
+                // this.temporalHitBoxAdjust(300, this.width * 0.5 - 30, this.height * 0.5)
+
+
                 this.setVelocityX(0); //parar el pj
+                this.swordHitbox.body.position.x = this.flipX
+                    ? this.x - this.width * 0.8
+                    : this.x + this.width * 0.25
+
+                // this.swordHitbox.body.position.x = this.x + this.body.width;
+                this.swordHitbox.body.position.y = this.y + this.body.height * 0.2
             }
 
             // Slide
@@ -235,7 +267,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     }
 
     checkIsDead() {
-        var health = this.currentScene.registry.get(Constants.REGISTRY.HEALTH);
+        var health = this.currentScene.registry.get(Constants.PLAYER.STATS.HEALTH);
 
         if (health <= 0 && !this.playerIsDead && this.allowMove) {
             this.currentScene.physics.world.removeCollider(this.currentScene.registry.get(Constants.REGISTRY.COLLIDERS.ENEMY))
@@ -247,7 +279,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     }
 
     getDamage(damage: number) {
-        var health = this.currentScene.registry.get(Constants.REGISTRY.HEALTH);
+        var health = this.currentScene.registry.get(Constants.PLAYER.STATS.HEALTH);
         if (health > 0 && !this.playerIsDead && this.actions.damage.state && this.actions.invulnerable.state) {
 
             this.blockMove('damage');
@@ -282,7 +314,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             }
 
             health = health - damage;
-            this.currentScene.registry.set(Constants.REGISTRY.HEALTH, health)
+            this.currentScene.registry.set(Constants.PLAYER.STATS.HEALTH, health)
             this.currentScene.events.emit(Constants.EVENTS.HEALTH)
         }
     }
@@ -300,4 +332,32 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         }, [], this)
 
     }
+    temporalHitBoxAdjust(time: number, x: number, y: number) {
+        const offSetx = this.body.offset.x
+        const offSety = this.body.offset.y
+        this.body.setOffset(x, y)
+        this.currentScene.time.delayedCall(time, () => {
+            this.body.setOffset(offSetx, offSety)
+        }, [], this)
+
+    }
+
+    attack(enemy: Phaser.GameObjects.GameObject) {
+
+        this.currentScene.physics.add.collider(this.swordHitbox, enemy,)
+
+
+    }
+
+    handleCollide(obj1: Phaser.GameObjects.GameObject, objt2: Phaser.GameObjects.GameObject,) {
+
+
+    }
 }
+
+// this.physics.add.overlap(this.swordHitbox, this.box, this.handleCollide, undefined, this)
+
+// private handleCollide(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject)
+// 	{
+// 		this.boxStateMachine.setState('damage')
+// 	}

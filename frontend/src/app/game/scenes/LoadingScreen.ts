@@ -102,6 +102,10 @@ export class LoadingScreen extends Phaser.Scene {
       'menuButton-2',
       'assets/graphics/uiAssets2/PNG/grey_button04.png'
     );
+    this.load.image(
+      'cross',
+      'assets/graphics/gameIcons/PNG/Black/1x/cross.png'
+    );
 
 
     this.load.image('logo', 'assets/graphics/Logo.jpg');
@@ -187,6 +191,11 @@ export class LoadingScreen extends Phaser.Scene {
     this.load.spritesheet(
       'slime',
       'assets/SpritesSheets/Enemies/Slime/Idle-Run.png',
+      { frameWidth: 44, frameHeight: 30 }
+    );
+    this.load.spritesheet(
+      'slimeHit',
+      'assets/SpritesSheets/Enemies/Slime/Hit(44x30).png',
       { frameWidth: 44, frameHeight: 30 }
     );
 
