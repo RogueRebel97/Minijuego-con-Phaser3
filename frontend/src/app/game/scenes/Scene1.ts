@@ -13,6 +13,9 @@ export class Scene1 extends Phaser.Scene {
   private hud!: HUD
   private slime!: Slime
 
+  private enemies!: Physics.Arcade.Group
+
+
   private slimeHPText!: Phaser.GameObjects.Text
   private width!: number;
   private height!: number;
@@ -40,8 +43,6 @@ export class Scene1 extends Phaser.Scene {
 
     this.width = this.cameras.main.width;
     this.height = this.cameras.main.height;
-
-
   }
 
   create() {
@@ -86,7 +87,7 @@ export class Scene1 extends Phaser.Scene {
     this.tileMapLayer.setCollisionByExclusion([-1]);
 
 
-    // Enemie Test
+    // Enemie Slime
     this.tileMap.findObject(Constants.ENEMIES.SLIME.ID, (d: any) => {
       this.slime = new Slime({
         currentScene: this,
@@ -97,34 +98,23 @@ export class Scene1 extends Phaser.Scene {
     });
     this.slime.create()
 
-    // this.anims.create({
-    //   key: 'idleSlime',
-    //   frames: this.anims.generateFrameNumbers('slime', { start: 0, end: 9 }),
-    //   frameRate: 20,
-    //   repeat: -1,
-    // });
-
-    // this.anims.create({
-    //   key: 'slimeHit',
-    //   frames: this.anims.generateFrameNumbers('slimeHit', { start: 0, end: 4 }),
-    //   frameRate: 20,
-    //   repeat: 0,
-    // });
-
-    // this.slimeHP = 100;
-    // this.slime = this.physics.add.sprite(695, 505, 'slime').play('idleSlime')
-    // this.slime.body.immovable = true
-    // this.slimeHPText = this.add.text(this.slime.x, this.slime.y - 20, `HP:${Constants.ENEMIES.SLIME.STATS.HEALTH}`,
-    //   { fontSize: '14px', color: '#FFFFFF', fontFamily: 'pixel' })
+    this.enemies = this.physics.add.group(this.slime);
 
 
 
+    this.slimeHPText = this.add.text(this.slime.x, this.slime.y - 20, `HP:${this.registry.get(Constants.ENEMIES.SLIME.STATS.HEALTH)}`,
+      { fontSize: '14px', color: '#FFFFFF', fontFamily: 'pixel' })
 
+
+
+    // collider Player and Ground
     this.physics.add.collider(this.player, this.tileMapLayer);
-    this.physics.add.collider(this.slime, this.tileMapLayer);
-    this.player.attack(this.slime)
 
-    this.enemyCollider = this.physics.add.overlap(this.slime, this.player, (player, slime) => {
+    this.physics.add.collider(this.enemies, this.tileMapLayer);
+    // this.player.attack(this.slime)
+
+    //player touch Slime
+    this.enemyCollider = this.physics.add.overlap(this.slime, this.player, (slime, player) => {
       if (this.registry.get(Constants.PLAYER.STATS.HEALTH) > 0 && !this.invulnerable) {
         // this.player.getInvulnerable(1500)
         this.player.getDamage(10);
@@ -132,17 +122,20 @@ export class Scene1 extends Phaser.Scene {
     });
     this.registry.set(Constants.REGISTRY.COLLIDERS.ENEMY, this.enemyCollider)
 
+    console.log(this.enemies.getLength());
+
+    this.registry.set(Constants.GROUPS.ENEMIES, this.enemies)
 
   }
 
   override update() {
     console.log('Nivel 1 corriendo');
 
-
-
-
     this.player.update();
     this.player.checkIsDead();
+
+    this.slime.update();
+    this.slime.checkIsDead();
 
   }
 

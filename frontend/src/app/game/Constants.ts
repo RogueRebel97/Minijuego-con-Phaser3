@@ -37,17 +37,21 @@ const Constants = {
         SLIME: {
             ID: 'slime',
             ANIMATIONS: {
+                IDLE: 'idleSlime',
+                HIT: 'slimeHit'
 
             },
             STATS: {
-                MAXHEALTH: 'maxHealth',
-                HEALTH: 'healthValue'
+                MAXHEALTH: 'maxHealth-slime',
+                HEALTH: 'healthValue-slime',
+                DAMAGE: '10'
             }
         }
     },
+    GROUPS: {
+        ENEMIES: 'enemies'
+    },
     REGISTRY: {
-        MAXHEALTH: 'maxHealth',
-        HEALTH: 'healthValue',
         COLLIDERS: {
             ENEMY: 'enemyCollider'
         }

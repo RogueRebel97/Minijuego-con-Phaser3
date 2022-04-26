@@ -54,7 +54,7 @@ export default class HUD {
 
         this.healthTxT = this.activeScene.add.text
             ((this.container.width / 2) - 750, this.height - 625,
-                this.activeScene.registry.get(Constants.REGISTRY.HEALTH) + '/' + this.activeScene.registry.get(Constants.REGISTRY.MAXHEALTH),
+                this.activeScene.registry.get(Constants.PLAYER.STATS.HEALTH) + '/' + this.activeScene.registry.get(Constants.PLAYER.STATS.MAXHEALTH),
                 { fontSize: '24px', color: '#FFFFFF', fontFamily: 'pixel' }).setScrollFactor(0);
 
 
