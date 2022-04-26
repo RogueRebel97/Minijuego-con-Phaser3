@@ -1,4 +1,5 @@
 import Constants from "../Constants";
+import Enemy from "../enemies/enemy";
 
 export default class Knight extends Phaser.Physics.Arcade.Sprite {
     // Attributes
@@ -72,17 +73,11 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         // this.currentScene.physics.add.overlap
         //     (this.swordHitbox, this.currentScene.registry.get(Constants.GROUPS.ENEMIES), this.attackCollide, undefined, this.currentScene)
 
-        this.currentScene.physics.add.collider
-            (this.swordHitbox, this.currentScene.registry.get(Constants.GROUPS.ENEMIES))
+
+
     }
 
     create() { // Character animations
-        this.anims.create({
-            key: 'idle',
-            frames: this.currentScene.anims.generateFrameNumbers('knight', { start: 0, end: 9 }),
-            frameRate: 20,
-            repeat: -1,
-        });
         this.anims.create({
             key: 'left',
             frames: this.currentScene.anims.generateFrameNumbers('run', { start: 0, end: 9 }),
@@ -143,6 +138,11 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             frames: this.currentScene.anims.generateFrameNumbers('death', { start: 0, end: 9 }),
             frameRate: 20,
         });
+
+        this.currentScene.physics.add.overlap
+            (this.swordHitbox, this.currentScene.registry.get(Constants.GROUPS.ENEMIES), this.attackCollide)
+
+        console.log("Grupo de enemigos:" + this.currentScene.registry.get(Constants.GROUPS.ENEMIES));
 
 
     }
@@ -220,7 +220,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             if (key.JustDown(this.controlls.SPACE) && this.body.blocked.down && this.actions.attack.state) {
                 this.setVelocityX(0); //parar el pj
                 this.blockMove('attack') // bloquear otros inputs de usuario por x milisegundos
-                this.cooldown('attack'); // impide que se vuelva a ejecutar otro ataque durante x ms
+                this.cooldown('attack');    // impide que se vuelva a ejecutar otro ataque durante x ms
                 this.anims.stop(); // detener animaciones en curso
                 this.anims.play('downSwing');
 
@@ -245,10 +245,10 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 this.on(Phaser.Animations.Events.ANIMATION_UPDATE, startHit) // cuando la animacion avance llama a startHi para saber cuando comenzar
 
                 // desactivar la hitbox al acabar la animacion
-                // this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'downSwing', () => {
-                //     this.swordHitbox.body.enable = false;
-                //     this.currentScene.physics.world.remove(this.swordHitbox.body)
-                // })
+                this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'downSwing', () => {
+                    this.swordHitbox.body.enable = false;
+                    this.currentScene.physics.world.remove(this.swordHitbox.body)
+                })
 
 
 
@@ -367,18 +367,16 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
     }
 
-    attack(enemy: Phaser.Physics.Arcade.Sprite) {
 
-        this.currentScene.physics.add.collider(this.swordHitbox, enemy, this.attackCollide, undefined, this)
 
-        console.log("HIT!!!!");
-    }
+    attackCollide(obj1: any, obj2: any) {
+        var enemy: Enemy;
+        var dmg: number = 0;
+        enemy = obj2;
+        enemy.getDamage(dmg)
 
-    attackCollide(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject) {
 
-        console.log("obj1: " + obj1);
-        console.log("obj2: " + obj2);
-        console.log("HIT!!!!");
+
 
     }
 }

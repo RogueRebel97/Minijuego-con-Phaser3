@@ -198,7 +198,11 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/SpritesSheets/Enemies/Slime/Hit(44x30).png',
       { frameWidth: 44, frameHeight: 30 }
     );
-
+    this.load.spritesheet(
+      'slimeParticles',
+      'assets/SpritesSheets/Enemies/Slime/ Particles(62x16).png',
+      { frameWidth: 62, frameHeight: 16 }
+    );
 
 
     //Map

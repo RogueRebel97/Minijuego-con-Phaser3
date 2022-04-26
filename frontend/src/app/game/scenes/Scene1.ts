@@ -2,7 +2,7 @@ import { Game, Physics, Scene } from 'phaser';
 import { delay } from 'rxjs';
 import Settings from './SettingsMenu';
 import Knight from '../character/knight';
-import Slime from '../enemies/slime';
+import Enemy from '../enemies/enemy';
 import Constants from '../Constants';
 import HUD from './hud';
 
@@ -11,7 +11,7 @@ export class Scene1 extends Phaser.Scene {
   // Propiedades
   private player!: Knight;
   private hud!: HUD
-  private slime!: Slime
+  private slime!: Enemy
 
   private enemies!: Physics.Arcade.Group
 
@@ -71,7 +71,7 @@ export class Scene1 extends Phaser.Scene {
         texture: Constants.PLAYER.ID
       });
     });
-    this.player.create();
+
 
     //create hud
     this.hud = new HUD(this)
@@ -87,20 +87,25 @@ export class Scene1 extends Phaser.Scene {
     this.tileMapLayer.setCollisionByExclusion([-1]);
 
 
-    // Enemie Slime
+    // Enemy Slime
     this.tileMap.findObject(Constants.ENEMIES.SLIME.ID, (d: any) => {
-      this.slime = new Slime({
+      this.slime = new Enemy({
         currentScene: this,
         x: d.x,
         y: d.y,
-        texture: Constants.ENEMIES.SLIME.ID
+        texture: Constants.ENEMIES.SLIME.ID,
+        maxHealth: 20
       });
     });
-    this.slime.create()
+
 
     this.enemies = this.physics.add.group(this.slime);
 
+    this.registry.set(Constants.GROUPS.ENEMIES, this.enemies)
+    console.log("enemy GRoup from Scene:" + this.registry.get(Constants.GROUPS.ENEMIES));
 
+    this.slime.create()
+    this.player.create();
 
     this.slimeHPText = this.add.text(this.slime.x, this.slime.y - 20, `HP:${this.registry.get(Constants.ENEMIES.SLIME.STATS.HEALTH)}`,
       { fontSize: '14px', color: '#FFFFFF', fontFamily: 'pixel' })
@@ -122,9 +127,10 @@ export class Scene1 extends Phaser.Scene {
     });
     this.registry.set(Constants.REGISTRY.COLLIDERS.ENEMY, this.enemyCollider)
 
+
     console.log(this.enemies.getLength());
 
-    this.registry.set(Constants.GROUPS.ENEMIES, this.enemies)
+
 
   }
 
