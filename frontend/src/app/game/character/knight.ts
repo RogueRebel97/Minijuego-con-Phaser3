@@ -8,6 +8,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     private vSlide: number = 500;
     private maxHealth: number = 30;
     private health: number = this.maxHealth;
+    private damage: number = 10;
 
     // Actions & states
     private actions: any = {
@@ -20,8 +21,8 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     private playerIsDead: boolean = false;
     // private allowDamage: boolean = true;
 
-    // Key controlls
-    private controlls!: any;
+    // Key controls
+    private controls!: any;
 
     // Current Game Scene
     private currentScene!: Phaser.Scene;
@@ -39,7 +40,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.currentScene.registry.set(Constants.PLAYER.STATS.HEALTH, this.health)
 
         // Player Controls
-        this.controlls = this.currentScene.input.keyboard.addKeys({
+        this.controls = this.currentScene.input.keyboard.addKeys({
             'UP': Phaser.Input.Keyboard.KeyCodes.UP,
             'DOWN': Phaser.Input.Keyboard.KeyCodes.DOWN,
             'LEFT': Phaser.Input.Keyboard.KeyCodes.LEFT,
@@ -156,7 +157,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         if (this.allowMove) {
 
             // Displace
-            if ((this.controlls.LEFT.isDown || this.controlls.A.isDown)) { // Left <==
+            if ((this.controls.LEFT.isDown || this.controls.A.isDown)) { // Left <==
 
 
                 // Left Speed
@@ -173,7 +174,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 // hitbox adjust
                 this.body.setOffset(this.width * 0.5 - 5, this.height * 0.5);
 
-            } else if ((this.controlls.RIGHT.isDown || this.controlls.D.isDown)) { // Right ==>
+            } else if ((this.controls.RIGHT.isDown || this.controls.D.isDown)) { // Right ==>
 
                 // Right speed
                 this.setVelocityX(this.vRun);
@@ -195,7 +196,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             }
 
             // Jump
-            if ((key.JustDown(this.controlls.UP) || key.JustDown(this.controlls.W)) && this.body.blocked.down) {
+            if ((key.JustDown(this.controls.UP) || key.JustDown(this.controls.W)) && this.body.blocked.down) {
                 this.anims.stop();
                 this.setVelocityY(-this.vJump);
                 this.anims.play('jump');
@@ -217,7 +218,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             }
 
             // Attack: Down Swing
-            if (key.JustDown(this.controlls.SPACE) && this.body.blocked.down && this.actions.attack.state) {
+            if (key.JustDown(this.controls.SPACE) && this.body.blocked.down && this.actions.attack.state) {
                 this.setVelocityX(0); //parar el pj
                 this.blockMove('attack') // bloquear otros inputs de usuario por x milisegundos
                 this.cooldown('attack');    // impide que se vuelva a ejecutar otro ataque durante x ms
@@ -258,8 +259,8 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             }
 
             // Slide
-            if (key.JustDown(this.controlls.SHIFT) &&
-                (this.controlls.RIGHT.isDown || this.controlls.LEFT.isDown || this.controlls.A.isDown || this.controlls.D.isDown) &&
+            if (key.JustDown(this.controls.SHIFT) &&
+                (this.controls.RIGHT.isDown || this.controls.LEFT.isDown || this.controls.A.isDown || this.controls.D.isDown) &&
                 this.body.blocked.down && this.actions.slide.state) {
 
                 this.blockMove('slide'); // bloquear otros inputs de usuario por x milisegundos
@@ -371,13 +372,9 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
     attackCollide(obj1: any, obj2: any) {
         var enemy: Enemy;
-        var dmg: number = 0;
+
         enemy = obj2;
-        enemy.getDamage(dmg)
-
-
-
-
+        enemy.getDamage(10)
     }
 }
 

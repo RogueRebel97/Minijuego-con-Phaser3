@@ -12,6 +12,7 @@ export default class SettingsMenu {
   private checkmark!: Phaser.GameObjects.Image;
   private panel: any
   private cross: Phaser.GameObjects.Image;
+  private pauseBackground!: Phaser.GameObjects.Rectangle
 
 
   private pauseText: Phaser.GameObjects.Text
@@ -25,15 +26,15 @@ export default class SettingsMenu {
 
   private open = false;
 
+  private width: number;
+  private height: number;
+
   //Funcion booleana para comprobar si el menu esta desplegado o no.
   get isOpen() {
     return this.open;
   }
 
   constructor(scene: Phaser.Scene) {
-
-    console.log('Escena:' + scene);
-    console.log('Abierto:' + this.open);
 
 
     this.activeScene = scene;
@@ -42,6 +43,12 @@ export default class SettingsMenu {
     const screenCenterY = this.activeScene.cameras.main.worldView.y + this.activeScene.cameras.main.height / 2;
     const { width } = scene.scale;
 
+    this.width = this.activeScene.cameras.main.width;
+    this.height = this.activeScene.cameras.main.height;
+
+
+    this.pauseBackground = this.activeScene.add.rectangle(screenCenterX, screenCenterY, this.width, this.height, 0xff0000, 0)
+    // this.pauseBackground = this.activeScene.add.rectangle(width - 1920, screenCenterY, this.width, this.height, 0xff0000, 0.5)
     this.container = scene.add.container(width + 300, screenCenterY - 250); // Comienza escondido en la Derecha (width+300)
     this.panel = scene.add.nineslice(0, 0, 340, 300, 'setting_panel', 24).setOrigin(0.5, 0);
 
@@ -102,7 +109,7 @@ export default class SettingsMenu {
     // );
 
 
-
+    // this.container.add(this.pauseBackground);
     this.container.add(this.panel);
     this.container.add(this.pauseText);
     this.container.add(this.cross);
@@ -147,6 +154,7 @@ export default class SettingsMenu {
         this.resumeButton.setTint(0xffffff);
         this.resumeButton.setTexture('menuButton-1')
         // this.hide()
+        this.showBackground()
         this.resume()
       })
 
@@ -154,15 +162,15 @@ export default class SettingsMenu {
 
   // Mostrar y Ocultar Menu
   // si esta abierto no hacer nada.
+
   show() {
+
     const { width, height } = this.activeScene.scale;
-
-
-
-
     if (this.open) {
       return;
     }
+    this.pauseBackground.alpha = 0.5 //Rectangle 
+
     //Animacion de desplazamiento para mostrar
     this.activeScene.tweens.add({
       targets: this.container,
@@ -170,6 +178,7 @@ export default class SettingsMenu {
       duration: 300,
       ease: Phaser.Math.Easing.Sine.InOut,
     }).complete;
+
 
     this.open = true;
 
@@ -180,6 +189,7 @@ export default class SettingsMenu {
       return;
     }
     const { width, height } = this.activeScene.scale;
+    this.pauseBackground.alpha = 0 //rectangle
     //Animacion de desplazamiento para ocultar
     this.activeScene.tweens.add({
       targets: this.container,
@@ -188,6 +198,7 @@ export default class SettingsMenu {
       ease: Phaser.Math.Easing.Sine.InOut,
     });
 
+    console.log(this.pauseBackground.alpha);
     this.open = false;
 
   }
@@ -214,6 +225,7 @@ export default class SettingsMenu {
   resume() {
     if (this.isOpen) {
       this.hide();
+
       // Resume Scene
       for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) {
         if (this.activeScene.scene.manager.scenes[i].scene.key == 'ui-scene') {
@@ -237,4 +249,12 @@ export default class SettingsMenu {
   // resume(key: string) {
   //   this.hide();
   // }
+
+
+  showBackground() {
+    this.pauseBackground.setAlpha(1)
+  }
+  hideBackground() {
+    this.pauseBackground.setAlpha(0.1)
+  }
 }

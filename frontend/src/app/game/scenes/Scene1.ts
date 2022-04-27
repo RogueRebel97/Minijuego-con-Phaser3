@@ -1,6 +1,5 @@
 import { Game, Physics, Scene } from 'phaser';
 import { delay } from 'rxjs';
-import Settings from './SettingsMenu';
 import Knight from '../character/knight';
 import Enemy from '../enemies/enemy';
 import Constants from '../Constants';
@@ -15,8 +14,10 @@ export class Scene1 extends Phaser.Scene {
 
   private enemies!: Physics.Arcade.Group
 
+  private controls!: any
 
-  private slimeHPText!: Phaser.GameObjects.Text
+
+  // private slimeHPText!: Phaser.GameObjects.Text
   private width!: number;
   private height!: number;
 
@@ -34,7 +35,7 @@ export class Scene1 extends Phaser.Scene {
   }
 
   init() {
-    console.log('Scene1 Corriendo');
+    // console.log('Scene1 Corriendo');
 
     // this.scene.launch('hud');
     // this.scene.bringToTop('hud')
@@ -46,6 +47,15 @@ export class Scene1 extends Phaser.Scene {
   }
 
   create() {
+
+    // controles de la escena
+    this.controls = this.input.keyboard.addKeys({
+      'E': Phaser.Input.Keyboard.KeyCodes.E,
+      'R': Phaser.Input.Keyboard.KeyCodes.R,
+    })
+
+
+
 
     //background layer 1
     this.createBackground(this, 'forestBckgr-1', 12, 0)
@@ -102,13 +112,11 @@ export class Scene1 extends Phaser.Scene {
     this.enemies = this.physics.add.group(this.slime);
 
     this.registry.set(Constants.GROUPS.ENEMIES, this.enemies)
-    console.log("enemy GRoup from Scene:" + this.registry.get(Constants.GROUPS.ENEMIES));
+    // console.log("enemy GRoup from Scene:" + this.registry.get(Constants.GROUPS.ENEMIES));
 
     this.slime.create()
     this.player.create();
 
-    this.slimeHPText = this.add.text(this.slime.x, this.slime.y - 20, `HP:${this.registry.get(Constants.ENEMIES.SLIME.STATS.HEALTH)}`,
-      { fontSize: '14px', color: '#FFFFFF', fontFamily: 'pixel' })
 
 
 
@@ -128,20 +136,31 @@ export class Scene1 extends Phaser.Scene {
     this.registry.set(Constants.REGISTRY.COLLIDERS.ENEMY, this.enemyCollider)
 
 
-    console.log(this.enemies.getLength());
+    // console.log(this.enemies.getLength());
 
 
 
   }
 
   override update() {
-    console.log('Nivel 1 corriendo');
+    // console.log('Nivel 1 corriendo');
+    let key = Phaser.Input.Keyboard;
+
+    if (key.JustDown(this.controls.E)) {
+
+      this.spawnEnemy()
+    }
 
     this.player.update();
     this.player.checkIsDead();
 
-    this.slime.update();
-    this.slime.checkIsDead();
+    if (this.slime.body) {
+      this.slime.update();
+      this.slime.checkIsDead();
+
+    } else {
+      return
+    }
 
   }
 
@@ -155,6 +174,39 @@ export class Scene1 extends Phaser.Scene {
       m.displayHeight = this.sys.canvas.height;
       x += m.width
     }
+  }
+
+  spawnEnemy() {
+    // Enemy Slime
+    this.tileMap.findObject(Constants.ENEMIES.SLIME.ID, (d: any) => {
+      this.slime = new Enemy({
+        currentScene: this,
+        x: d.x,
+        y: d.y,
+        texture: Constants.ENEMIES.SLIME.ID,
+        maxHealth: 20
+      });
+    });
+
+
+    this.enemies = this.physics.add.group(this.slime);
+
+    this.registry.set(Constants.GROUPS.ENEMIES, this.enemies)
+
+    this.slime.create()
+
+    this.physics.add.collider(this.enemies, this.tileMapLayer);
+
+    this.enemyCollider = this.physics.add.overlap(this.slime, this.player, (slime, player) => {
+      if (this.registry.get(Constants.PLAYER.STATS.HEALTH) > 0 && !this.invulnerable) {
+        // this.player.getInvulnerable(1500)
+        this.player.getDamage(10);
+      }
+    });
+    this.registry.set(Constants.REGISTRY.COLLIDERS.ENEMY, this.enemyCollider)
+
+    this.physics.add.collider(this.slime, this.enemies)
+
   }
 
 

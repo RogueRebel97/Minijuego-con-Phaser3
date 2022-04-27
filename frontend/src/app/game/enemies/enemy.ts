@@ -12,8 +12,8 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     //Actions & States
     private actions: any = {
         attack: { state: true, duration: 200, cooldown: 400 },
-        damage: { state: true, duration: 200, cooldown: 200 },
-        invulnerable: { state: true, cooldown: 200 }
+        damage: { state: true, duration: 500, cooldown: 1500 },
+        invulnerable: { state: true, cooldown: 325 }
     }
     private allowMove: boolean = true
     private isDead: boolean = false;
@@ -42,6 +42,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     create() {
+        console.log(`hp de Slime: ${this.health}`);
 
         // slime Anims
         this.anims.create({
@@ -54,22 +55,23 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.anims.create({
             key: Constants.ENEMIES.SLIME.ANIMATIONS.HIT,
             frames: this.anims.generateFrameNumbers(Constants.ENEMIES.SLIME.ANIMATIONS.HIT, { start: 0, end: 4 }),
-            frameRate: 20,
+            frameRate: 10,
             repeat: -1,
         });
-        this.anims.create({
-            key: 'particles',
-            frames: this.anims.generateFrameNumbers('particles', { start: 0, end: 4 }),
-            frameRate: 20,
-            repeat: 0,
-        });
+        // this.anims.create({
+        //     key: 'particles',
+        //     frames: this.anims.generateFrameNumbers('particles', { start: 0, end: 4 }),
+        //     frameRate: 20,
+        //     repeat: 0,
+        // });
         //End Slime anims
     }
 
     override update() {
 
+        if (this.isDead) this.allowMove = false
 
-        if (this.body.velocity.x == 0 && this.body.blocked.down && this.allowMove) {
+        if (this.allowMove) {
             this.anims.play(Constants.ENEMIES.SLIME.ANIMATIONS.IDLE, true)
         }
 
@@ -84,30 +86,39 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.isDead = true;
             this.anims.stop();
             this.setVelocityX(0);
-            this.anims.play('particles')
+
             this.currentScene.physics.world.remove(this.body)
             this.body.enable = false;
-            console.log("Slime muerto");
+            this.destroy()
+
         }
     }
 
     getDamage(damage: number) {
         var health = this.currentScene.registry.get(Constants.ENEMIES.SLIME.STATS.HEALTH)
-        if (health > 0 && !this.isDead && this.actions.damage.state && this.actions.invulnerable.state) {
-            console.log("hit");
 
-            this.blockMove('damage');
-            this.cooldown('damage')
-            // this.setVelocityX(200)
-            // this.setVelocityY(-250)
-            this.anims.play(Constants.ENEMIES.SLIME.ANIMATIONS.HIT, true)
+
+        if (health > 0 && !this.isDead && this.actions.damage.state && this.actions.invulnerable.state) {
+            console.log(`States: 
+            Muerto:${this.isDead}
+            RecibioDaño:${this.actions.damage.state} 
+            Invulnerable:${this.actions.invulnerable.state}`);
+            console.log("hp INICIAL Slime: " + health);
+            console.log("HIT");
+
+
+            this.blockMove('damage'); // Parar movimientos del enemigo y evitar que realice otra accion por X ms
+            this.cooldown('damage') // Evitar que reciba daño de nuevo por X ms
+            this.anims.play(Constants.ENEMIES.SLIME.ANIMATIONS.HIT)
+
             health = health - damage;
             this.currentScene.registry.set(Constants.ENEMIES.SLIME.STATS.HEALTH, health)
-            console.log(health);
+            console.log(`hp FINAL de Slime: ${this.currentScene.registry.get(Constants.ENEMIES.SLIME.STATS.HEALTH)}`);
+
 
         }
 
-        console.log(this.currentScene.registry.get(Constants.ENEMIES.SLIME.STATS.HEALTH));
+
 
     }
     private blockMove(action: string) {

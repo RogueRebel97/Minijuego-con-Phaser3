@@ -12,6 +12,8 @@ export default class UIScene extends Phaser.Scene {
   private ESC!: any
 
 
+
+
   constructor() {
     super({ key: 'ui-scene' });
   }
@@ -24,9 +26,7 @@ export default class UIScene extends Phaser.Scene {
 
     const { width } = this.scale;
     // Boton de Pausa
-    const settingButton = this.add
-      .image(width - 10, 10, 'small_button')
-      .setOrigin(1, 0);
+    const settingButton = this.add.image(width - 10, 10, 'small_button').setOrigin(1, 0);
 
     //Icono de boton de pausa
     this.add.image(settingButton.x - settingButton.width * 0.5, settingButton.y + settingButton.height * 0.5, 'option_button').setScale(1);
@@ -61,7 +61,9 @@ export default class UIScene extends Phaser.Scene {
 
   pauseResume() {
     if (this.SettingMenu.isOpen) {
-      this.SettingMenu.hide();
+      // this.SettingMenu.hideBackground();
+      this.SettingMenu.hide(); //Callback for hide
+
       // Resume Scene
       for (let i = 0; i <= this.scene.manager.scenes.length - 1; i++) {
         if (this.scene.manager.scenes[i].scene.key == 'ui-scene') {
@@ -71,7 +73,10 @@ export default class UIScene extends Phaser.Scene {
       }
     } else {
       //Pause Scene
-      this.SettingMenu.show();
+      // this.SettingMenu.showBackground();
+
+      this.SettingMenu.show(); //Callback for show
+
       for (let i = 0; i <= this.scene.manager.scenes.length - 1; i++) {
 
         if (this.scene.manager.scenes[i].scene.key == 'ui-scene') {
