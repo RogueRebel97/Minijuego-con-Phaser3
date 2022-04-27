@@ -104,7 +104,7 @@ export class Scene1 extends Phaser.Scene {
         x: d.x,
         y: d.y,
         texture: Constants.ENEMIES.SLIME.ID,
-        maxHealth: 20
+        maxHealth: 99999
       });
     });
 
@@ -154,6 +154,8 @@ export class Scene1 extends Phaser.Scene {
     this.player.update();
     this.player.checkIsDead();
 
+    this.slime.update();
+
     if (this.slime.body) {
       this.slime.update();
       this.slime.checkIsDead();
@@ -184,7 +186,7 @@ export class Scene1 extends Phaser.Scene {
         x: d.x,
         y: d.y,
         texture: Constants.ENEMIES.SLIME.ID,
-        maxHealth: 20
+        maxHealth: 9999
       });
     });
 

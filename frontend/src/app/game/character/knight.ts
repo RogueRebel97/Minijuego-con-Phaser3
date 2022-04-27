@@ -6,7 +6,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     private vRun: number = 250;
     private vJump: number = 330;
     private vSlide: number = 500;
-    private maxHealth: number = 30;
+    private maxHealth: number = 999;
     private health: number = this.maxHealth;
     private damage: number = 10;
 
@@ -88,7 +88,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.anims.create({
             key: 'idle',
             frames: this.currentScene.anims.generateFrameNumbers('knight', { start: 0, end: 9 }),
-            frameRate: 20,
+            frameRate: 10,
             repeat: -1,
         });
         this.anims.create({

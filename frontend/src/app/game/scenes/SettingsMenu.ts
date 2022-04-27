@@ -169,7 +169,8 @@ export default class SettingsMenu {
     if (this.open) {
       return;
     }
-    this.pauseBackground.alpha = 0.5 //Rectangle 
+    this.pauseBackground.strokeAlpha = 0.5 //Rectangle 
+
 
     //Animacion de desplazamiento para mostrar
     this.activeScene.tweens.add({
@@ -189,7 +190,8 @@ export default class SettingsMenu {
       return;
     }
     const { width, height } = this.activeScene.scale;
-    this.pauseBackground.alpha = 0 //rectangle
+    this.pauseBackground.strokeAlpha = 0 //rectangle
+
     //Animacion de desplazamiento para ocultar
     this.activeScene.tweens.add({
       targets: this.container,
