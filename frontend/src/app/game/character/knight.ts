@@ -140,6 +140,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             frameRate: 20,
         });
 
+        // Sword and Enemy Colliders
         this.currentScene.physics.add.overlap
             (this.swordHitbox, this.currentScene.registry.get(Constants.GROUPS.ENEMIES), this.attackCollide)
 

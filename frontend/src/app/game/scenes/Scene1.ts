@@ -81,7 +81,7 @@ export class Scene1 extends Phaser.Scene {
         texture: Constants.PLAYER.ID
       });
     });
-
+    this.registry.set(Constants.GROUPS.PLAYER, this.player)
 
     //create hud
     this.hud = new HUD(this)

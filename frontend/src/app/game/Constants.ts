@@ -49,11 +49,13 @@ const Constants = {
         }
     },
     GROUPS: {
-        ENEMIES: 'enemies'
+        ENEMIES: 'enemies',
+        PLAYER: 'player'
     },
     REGISTRY: {
         COLLIDERS: {
             ENEMY: 'enemyCollider'
+
         }
     }
 

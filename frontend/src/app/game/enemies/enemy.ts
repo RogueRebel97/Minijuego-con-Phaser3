@@ -11,17 +11,19 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     private moveTime: number = 0
 
 
-
     //Actions & States
     private actions: any = {
         left: { state: false },
         right: { state: false },
         attack: { state: true, duration: 200, cooldown: 400 },
         damage: { state: true, duration: 500, cooldown: 400 },
-        invulnerable: { state: true, cooldown: 325 }
+        invulnerable: { state: true, cooldown: 325 },
     }
     private allowMove: boolean = true
     private isDead: boolean = false;
+    private isChasing: boolean = false;
+
+    private aggro: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
 
 
     //Current Game Scene
@@ -47,6 +49,13 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.currentScene.physics.world.enable(this)
         this.currentScene.add.existing(this)
 
+        //aggro
+        this.aggro = this.currentScene.add.rectangle(this.x, this.y, 600, 300, 0xFF0000, 0) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody
+        this.currentScene.physics.add.existing(this.aggro)
+        this.aggro.body.setAllowGravity(false)
+        this.aggro.debugBodyColor = 0xadfefe;
+
+
     }
 
     create() {
@@ -68,37 +77,52 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         });
         //End Slime anims
 
-        console.log('derecha: ' + this.actions.right.state);
-        console.log('izquierda: ' + this.actions.left.state);
+
+        this.aggro.on("overlapStart", () => {
+            this.aggro.body.debugBodyColor = 0xff3300;
+            console.log("overlapstart")
+        })
+        this.aggro.on("overlapEnd", () => {
+            this.body.debugBodyColor = 0x00ff33;
+            console.log("overlapend");
+        })
+        this.currentScene.physics.add.overlap
+            (this.aggro, this.currentScene.registry.get(Constants.GROUPS.PLAYER))
     }
 
     override update() {
-        // console.log('derecha: ' + this.actions.right.state);
-        // console.log('izquierda: ' + this.actions.left.state);
+        var touching = !this.aggro.body.touching.none;
+        var wasTouching = !this.aggro.body.wasTouching.none;
+
+        if (touching && !wasTouching) this.aggro.emit("overlapstart");
+        else if (!touching && wasTouching) this.aggro.emit("overlapend");
+
+        console.log(this.isChasing);
 
         if (this.isDead) this.allowMove = false
+        this.anims.play(Constants.ENEMIES.SLIME.ANIMATIONS.IDLE, true)
+
+
+
 
         //Patrolling
-        if (this.allowMove) {
-            this.anims.play(Constants.ENEMIES.SLIME.ANIMATIONS.IDLE, true)
-
+        if (this.allowMove && !this.isChasing) {
             if (this.actions.left.state) {
                 this.moveLeftUpdate(1)
-                // console.log("izquierda");
-                // console.log('derecha: ' + this.actions.right.state);
-                // console.log('izquierda: ' + this.actions.left.state);
+
             }
 
             if (this.actions.right.state) {
 
                 this.moveRightUpdate(1)
-                // console.log("derecha");
-                // console.log('derecha: ' + this.actions.right.state);
-                // console.log('izquierda: ' + this.actions.left.state);
 
             }
         }
 
+
+        // this.aggro.body.x = this.body.x       // this.aggro.body.y = this.body.y * 0.5
+        this.aggro.x = this.x
+        this.aggro.y = this.y
 
     }
 
@@ -174,20 +198,10 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    moveLeft() {
-        this.moveTime = 0// reseteamos el tiempo
 
-
-
-    }
 
     moveLeftUpdate(time: number) {
         this.moveTime += time // Aumentar el contador con cada paso
-        // console.log(this.moveTime);
-
-
-
-
         this.setVelocityX(-20)
         if (this.moveTime > 500) { // a los 2 seg cambiar la direccion
             if (!this.flipX) this.flipX = true
@@ -196,25 +210,13 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.actions.right.state = true
 
         }
-
-
-
     }
 
-    moveRight() {
-        this.moveTime = 0 // reseteamos el tiempo
-
-
-
-    }
 
     moveRightUpdate(time: number) {
         this.moveTime += time // Aumentar el contador con cada paso
 
-
-
         this.setVelocityX(20)
-
         if (this.moveTime > 500) { // a los 2 seg cambiar la direccion
             if (this.flipX) this.flipX = false
             this.moveTime = 0 // reseteamos el tiempo
@@ -222,9 +224,18 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.actions.left.state = true
         }
 
-
-
     }
+
+    // chase(enemy: any, player: any) {
+    //     var distance: number = player.x - enemy.x;
+    //     this.isChasing = true
+
+
+
+
+
+
+    // }
 
 
 }
