@@ -110,9 +110,20 @@ export class LoadingScreen extends Phaser.Scene {
 
     this.load.image('logo', 'assets/graphics/Logo.jpg');
 
+    //Map
+    this.load.tilemapTiledJSON(Constants.MAPS.LEVELS.TESTLEVEL.TILEMAPJSON, 'assets/tileMaps/testMap.json');
+    this.load.tilemapTiledJSON(Constants.MAPS.LEVELS.LEVEL1.TILEMAPJSON, 'assets/tileMaps/Level-1.json')
+    //Tilesets
+    this.load.image(Constants.MAPS.SCENERY.BASIC.TILESET.BASICTERRAIN, 'assets/graphics/tileSets/basicTerrain.png')
+    this.load.image(Constants.MAPS.SCENERY.PLAINS.TILESET.PLAINS_1, 'assets/graphics/tileSets/plainsTileset1.png')
+    this.load.image(Constants.MAPS.SCENERY.PLAINS.TILESET.PLAINS_2, 'assets/graphics/tileSets/plainsTileset2.png')
+    this.load.image(Constants.MAPS.SCENERY.FOREST.TILESET.WOODSTERRAIN, 'assets/graphics/tileSets/woodTerrain.png')
 
+    //Decorations
+    this.load.image('plainDecors', 'assets/graphics/decorations/plainsDecors.png')
 
-    // Assets for Map
+    // Backgrounds for Map
+    //Forest
     this.load.image(
       'forestBckgr-1',
       'assets/SpritesSheets/oak_woods_v1.0/background/background_layer_1.png'
@@ -126,13 +137,16 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/SpritesSheets/oak_woods_v1.0/background/background_layer_3.png'
     );
 
-    this.load.image('basicPlataform', 'assets/graphics/platform.png');
-    this.load.spritesheet('dude', 'assets/graphics/dude.png', {
-      frameWidth: 32,
-      frameHeight: 48,
-    });
-    // SpriteSheets del caballero
 
+    //plains
+    this.load.image('plainsSky', 'assets/SpritesSheets/plains/BG1.png')
+    this.load.image('plainsBG1', 'assets/SpritesSheets/plains/BG2.png')
+    this.load.image('plainsBG2', 'assets/SpritesSheets/plains/BG3.png')
+
+
+
+
+    // SpriteSheets del caballero
     this.load.spritesheet(
       Constants.PLAYER.ID,
       'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Idle.png',
@@ -187,27 +201,23 @@ export class LoadingScreen extends Phaser.Scene {
 
 
     // Enemies
-
     this.load.spritesheet(
       'slime',
       'assets/SpritesSheets/Enemies/Slime/Idle-Run.png',
       { frameWidth: 44, frameHeight: 30 }
     );
     this.load.spritesheet(
-      'slimeHit',
+      Constants.ENEMIES.SLIME.ANIMATIONS.HIT,
       'assets/SpritesSheets/Enemies/Slime/Hit(44x30).png',
       { frameWidth: 44, frameHeight: 30 }
     );
     this.load.spritesheet(
       'slimeParticles',
-      'assets/SpritesSheets/Enemies/Slime/ Particles(62x16).png',
+      'assets/SpritesSheets/Enemies/Slime/Particles(62x16).png',
       { frameWidth: 62, frameHeight: 16 }
     );
 
 
-    //Map
-    this.load.tilemapTiledJSON(Constants.MAPS.LEVEL1.TILEMAPJSON, 'assets/tileMaps/testMap.json');
-    this.load.image(Constants.MAPS.TILESET, 'assets/graphics/tileSets/basicTerrain.png')
 
 
     // fin de Assets

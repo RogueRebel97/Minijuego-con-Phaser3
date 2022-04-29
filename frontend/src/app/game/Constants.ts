@@ -9,11 +9,58 @@ const Constants = {
     },
 
     MAPS: {
-        LEVEL1: {
-            TILEMAPJSON: 'level1Map',
-            PLATAFORMLAYER: 'plataforms'
+        LEVELS: {
+            TESTLEVEL: {
+                TILEMAPJSON: 'testmap',
+                PLATAFORMLAYER: 'plataforms'
+            },
+            LEVEL1: {
+                TILEMAPJSON: 'level-1',
+                PLATAFORMLAYER: 'plataforms/plataforms-1',
+            }
+
         },
-        TILESET: 'basicTerrain'
+        SCENERY: {
+            PLAINS: {
+                TILESET: {
+                    PLAINS_1: 'plainsTileset1',
+                    PLAINS_2: 'plainsTileset2'
+                },
+                BACKGROUND: {
+
+                },
+                DECORATOR: {
+
+                }
+
+            },
+            FOREST: {
+                TILESET: {
+                    WOODSTERRAIN: 'woodTerrain'
+
+                },
+                BACKGROUND: {
+
+                },
+                DECORATOR: {
+
+                }
+
+            },
+            BASIC: {
+                TILESET: {
+                    BASICTERRAIN: 'basicTerrain',
+                }
+
+            }
+
+
+        }
+
+
+
+
+
     },
     PLAYER: {
         ID: 'knight',

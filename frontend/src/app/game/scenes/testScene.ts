@@ -6,7 +6,7 @@ import Constants from '../Constants';
 import HUD from './hud';
 
 
-export class Scene1 extends Phaser.Scene {
+export class TestScene extends Phaser.Scene {
   // Propiedades
   private player!: Knight;
   private hud!: HUD
@@ -22,12 +22,8 @@ export class Scene1 extends Phaser.Scene {
   private height!: number;
 
   private tileMap!: Phaser.Tilemaps.Tilemap;
-  private plainsTileSet_1!: Phaser.Tilemaps.Tileset;
-  private plainsTileSet_2!: Phaser.Tilemaps.Tileset;
-  private tileSets!: Phaser.Tilemaps.Tileset[];
-
+  private tileSet!: Phaser.Tilemaps.Tileset;
   private tileMapLayer!: Phaser.Tilemaps.TilemapLayer;
-
 
   private enemyCollider!: Phaser.Physics.Arcade.Collider;
   private invulnerable = false;
@@ -53,47 +49,36 @@ export class Scene1 extends Phaser.Scene {
   create() {
 
     // controles de la escena
-    // this.controls = this.input.keyboard.addKeys({
-    //   'E': Phaser.Input.Keyboard.KeyCodes.E,
-    //   'R': Phaser.Input.Keyboard.KeyCodes.R,
-    // })
+    this.controls = this.input.keyboard.addKeys({
+      'E': Phaser.Input.Keyboard.KeyCodes.E,
+      'R': Phaser.Input.Keyboard.KeyCodes.R,
+    })
 
 
-    // MAP & Background
+
 
     //background layer 1
-    // this.createBackground(this, 'plainsSky', 12, 0)
+    this.createBackground(this, 'forestBckgr-1', 12, 0)
 
     //background layer 2
-    // this.createBackground(this, 'plainsBG1', 12, 0.5)
+    this.createBackground(this, 'forestBckgr-2', 12, 0.5)
 
     //background layer 3
-    // this.createBackground(this, 'plainsBG2', 14, 1)
+    this.createBackground(this, 'forestBckgr-3', 14, 1)
 
-    const sky = this.add.image(this.cameras.main.width * 0.5, this.cameras.main.height * 0.5, 'plainsSky')
-    sky.displayWidth = this.sys.canvas.width;
-    sky.displayHeight = this.sys.canvas.height;
 
-    const bg1 = this.add.image(this.cameras.main.width * 0.5, this.cameras.main.height * 0.5, 'plainsBG1')
-    bg1.displayWidth = this.sys.canvas.width;
-    bg1.displayHeight = this.sys.canvas.height;
-
-    const bg2 = this.add.image(this.cameras.main.width * 0.5, this.cameras.main.height * 0.5, 'plainsBG2')
-    bg2.displayWidth = this.sys.canvas.width;
-    bg2.displayHeight = this.sys.canvas.height;
 
     //load tile map
-    this.tileMap = this.make.tilemap({ key: Constants.MAPS.LEVELS.LEVEL1.TILEMAPJSON, tileWidth: 16, tileHeight: 16 });
+    this.tileMap = this.make.tilemap({ key: Constants.MAPS.LEVELS.TESTLEVEL.TILEMAPJSON, tileWidth: 16, tileHeight: 16 });
     this.physics.world.bounds.setTo(0, 0, this.tileMap.widthInPixels, this.tileMap.heightInPixels);
 
+
     //TileSet
-    this.plainsTileSet_1 = this.tileMap.addTilesetImage(Constants.MAPS.SCENERY.PLAINS.TILESET.PLAINS_1);
-    this.plainsTileSet_2 = this.tileMap.addTilesetImage(Constants.MAPS.SCENERY.PLAINS.TILESET.PLAINS_2);
-    this.tileSets = [this.plainsTileSet_1, this.plainsTileSet_2]
+    this.tileSet = this.tileMap.addTilesetImage(Constants.MAPS.SCENERY.BASIC.TILESET.BASICTERRAIN);
 
-
-    this.tileMapLayer = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.PLATAFORMLAYER, this.tileSets);
+    this.tileMapLayer = this.tileMap.createLayer(Constants.MAPS.LEVELS.TESTLEVEL.PLATAFORMLAYER, this.tileSet);
     this.tileMapLayer.setCollisionByExclusion([-1]);
+
 
     //Player
     this.tileMap.findObject(Constants.PLAYER.ID, (d: any) => {
@@ -114,9 +99,6 @@ export class Scene1 extends Phaser.Scene {
     this.cameras.main.startFollow(this.player);
 
 
-
-
-
     // Enemy Slime
     this.tileMap.findObject(Constants.ENEMIES.SLIME.ID, (d: any) => {
       this.slime = new Enemy({
@@ -124,7 +106,7 @@ export class Scene1 extends Phaser.Scene {
         x: d.x,
         y: d.y,
         texture: Constants.ENEMIES.SLIME.ID,
-        maxHealth: 999
+        maxHealth: 99999
       });
     });
 
@@ -142,11 +124,9 @@ export class Scene1 extends Phaser.Scene {
 
     // collider Player and Ground
     this.physics.add.collider(this.player, this.tileMapLayer);
-    // this.physics.add.collider(this.player, this.tileMapLayer_2);
 
     this.physics.add.collider(this.enemies, this.tileMapLayer);
-    // this.physics.add.collider(this.enemies, this.tileMapLayer_2);
-
+    // this.player.attack(this.slime)
 
     //player touch Slime
     this.enemyCollider = this.physics.add.overlap(this.slime, this.player, (slime, player) => {
@@ -168,10 +148,10 @@ export class Scene1 extends Phaser.Scene {
     // console.log('Nivel 1 corriendo');
     let key = Phaser.Input.Keyboard;
 
-    // if (key.JustDown(this.controls.E)) {
+    if (key.JustDown(this.controls.E)) {
 
-    //   this.spawnEnemy()
-    // }
+      this.spawnEnemy()
+    }
 
     this.player.update();
     this.player.checkIsDead();
@@ -192,44 +172,44 @@ export class Scene1 extends Phaser.Scene {
   createBackground(scene: Phaser.Scene, texture: string, count: number, scrollFactor: number) {
     let x = 0;
     for (let i = 0; i < count; i++) {
-      const img = scene.add.image(x, scene.scale.height, texture)
+      const m = scene.add.image(x, scene.scale.height, texture)
         .setOrigin(0, 1).setScrollFactor(scrollFactor)
-      img.displayWidth = this.sys.canvas.width;
-      img.displayHeight = this.sys.canvas.height;
-      x += img.width
+      m.displayWidth = this.sys.canvas.width;
+      m.displayHeight = this.sys.canvas.height;
+      x += m.width
     }
   }
 
   spawnEnemy() {
     // Enemy Slime
-    // this.tileMap.findObject(Constants.ENEMIES.SLIME.ID, (d: any) => {
-    //   this.slime = new Enemy({
-    //     currentScene: this,
-    //     x: d.x,
-    //     y: d.y,
-    //     texture: Constants.ENEMIES.SLIME.ID,
-    //     maxHealth: 9999
-    //   });
-    // });
+    this.tileMap.findObject(Constants.ENEMIES.SLIME.ID, (d: any) => {
+      this.slime = new Enemy({
+        currentScene: this,
+        x: d.x,
+        y: d.y,
+        texture: Constants.ENEMIES.SLIME.ID,
+        maxHealth: 9999
+      });
+    });
 
 
-    // this.enemies = this.physics.add.group(this.slime);
+    this.enemies = this.physics.add.group(this.slime);
 
-    // this.registry.set(Constants.GROUPS.ENEMIES, this.enemies)
+    this.registry.set(Constants.GROUPS.ENEMIES, this.enemies)
 
-    // this.slime.create()
+    this.slime.create()
 
-    // this.physics.add.collider(this.enemies, this.tileMapLayer_1);
+    this.physics.add.collider(this.enemies, this.tileMapLayer);
 
-    // this.enemyCollider = this.physics.add.overlap(this.slime, this.player, (slime, player) => {
-    //   if (this.registry.get(Constants.PLAYER.STATS.HEALTH) > 0 && !this.invulnerable) {
-    //     // this.player.getInvulnerable(1500)
-    //     this.player.getDamage(10);
-    //   }
-    // });
-    // this.registry.set(Constants.REGISTRY.COLLIDERS.ENEMY, this.enemyCollider)
+    this.enemyCollider = this.physics.add.overlap(this.slime, this.player, (slime, player) => {
+      if (this.registry.get(Constants.PLAYER.STATS.HEALTH) > 0 && !this.invulnerable) {
+        // this.player.getInvulnerable(1500)
+        this.player.getDamage(10);
+      }
+    });
+    this.registry.set(Constants.REGISTRY.COLLIDERS.ENEMY, this.enemyCollider)
 
-    // this.physics.add.collider(this.slime, this.enemies)
+    this.physics.add.collider(this.slime, this.enemies)
 
   }
 

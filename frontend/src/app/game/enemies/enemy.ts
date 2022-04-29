@@ -65,7 +65,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.anims.create({
             key: Constants.ENEMIES.SLIME.ANIMATIONS.IDLE,
             frames: this.anims.generateFrameNumbers(Constants.ENEMIES.SLIME.ID, { start: 0, end: 9 }),
-            frameRate: 10,
+            frameRate: 20,
             repeat: -1,
         });
 
@@ -73,34 +73,23 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
             key: Constants.ENEMIES.SLIME.ANIMATIONS.HIT,
             frames: this.anims.generateFrameNumbers(Constants.ENEMIES.SLIME.ANIMATIONS.HIT, { start: 0, end: 4 }),
             frameRate: 10,
-            repeat: -1,
+
         });
         //End Slime anims
 
-
-        this.aggro.on("overlapStart", () => {
-            this.aggro.body.debugBodyColor = 0xff3300;
-            console.log("overlapstart")
-        })
-        this.aggro.on("overlapEnd", () => {
-            this.body.debugBodyColor = 0x00ff33;
-            console.log("overlapend");
-        })
         this.currentScene.physics.add.overlap
-            (this.aggro, this.currentScene.registry.get(Constants.GROUPS.PLAYER))
+            (this.aggro, this.currentScene.registry.get(Constants.GROUPS.PLAYER), this.chase, this.checkIsChasing, this)
     }
 
     override update() {
-        var touching = !this.aggro.body.touching.none;
-        var wasTouching = !this.aggro.body.wasTouching.none;
 
-        if (touching && !wasTouching) this.aggro.emit("overlapstart");
-        else if (!touching && wasTouching) this.aggro.emit("overlapend");
 
-        console.log(this.isChasing);
 
         if (this.isDead) this.allowMove = false
-        this.anims.play(Constants.ENEMIES.SLIME.ANIMATIONS.IDLE, true)
+        if (this.actions.damage.state) {
+            this.anims.play(Constants.ENEMIES.SLIME.ANIMATIONS.IDLE, true)
+        }
+
 
 
 
@@ -109,20 +98,19 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         if (this.allowMove && !this.isChasing) {
             if (this.actions.left.state) {
                 this.moveLeftUpdate(1)
-
             }
-
             if (this.actions.right.state) {
-
                 this.moveRightUpdate(1)
-
             }
         }
 
 
-        // this.aggro.body.x = this.body.x       // this.aggro.body.y = this.body.y * 0.5
+
         this.aggro.x = this.x
         this.aggro.y = this.y
+        this.isChasing = false
+
+
 
     }
 
@@ -163,6 +151,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.anims.stop()
             this.setVelocityX(0)
             this.anims.play(Constants.ENEMIES.SLIME.ANIMATIONS.HIT)
+
             health = health - damage;
             this.currentScene.registry.set(Constants.ENEMIES.SLIME.STATS.HEALTH, health)
             console.log(`hp FINAL de Slime: ${this.currentScene.registry.get(Constants.ENEMIES.SLIME.STATS.HEALTH)}`);
@@ -203,12 +192,15 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     moveLeftUpdate(time: number) {
         this.moveTime += time // Aumentar el contador con cada paso
         this.setVelocityX(-20)
+
         if (this.moveTime > 500) { // a los 2 seg cambiar la direccion
             if (!this.flipX) this.flipX = true
-            this.moveTime = 0// reseteamos el tiempo
-            this.actions.left.state = false //Cambio de direccion
-            this.actions.right.state = true
 
+            this.moveTime = 0// reseteamos el tiempo
+
+            this.actions.left.state = false //Cambio de direccion
+
+            this.actions.right.state = true
         }
     }
 
@@ -226,16 +218,31 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     }
 
-    // chase(enemy: any, player: any) {
-    //     var distance: number = player.x - enemy.x;
-    //     this.isChasing = true
+    chase(enemy: any, player: any) {
+        var distance: number = player.x - enemy.x;
+
+        this.isChasing = true
+        if (this.isChasing && this.allowMove) {
+
+            if (distance > 0) {
+                this.flipX = true
+                this.setVelocityX(150)
+            } else {
+                this.flipX = false
+                this.setVelocityX(-150)
+            }
+        }
 
 
 
 
 
 
-    // }
+    }
+    checkIsChasing() {
+
+
+    }
 
 
 }
