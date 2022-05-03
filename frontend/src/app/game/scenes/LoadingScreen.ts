@@ -110,9 +110,10 @@ export class LoadingScreen extends Phaser.Scene {
 
     this.load.image('logo', 'assets/graphics/Logo.jpg');
 
-    //Map
+    //Maps
     this.load.tilemapTiledJSON(Constants.MAPS.LEVELS.TESTLEVEL.TILEMAPJSON, 'assets/tileMaps/testMap.json');
     this.load.tilemapTiledJSON(Constants.MAPS.LEVELS.LEVEL1.TILEMAPJSON, 'assets/tileMaps/Level-1.json')
+
     //Tilesets
     this.load.image(Constants.MAPS.SCENERY.BASIC.TILESET.BASICTERRAIN, 'assets/graphics/tileSets/basicTerrain.png')
     this.load.image(Constants.MAPS.SCENERY.PLAINS.TILESET.PLAINS_1, 'assets/graphics/tileSets/plainsTileset1.png')
@@ -120,7 +121,7 @@ export class LoadingScreen extends Phaser.Scene {
     this.load.image(Constants.MAPS.SCENERY.FOREST.TILESET.WOODSTERRAIN, 'assets/graphics/tileSets/woodTerrain.png')
 
     //Decorations
-    this.load.image('plainDecors', 'assets/graphics/decorations/plainsDecors.png')
+    this.load.image(Constants.MAPS.SCENERY.PLAINS.DECORATOR.PLAINSDECORS, 'assets/graphics/decorations/plainsDecors.png')
 
     // Backgrounds for Map
     //Forest
@@ -142,6 +143,7 @@ export class LoadingScreen extends Phaser.Scene {
     this.load.image('plainsSky', 'assets/SpritesSheets/plains/BG1.png')
     this.load.image('plainsBG1', 'assets/SpritesSheets/plains/BG2.png')
     this.load.image('plainsBG2', 'assets/SpritesSheets/plains/BG3.png')
+
 
 
 

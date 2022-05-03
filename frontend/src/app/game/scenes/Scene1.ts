@@ -14,23 +14,38 @@ export class Scene1 extends Phaser.Scene {
 
   private enemies!: Physics.Arcade.Group
 
+  private enemyCollider!: Phaser.Physics.Arcade.Collider;
+  private invulnerable = false;
+
   private controls!: any
 
-
-  // private slimeHPText!: Phaser.GameObjects.Text
   private width!: number;
   private height!: number;
 
+  // Tilemap y Tilegroup
   private tileMap!: Phaser.Tilemaps.Tilemap;
+  private tileSets!: Phaser.Tilemaps.Tileset[];
+  private mapLayers!: Phaser.Tilemaps.TilemapLayer[]
+
+  //Tilesets
   private plainsTileSet_1!: Phaser.Tilemaps.Tileset;
   private plainsTileSet_2!: Phaser.Tilemaps.Tileset;
-  private tileSets!: Phaser.Tilemaps.Tileset[];
+  private plainsDecors!: Phaser.Tilemaps.Tileset
+
+  //TilemapLayers
+  private plataformsLayer!: Phaser.Tilemaps.TilemapLayer;
+  private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
+
+  private decorsLayer1!: Phaser.Tilemaps.TilemapLayer;
+  private decorsLayer2!: Phaser.Tilemaps.TilemapLayer;
+  private decorsLayer3!: Phaser.Tilemaps.TilemapLayer;
+
+  private backgroundsLayer1!: Phaser.Tilemaps.TilemapLayer
+  private backgroundsLayer2!: Phaser.Tilemaps.TilemapLayer
 
   private tileMapLayer!: Phaser.Tilemaps.TilemapLayer;
 
 
-  private enemyCollider!: Phaser.Physics.Arcade.Collider;
-  private invulnerable = false;
 
   constructor() {
     super({ key: 'Scene1' });
@@ -51,13 +66,6 @@ export class Scene1 extends Phaser.Scene {
   }
 
   create() {
-
-    // controles de la escena
-    // this.controls = this.input.keyboard.addKeys({
-    //   'E': Phaser.Input.Keyboard.KeyCodes.E,
-    //   'R': Phaser.Input.Keyboard.KeyCodes.R,
-    // })
-
 
     // MAP & Background
 
@@ -86,14 +94,30 @@ export class Scene1 extends Phaser.Scene {
     this.tileMap = this.make.tilemap({ key: Constants.MAPS.LEVELS.LEVEL1.TILEMAPJSON, tileWidth: 16, tileHeight: 16 });
     this.physics.world.bounds.setTo(0, 0, this.tileMap.widthInPixels, this.tileMap.heightInPixels);
 
-    //TileSet
+    //TileSet & decors
     this.plainsTileSet_1 = this.tileMap.addTilesetImage(Constants.MAPS.SCENERY.PLAINS.TILESET.PLAINS_1);
     this.plainsTileSet_2 = this.tileMap.addTilesetImage(Constants.MAPS.SCENERY.PLAINS.TILESET.PLAINS_2);
-    this.tileSets = [this.plainsTileSet_1, this.plainsTileSet_2]
+    this.plainsDecors = this.tileMap.addTilesetImage(Constants.MAPS.SCENERY.PLAINS.DECORATOR.PLAINSDECORS)
+    this.tileSets = [this.plainsTileSet_1, this.plainsTileSet_2, this.plainsDecors] //Add every tileset and decor to Tileset Group
 
 
-    this.tileMapLayer = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.PLATAFORMLAYER, this.tileSets);
-    this.tileMapLayer.setCollisionByExclusion([-1]);
+    //Layers
+    this.decorsLayer3 = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.DECORS.LAYER3, this.tileSets)
+    this.decorsLayer2 = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.DECORS.LAYER2, this.tileSets)
+    this.decorsLayer1 = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.DECORS.LAYER1, this.tileSets)
+
+
+    this.backgroundsLayer2 = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.BACKGROUND.BG2, this.tileSets)
+    this.backgroundsLayer1 = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.BACKGROUND.BG1, this.tileSets)
+
+    this.wallsLayer = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.PLATAFORMS.WALLS, this.tileSets)
+    this.plataformsLayer = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.PLATAFORMS.PLATAFORMS, this.tileSets)
+    this.mapLayers = [this.plataformsLayer, this.wallsLayer, this.decorsLayer1, this.decorsLayer2, this.decorsLayer3, this.backgroundsLayer1, this.backgroundsLayer2]
+
+    for (let i = 0; i < this.mapLayers.length; i++) {
+      // console.log(this.mapLayers[i]);
+      this.mapLayers[i].setCollisionByExclusion([-1])
+    }
 
     //Player
     this.tileMap.findObject(Constants.PLAYER.ID, (d: any) => {
@@ -106,17 +130,6 @@ export class Scene1 extends Phaser.Scene {
     });
     this.registry.set(Constants.GROUPS.PLAYER, this.player)
 
-    //create hud
-    this.hud = new HUD(this)
-
-    //camera
-    this.cameras.main.setBounds(0, 0, this.tileMap.widthInPixels, this.tileMap.heightInPixels);
-    this.cameras.main.startFollow(this.player);
-
-
-
-
-
     // Enemy Slime
     this.tileMap.findObject(Constants.ENEMIES.SLIME.ID, (d: any) => {
       this.slime = new Enemy({
@@ -127,25 +140,41 @@ export class Scene1 extends Phaser.Scene {
         maxHealth: 999
       });
     });
-
-
     this.enemies = this.physics.add.group(this.slime);
 
-    this.registry.set(Constants.GROUPS.ENEMIES, this.enemies)
-    // console.log("enemy GRoup from Scene:" + this.registry.get(Constants.GROUPS.ENEMIES));
+    this.registry.set(Constants.GROUPS.ENEMIES, this.enemies);
 
     this.slime.create()
     this.player.create();
 
+    //create hud
+    this.hud = new HUD(this)
+
+    //camera
+    this.cameras.main.setBounds(0, 0, this.tileMap.widthInPixels, this.tileMap.heightInPixels);
+    this.cameras.main.startFollow(this.player);
+    this.cameras.main.zoom = 2;
+
+
+    // Colliders
+    this.physics.add.collider(this.player, this.plataformsLayer);
+    this.physics.add.collider(this.player, this.wallsLayer);
+
+    // enemies and platforms
+    this.physics.add.collider(this.enemies, this.plataformsLayer, (slime: any, platform: any) => {
+      if (slime.body.velocity.x > 0 && slime.body.x > platform.x + (platform.width - slime.body.width) ||
+        slime.body.velocity.x < 0 && slime.body.x < platform.x) {
+        slime.body.velocity.x *= -1
+      }
+
+      console.log(platform);
 
 
 
-    // collider Player and Ground
-    this.physics.add.collider(this.player, this.tileMapLayer);
-    // this.physics.add.collider(this.player, this.tileMapLayer_2);
+    });
+    this.physics.add.collider(this.enemies, this.wallsLayer);
 
-    this.physics.add.collider(this.enemies, this.tileMapLayer);
-    // this.physics.add.collider(this.enemies, this.tileMapLayer_2);
+
 
 
     //player touch Slime
@@ -156,12 +185,6 @@ export class Scene1 extends Phaser.Scene {
       }
     });
     this.registry.set(Constants.REGISTRY.COLLIDERS.ENEMY, this.enemyCollider)
-
-
-    // console.log(this.enemies.getLength());
-
-
-
   }
 
   override update() {
@@ -186,6 +209,7 @@ export class Scene1 extends Phaser.Scene {
       return
     }
 
+    this.slime.resetChase();
   }
 
 
@@ -208,7 +232,7 @@ export class Scene1 extends Phaser.Scene {
     //     x: d.x,
     //     y: d.y,
     //     texture: Constants.ENEMIES.SLIME.ID,
-    //     maxHealth: 9999
+    //     maxHealth: 999
     //   });
     // });
 

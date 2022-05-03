@@ -16,7 +16,23 @@ const Constants = {
             },
             LEVEL1: {
                 TILEMAPJSON: 'level-1',
-                PLATAFORMLAYER: 'plataforms/plataforms-1',
+                LAYER: {
+                    PLATAFORMS: {
+                        PLATAFORMS: 'plataforms/plataforms',
+                        WALLS: 'plataforms/walls'
+                    },
+
+                    DECORS: {
+                        LAYER1: 'decors/layer-1',
+                        LAYER2: 'decors/layer-2',
+                        LAYER3: 'decors/layer-3'
+                    },
+                    BACKGROUND: {
+                        BG1: 'background/bg1',
+                        BG2: 'background/bg2',
+                    }
+
+                },
             }
 
         },
@@ -30,6 +46,7 @@ const Constants = {
 
                 },
                 DECORATOR: {
+                    PLAINSDECORS: 'plainsDecors'
 
                 }
 

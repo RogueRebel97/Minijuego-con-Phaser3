@@ -16,12 +16,14 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         left: { state: false },
         right: { state: false },
         attack: { state: true, duration: 200, cooldown: 400 },
-        damage: { state: true, duration: 500, cooldown: 400 },
-        invulnerable: { state: true, cooldown: 325 },
+        damage: { state: false, duration: 500, cooldown: 400 },
+        // invulnerable: { state: true, cooldown: 325 },
     }
+
     private allowMove: boolean = true
     private isDead: boolean = false;
     private isChasing: boolean = false;
+    private isPatrolling: boolean = true
 
     private aggro: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
 
@@ -44,58 +46,34 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.currentScene.registry
             .set(Constants.ENEMIES.SLIME.STATS.HEALTH, this.health)
 
-
         // Physics
         this.currentScene.physics.world.enable(this)
         this.currentScene.add.existing(this)
 
-        //aggro
-        this.aggro = this.currentScene.add.rectangle(this.x, this.y, 600, 300, 0xFF0000, 0) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody
+        //Field of View
+        this.aggro = this.currentScene.add.rectangle(this.x, this.y, 200, 150, 0xFF0000, 0) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody
         this.currentScene.physics.add.existing(this.aggro)
         this.aggro.body.setAllowGravity(false)
-        this.aggro.debugBodyColor = 0xadfefe;
-
 
     }
 
     create() {
         console.log(`hp de Slime: ${this.health}`);
-
-        // slime Anims
-        this.anims.create({
-            key: Constants.ENEMIES.SLIME.ANIMATIONS.IDLE,
-            frames: this.anims.generateFrameNumbers(Constants.ENEMIES.SLIME.ID, { start: 0, end: 9 }),
-            frameRate: 20,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: Constants.ENEMIES.SLIME.ANIMATIONS.HIT,
-            frames: this.anims.generateFrameNumbers(Constants.ENEMIES.SLIME.ANIMATIONS.HIT, { start: 0, end: 4 }),
-            frameRate: 10,
-
-        });
-        //End Slime anims
+        this.createAnimations();
 
         this.currentScene.physics.add.overlap
             (this.aggro, this.currentScene.registry.get(Constants.GROUPS.PLAYER), this.chase, this.checkIsChasing, this)
     }
 
     override update() {
-
-
-
         if (this.isDead) this.allowMove = false
-        if (this.actions.damage.state) {
-            this.anims.play(Constants.ENEMIES.SLIME.ANIMATIONS.IDLE, true)
-        }
 
-
-
-
+        if (!this.actions.damage.state) this.anims.play(Constants.ENEMIES.SLIME.ANIMATIONS.IDLE, true)
 
         //Patrolling
-        if (this.allowMove && !this.isChasing) {
+        if (this.allowMove && !this.isChasing && !this.actions.damage.state) {
+            console.log('entro en patrol');
+
             if (this.actions.left.state) {
                 this.moveLeftUpdate(1)
             }
@@ -105,18 +83,31 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         }
 
 
-
+        // Field of view Aggro follow slime
         this.aggro.x = this.x
         this.aggro.y = this.y
-        this.isChasing = false
+    }
 
+    createAnimations() {
 
+        this.anims.create({
+            key: Constants.ENEMIES.SLIME.ANIMATIONS.IDLE,
+            frames: this.anims.generateFrameNumbers(Constants.ENEMIES.SLIME.ID, { start: 0, end: 9 }),
+            frameRate: 15,
+            repeat: -1,
+        });
 
+        this.anims.create({
+            key: Constants.ENEMIES.SLIME.ANIMATIONS.HIT,
+            frames: this.anims.generateFrameNumbers(Constants.ENEMIES.SLIME.ANIMATIONS.HIT, { start: 0, end: 4 }),
+            frameRate: 10,
+
+        });
     }
 
     checkIsDead() {
-
         var health = this.currentScene.registry.get(Constants.ENEMIES.SLIME.STATS.HEALTH)
+
         if (health <= 0 && !this.isDead && this.allowMove) {
             console.log("Slime muerto");
             this.isDead = true;
@@ -134,12 +125,11 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     getDamage(damage: number) {
         var health = this.currentScene.registry.get(Constants.ENEMIES.SLIME.STATS.HEALTH)
 
-
-        if (health > 0 && !this.isDead && this.actions.damage.state && this.actions.invulnerable.state) {
+        if (health > 0 && !this.isDead && !this.actions.damage.state) {
             console.log(`States: 
             Muerto:${this.isDead}
             RecibioDaño:${this.actions.damage.state} 
-            Invulnerable:${this.actions.invulnerable.state}`);
+           `);
             console.log("hp INICIAL Slime: " + health);
             console.log("HIT");
             console.log('derecha: ' + this.actions.right.state);
@@ -160,6 +150,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
 
 
     }
+
     blockMove(action: string) {
         this.allowMove = false;
         this.currentScene.time.delayedCall(this.actions[action].duration, () => {
@@ -168,16 +159,15 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     cooldown(action: string) {
-        this.actions[action].state = false;
+        this.actions[action].state = !this.actions[action].state;
         this.currentScene.time.delayedCall(this.actions[action].cooldown, () => {
-            this.actions[action].state = true
+            this.actions[action].state = !this.actions[action].state;
         }, [], this);
 
     }
 
-
     initialDirection() {
-        // sprite de slime mira a la derecha por defecto flipx=true es izquierda, false es derecha
+        // sprite de slime mira a la derecha por defecto flipX= true es izquierda, false es derecha
         const random = Phaser.Math.Between(1, 100)
         if (random > 50) {
             this.actions.left.state = true
@@ -187,30 +177,28 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-
-
     moveLeftUpdate(time: number) {
+        if (this.flipX) this.flipX = false // turn to rigth direction
         this.moveTime += time // Aumentar el contador con cada paso
+
+
         this.setVelocityX(-20)
 
         if (this.moveTime > 500) { // a los 2 seg cambiar la direccion
-            if (!this.flipX) this.flipX = true
-
-            this.moveTime = 0// reseteamos el tiempo
-
+            this.moveTime = 0 // reseteamos el tiempo
             this.actions.left.state = false //Cambio de direccion
-
             this.actions.right.state = true
         }
     }
 
-
     moveRightUpdate(time: number) {
+        if (!this.flipX) this.flipX = true // turn to rigth direction
+
         this.moveTime += time // Aumentar el contador con cada paso
 
         this.setVelocityX(20)
-        if (this.moveTime > 500) { // a los 2 seg cambiar la direccion
-            if (this.flipX) this.flipX = false
+        if (this.moveTime > 500) {      // a los 2 seg cambiar la direccion
+
             this.moveTime = 0 // reseteamos el tiempo
             this.actions.right.state = false //Cambio de direccion
             this.actions.left.state = true
@@ -221,17 +209,19 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     chase(enemy: any, player: any) {
         var distance: number = player.x - enemy.x;
 
-        this.isChasing = true
-        if (this.isChasing && this.allowMove) {
+        // this.isChasing = true
 
+
+        if (this.isChasing && this.allowMove) {
             if (distance > 0) {
                 this.flipX = true
-                this.setVelocityX(150)
+                this.setAccelerationX(40)
             } else {
                 this.flipX = false
-                this.setVelocityX(-150)
+                this.setAccelerationX(-40)
             }
         }
+
 
 
 
@@ -244,5 +234,8 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     }
 
+    resetChase() {
+        this.isChasing = false
+    }
 
 }

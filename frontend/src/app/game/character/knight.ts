@@ -3,16 +3,16 @@ import Enemy from "../enemies/enemy";
 
 export default class Knight extends Phaser.Physics.Arcade.Sprite {
     // Attributes
-    private vRun: number = 250;
-    private vJump: number = 330;
-    private vSlide: number = 500;
+    private vRun: number = 125;
+    private vJump: number = 250;
+    private vSlide: number = 330;
     private maxHealth: number = 999;
     private health: number = this.maxHealth;
     private damage: number = 10;
 
     // Actions & states
     private actions: any = {
-        attack: { state: true, duration: 300, cooldown: 525 },
+        attack: { state: true, duration: 300, cooldown: 350 },
         slide: { state: true, duration: 300, cooldown: 800 },
         damage: { state: true, duration: 500, cooldown: 1500 },
         invulnerable: { state: true, cooldown: 325 }
@@ -58,24 +58,17 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.currentScene.add.existing(this);
         this.setCollideWorldBounds(true);
         this.body.setSize(20, 38);
-        this.displayWidth = 240;
-        this.displayHeight = 160;
+        // this.displayWidth = 240;
+        // this.displayHeight = 160;
         this.body.setOffset(this.width * 0.5 - 15, this.height * 0.5);
 
 
         // Initialize Sword HitBox
-        this.swordHitbox = this.currentScene.add.rectangle(this.x, this.y, 80, 98, 0xFF0000, 0) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody
+        this.swordHitbox = this.currentScene.add.rectangle(this.x, this.y, 50, 55, 0xFF0000, 0) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody
         this.currentScene.physics.add.existing(this.swordHitbox)
         this.swordHitbox.body.setAllowGravity(false)
         this.swordHitbox.body.enable = false;
         this.currentScene.physics.world.remove(this.swordHitbox.body)
-
-
-        // this.currentScene.physics.add.overlap
-        //     (this.swordHitbox, this.currentScene.registry.get(Constants.GROUPS.ENEMIES), this.attackCollide, undefined, this.currentScene)
-
-
-
     }
 
     create() { // Character animations
@@ -116,12 +109,12 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.anims.create({
             key: 'dash',
             frames: this.anims.generateFrameNumbers('dash', { start: 0, end: 1 }),
-            frameRate: 30
+            frameRate: 40
         });
         this.anims.create({
             key: 'slide',
             frames: this.currentScene.anims.generateFrameNumbers('slide', { start: 0, end: 3 }),
-            frameRate: 60
+            frameRate: 40
         });
         this.anims.create({
             key: 'downSwing',
@@ -131,7 +124,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.anims.create({
             key: 'hit',
             frames: this.currentScene.anims.generateFrameNumbers('hit', { start: 0 }),
-            frameRate: 20,
+            frameRate: 5,
             repeat: -1,
         });
         this.anims.create({
@@ -234,8 +227,8 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                     this.off(Phaser.Animations.Events.ANIMATION_UPDATE, startHit) // apaga evento.
 
                     this.swordHitbox.x = this.flipX
-                        ? this.x - this.width * 0.8
-                        : this.x + this.width * 0.8
+                        ? this.x - this.width * 0.4
+                        : this.x + this.width * 0.4
                     this.swordHitbox.y = this.y + this.body.height * 0.5
 
                     // To-Do ajustar temporalmente la hitbox del caballero para que se adapte a la animacion
@@ -314,7 +307,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             this.getInvulnerable(1500)
 
             if (this.body.blocked.left) {
-                this.setVelocityX(200)
+                this.setVelocityX(100)
                 this.setVelocityY(-150)
                 this.anims.play('hit')
 
@@ -322,7 +315,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
             } else if (this.body.blocked.right) {
 
-                this.setVelocityX(-200)
+                this.setVelocityX(-100)
                 this.setVelocityY(-150)
                 this.anims.play('hit')
 
@@ -332,10 +325,10 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 this.anims.stop;
                 this.setVelocityY(-150)
                 if (random == 1) {
-                    this.setVelocityX(250)
+                    this.setVelocityX(100)
                     this.anims.play('hit')
                 } else {
-                    this.setVelocityX(-250)
+                    this.setVelocityX(-100)
                     this.anims.play('hit')
                 }
             }
