@@ -14,8 +14,7 @@ export class MainMenu extends Phaser.Scene {
 
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
 
-  private timeEvent!: any;
-  private timeText!: any;
+
 
   constructor() {
     super({ key: 'MainMenu' });
@@ -34,8 +33,7 @@ export class MainMenu extends Phaser.Scene {
     this.cameras.main.fadeIn(3000, 0, 0, 0);
 
     this.add.image(400, 300, 'sky');
-    // this.timeText = this.add.text(32, 32, 'Event.progress: ');
-    // this.timeEvent = this.time.delayedCall(3000, Event, [], this);
+
 
     const { width, height } = this.scale;
 
@@ -117,9 +115,7 @@ export class MainMenu extends Phaser.Scene {
     const pressSpace = Phaser.Input.Keyboard.JustDown(this.cursors.space!);
     console.log('MainMenu Corriendo');
 
-    // this.timeText.setText(
-    //   'Event.progress: ' + this.timeEvent.getProgress().toString().substr(0, 4)
-    // );
+
 
     if (pressUp) {
       this.selectNextButton(-1);

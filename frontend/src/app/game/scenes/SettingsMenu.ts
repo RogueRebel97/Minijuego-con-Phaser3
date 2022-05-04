@@ -48,7 +48,6 @@ export default class SettingsMenu {
 
 
     this.pauseBackground = this.activeScene.add.rectangle(screenCenterX, screenCenterY, this.width, this.height, 0xff0000, 0)
-    // this.pauseBackground = this.activeScene.add.rectangle(width - 1920, screenCenterY, this.width, this.height, 0xff0000, 0.5)
     this.container = scene.add.container(width + 300, screenCenterY - 250); // Comienza escondido en la Derecha (width+300)
     this.panel = scene.add.nineslice(0, 0, 340, 300, 'setting_panel', 24).setOrigin(0.5, 0);
 
@@ -119,6 +118,7 @@ export default class SettingsMenu {
     this.container.add(this.optionText)
     this.container.add(this.backToMenuButton)
     this.container.add(this.backText)
+
     // this.container.add(toggleButton);
     // this.container.add(this.checkmark);
     // this.container.add(soundText);
@@ -138,31 +138,15 @@ export default class SettingsMenu {
     //     this.toggleSound();
     //   });
 
-    this.resumeButton.setInteractive()
-      .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
-        this.resumeButton.setTint(0xe0e0e0);
-      })
-      .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, () => {
-        this.resumeButton.setTint(0xffffff);
-      })
-      .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-        this.resumeButton.setTint(0xe0e0e0);
-        this.resumeButton.setTexture('menuButton-2')
 
 
-      }).on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
-        this.resumeButton.setTint(0xffffff);
-        this.resumeButton.setTexture('menuButton-1')
-        // this.hide()
-        this.showBackground()
-        this.resume()
-      })
+    this.actionButton(this.resumeButton, 1)
+    this.actionButton(this.optionButton, 2)
+    this.actionButton(this.backToMenuButton, 3)
 
   }
 
   // Mostrar y Ocultar Menu
-  // si esta abierto no hacer nada.
-
   show() {
 
     const { width, height } = this.activeScene.scale;
@@ -206,11 +190,6 @@ export default class SettingsMenu {
   }
   // Fin Mostrar y ocultar Menu
 
-
-
-
-
-
   // Funcion para Sonido
   private toggleSound() {
     let isMute = this.checkmark.visible;
@@ -221,8 +200,6 @@ export default class SettingsMenu {
 
     this.checkmark.visible = isMute;
   }
-
-
 
   resume() {
     if (this.isOpen) {
@@ -236,11 +213,6 @@ export default class SettingsMenu {
         }
       }
     }
-  }
-
-  pressed() {
-    // Under construction
-    // recive un boton, lo pone interactive y le añade las animaciones de hover y presionado
   }
 
   // funcion para pausar
@@ -259,4 +231,53 @@ export default class SettingsMenu {
   hideBackground() {
     this.pauseBackground.setAlpha(0.1)
   }
+
+  actionButton(button: Phaser.GameObjects.Image, id: number) {
+
+    button.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
+      button.setTint(0xe0e0e0);
+    })
+      .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, () => {
+        button.setTint(0xffffff);
+      })
+      .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+        button.setTint(0xe0e0e0);
+        button.setTexture('menuButton-2')
+
+
+      }).on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+        button.setTint(0xffffff);
+        button.setTexture('menuButton-1')
+
+        switch (id) {
+          case 1:
+            console.log(id);
+            this.resume()
+            break;
+          case 2:
+            console.log(id)
+            break;
+          case 3:
+            console.log(id)
+            this.backToMenu()
+            break;
+          default:
+            return
+
+        }
+      })
+  }
+
+  backToMenu() {
+
+    for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) { //pausar escena activa
+      if (this.activeScene.scene.manager.scenes[i].scene.key == 'ui-scene') {
+      } else if (this.activeScene.scene.manager.scenes[i].scene.isActive()) {
+        this.activeScene.scene.stop(this.activeScene.scene.manager.scenes[i].scene.key);
+      }
+    }
+    this.activeScene.scene.start('MainMenu')
+    this.activeScene.scene.bringToTop('MainMenu')
+  }
+
 }

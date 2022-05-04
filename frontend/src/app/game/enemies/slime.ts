@@ -1,7 +1,7 @@
 import { retry } from "rxjs";
 import Constants from "../Constants";
 
-export default class Enemy extends Phaser.Physics.Arcade.Sprite {
+export default class Slime extends Phaser.Physics.Arcade.Sprite {
 
     // Attributes 
     private vRun: number = 150
@@ -32,6 +32,8 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     private currentScene!: Phaser.Scene
 
     constructor(config: any) {
+        console.log('slime creado');
+
         super(config.currentScene, config.x, config.y, config.texture, config.maxHealth);
 
         this.currentScene = config.currentScene
@@ -72,7 +74,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
 
         //Patrolling
         if (this.allowMove && !this.isChasing && !this.actions.damage.state) {
-            console.log('entro en patrol');
+            // console.log('entro en patrol');
 
             if (this.actions.left.state) {
                 this.moveLeftUpdate(1)
@@ -184,7 +186,14 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
 
         this.setVelocityX(-20)
 
-        if (this.moveTime > 500) { // a los 2 seg cambiar la direccion
+        // if (this.body.blocked.left) {
+        //     console.log('Choque por la izquierda');
+        //     this.moveTime = 500
+
+        // }
+
+
+        if (this.moveTime > 500 || this.body.blocked.left) { // a los 2 seg cambiar la direccion
             this.moveTime = 0 // reseteamos el tiempo
             this.actions.left.state = false //Cambio de direccion
             this.actions.right.state = true
@@ -197,7 +206,14 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.moveTime += time // Aumentar el contador con cada paso
 
         this.setVelocityX(20)
-        if (this.moveTime > 500) {      // a los 2 seg cambiar la direccion
+
+        // if (this.body.blocked.right) {
+        //     console.log('Choque por la derecha');
+        //     this.moveTime = 500
+
+        // }
+
+        if (this.moveTime > 500 || this.body.blocked.right) {      // a los 2 seg cambiar la direccion
 
             this.moveTime = 0 // reseteamos el tiempo
             this.actions.right.state = false //Cambio de direccion
@@ -209,7 +225,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     chase(enemy: any, player: any) {
         var distance: number = player.x - enemy.x;
 
-        // this.isChasing = true
+        this.isChasing = true
 
 
         if (this.isChasing && this.allowMove) {

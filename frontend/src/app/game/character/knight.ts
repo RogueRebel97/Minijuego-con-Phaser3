@@ -1,12 +1,12 @@
 import Constants from "../Constants";
-import Enemy from "../enemies/enemy";
+import Slime from "../enemies/slime";
 
 export default class Knight extends Phaser.Physics.Arcade.Sprite {
     // Attributes
     private vRun: number = 125;
     private vJump: number = 250;
     private vSlide: number = 330;
-    private maxHealth: number = 999;
+    private maxHealth: number = 100;
     private health: number = this.maxHealth;
     private damage: number = 10;
 
@@ -56,7 +56,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         // Sprite Physics
         this.currentScene.physics.world.enable(this);
         this.currentScene.add.existing(this);
-        this.setCollideWorldBounds(true);
+        this.setCollideWorldBounds(false);
         this.body.setSize(20, 38);
         // this.displayWidth = 240;
         // this.displayHeight = 160;
@@ -143,6 +143,8 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     }
 
     override update() {
+        console.log('caballero creado');
+
         let key = Phaser.Input.Keyboard;
 
         if (this.playerIsDead) this.allowMove = false;
@@ -365,7 +367,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
 
     attackCollide(obj1: any, obj2: any) {
-        var enemy: Enemy;
+        var enemy: Slime;
 
         enemy = obj2;
         enemy.getDamage(10)

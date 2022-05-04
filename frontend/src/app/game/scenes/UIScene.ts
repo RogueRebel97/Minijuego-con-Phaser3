@@ -61,9 +61,7 @@ export default class UIScene extends Phaser.Scene {
 
   pauseResume() {
     if (this.SettingMenu.isOpen) {
-      // this.SettingMenu.hideBackground();
       this.SettingMenu.hide(); //Callback for hide
-
       // Resume Scene
       for (let i = 0; i <= this.scene.manager.scenes.length - 1; i++) {
         if (this.scene.manager.scenes[i].scene.key == 'ui-scene') {
@@ -72,13 +70,10 @@ export default class UIScene extends Phaser.Scene {
         }
       }
     } else {
-      //Pause Scene
-      // this.SettingMenu.showBackground();
 
       this.SettingMenu.show(); //Callback for show
-
+      //Pause Scene
       for (let i = 0; i <= this.scene.manager.scenes.length - 1; i++) {
-
         if (this.scene.manager.scenes[i].scene.key == 'ui-scene') {
         } else if (this.scene.manager.scenes[i].scene.isActive()) {
           this.scene.pause(this.scene.manager.scenes[i].scene.key);

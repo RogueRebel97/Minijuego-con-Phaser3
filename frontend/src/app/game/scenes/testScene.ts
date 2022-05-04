@@ -1,7 +1,7 @@
 import { Game, Physics, Scene } from 'phaser';
 import { delay } from 'rxjs';
 import Knight from '../character/knight';
-import Enemy from '../enemies/enemy';
+import Enemy from '../enemies/slime';
 import Constants from '../Constants';
 import HUD from './hud';
 
