@@ -34,7 +34,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         super(config.currentScene, config.x, config.y, config.texture);
 
         this.currentScene = config.currentScene;
-
+        console.log('caballero creado');
         //Register global Variables
         this.currentScene.registry.set(Constants.PLAYER.STATS.MAXHEALTH, this.maxHealth)
         this.currentScene.registry.set(Constants.PLAYER.STATS.HEALTH, this.health)
@@ -143,7 +143,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     }
 
     override update() {
-        console.log('caballero creado');
+
 
         let key = Phaser.Input.Keyboard;
 
@@ -300,6 +300,13 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
+    fallDeath() {
+        this.currentScene.cameras.main.stopFollow()
+        this.health = 0
+        this.currentScene.physics.world.removeCollider(this.currentScene.registry.get(Constants.REGISTRY.COLLIDERS.DEATHZONE))
+        this.setCollideWorldBounds(false)
+    }
+
     getDamage(damage: number) {
         var health = this.currentScene.registry.get(Constants.PLAYER.STATS.HEALTH);
         if (health > 0 && !this.playerIsDead && this.actions.damage.state && this.actions.invulnerable.state) {
@@ -354,6 +361,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         }, [], this)
 
     }
+
     temporalHitBoxAdjust(time: number, x: number, y: number) {
         const offSetx = this.body.offset.x
         const offSety = this.body.offset.y
@@ -372,5 +380,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         enemy = obj2;
         enemy.getDamage(10)
     }
+
+
 }
 
