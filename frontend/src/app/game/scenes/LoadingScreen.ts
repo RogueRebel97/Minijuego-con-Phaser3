@@ -79,8 +79,12 @@ export class LoadingScreen extends Phaser.Scene {
     );
 
     this.load.image(
-      'setting_panel',
-      'assets/graphics/uiAssets/PNG/metalPanel_blueCorner.png'
+      'setting_panelv2',
+      'assets/graphics/uiAssets/PNG/metalPanel_blueCornerV2.png'
+    );
+    this.load.image(
+      'setting_panelv1',
+      'assets/graphics/uiAssets/PNG/metalPanel_blueCornerV1.png'
     );
     this.load.image(
       'small_button',
@@ -106,6 +110,16 @@ export class LoadingScreen extends Phaser.Scene {
       'cross',
       'assets/graphics/gameIcons/PNG/Black/1x/cross.png'
     );
+
+    this.load.image(
+      'returnB',
+      'assets/graphics/gameIcons/PNG/Black/1x/return.png'
+    );
+    this.load.image(
+      'returnW',
+      'assets/graphics/gameIcons/PNG/White/1x/return.png'
+    );
+
 
 
     this.load.image('logo', 'assets/graphics/Logo.jpg');

@@ -10,9 +10,10 @@ export class Scene1 extends Phaser.Scene {
   // Propiedades
   private player!: Knight;
   private hud!: HUD
-  private slime!: Slime
+  // private slime!: Slime
 
   private slimes!: Physics.Arcade.Group
+  private arraySlimes!: Slime[]
 
   private enemyCollider!: Phaser.Physics.Arcade.Collider;
   private deathZoneCollider!: Phaser.Physics.Arcade.Collider;
@@ -64,13 +65,16 @@ export class Scene1 extends Phaser.Scene {
   init() {
     console.log('Scene1 init Corriendo');
 
-    // this.scene.launch('hud');
-    // this.scene.bringToTop('hud')
+    this.scene.launch('hud');
+    this.scene.bringToTop('hud')
     this.scene.launch('ui-scene')
     this.scene.bringToTop('ui-scene')
 
     this.width = this.cameras.main.width;
     this.height = this.cameras.main.height;
+
+    this.slimes = this.physics.add.group()
+    this.arraySlimes = []
   }
 
   create() {
@@ -132,41 +136,36 @@ export class Scene1 extends Phaser.Scene {
     });
     this.registry.set(Constants.GROUPS.PLAYER, this.player)
 
-    // Enemy Slime
-    this.tileMap.findObject('slimes', (d: any) => {
-      this.slime = new Slime({
+    this.player.setCollideWorldBounds(true)
+
+
+    // Slimes Group Pyshics with and platforms and Walls
+    // this.physics.add.collider(this.slimes, this.plataformsLayer)
+    // this.physics.add.collider(this.slimes, this.wallsLayer);
+    // this.physics.add.collider(this.slimes, this.invisibleWallsEnemy);
+
+    this.slimeLayer = this.tileMap.getObjectLayer('slimes')
+    this.slimeLayer.objects.forEach(slimeObj => {
+      console.log(slimeObj);
+      const slime = new Slime({
         currentScene: this,
-        x: d.x,
-        y: d.y,
+        x: slimeObj.x,
+        y: slimeObj.y,
         texture: Constants.ENEMIES.SLIME.ID,
         maxHealth: 30
-      });
-    });
+      })
+      // this.slimes = this.physics.add.group(slime);
+      this.slimes.add(slime); //add slime to  Physics.Arcade.Group
+      this.arraySlimes.push(slime) // push slime into Array of Slime (class)
+      this.physics.add.collider(slime, this.plataformsLayer)
+      this.physics.add.collider(slime, this.wallsLayer);
+      this.physics.add.collider(slime, this.invisibleWallsEnemy);
 
-    // this.slimes = this.physics.add.group({
-    //   classType: Slime,
-    //   createCallback: (go) => {
-    //     const slimeGo = go as Slime
-    //     slimeGo.body.onCollide = true
-    //   }
-    // })
+    })
 
-
-    // this.slimeLayer = this.tileMap.getObjectLayer('slimes')
-    // this.slimeLayer.objects.forEach(slimeObj => {
-    //   this.slime = new Slime({
-    //     currentScene: this,
-    //     x: slimeObj.x,
-    //     y: slimeObj.y,
-    //     texture: Constants.ENEMIES.SLIME.ID,
-    //     maxHealth: 30
-    //   })
-    // })
-
-    this.slimes = this.physics.add.group(this.slime);
     this.registry.set(Constants.GROUPS.ENEMIES, this.slimes);
 
-    this.slime.create()
+    // this.slime.create()
     this.player.create();
 
     //create hud
@@ -182,25 +181,19 @@ export class Scene1 extends Phaser.Scene {
     this.physics.add.collider(this.player, this.plataformsLayer);
     this.physics.add.collider(this.player, this.wallsLayer);
     this.physics.add.collider(this.player, this.invisibleWallsPlayer)
+
+    //Player andDeath zones
     this.deathZoneCollider = this.physics.add.collider(this.player, this.deathZone, (deathzone, player) => {
-      this.cameras.main.stopFollow()
-      this.player.getDamage(999)
-      this.cameras.main.stopFollow
-      this.physics.world.removeCollider(this.deathZoneCollider)
+      this.player.fallDeath()
+
     })
 
-
-
-    // enemies and platforms and Walls
-    this.physics.add.collider(this.slimes, this.plataformsLayer)
-    this.physics.add.collider(this.slimes, this.wallsLayer);
-    this.physics.add.collider(this.slimes, this.invisibleWallsEnemy);
+    this.registry.set(Constants.REGISTRY.COLLIDERS.DEATHZONE, this.deathZoneCollider)
 
 
     //player touch Slime
-    this.enemyCollider = this.physics.add.overlap(this.slime, this.player, (slime, player) => {
+    this.enemyCollider = this.physics.add.overlap(this.slimes, this.player, (slime, player) => {
       this.player.getDamage(10);
-
     });
     this.registry.set(Constants.REGISTRY.COLLIDERS.ENEMY, this.enemyCollider)
 
@@ -209,25 +202,50 @@ export class Scene1 extends Phaser.Scene {
       this.player.removeAllListeners()
       this.slimes.removeAllListeners()
     })
+
+
+    for (let i = 0; i < this.arraySlimes.length; i++) {
+      console.log(this.arraySlimes[i]);
+
+    }
+
   }
 
   override update() {
-    console.log('Nivel 1 update  corriendo');
+    // console.log('Nivel 1 update  corriendo');
 
-    this.player.update();
-    this.player.checkIsDead();
-
-    this.slime.update();
-
-    if (this.slime.body) {
-      this.slime.update();
-      this.slime.checkIsDead();
-
-    } else {
+    if (this.player.body) {
+      this.player.update();
+      this.player.checkIsDead();
+    }
+    else {
       return
     }
 
-    this.slime.resetChase();
+
+
+    for (let i = 0; i < this.arraySlimes.length; i++) {
+      // console.log(this.arraySlimes[i]);
+      if (this.arraySlimes[i].body) {
+        this.arraySlimes[i].update()
+        this.arraySlimes[i].checkIsDead()
+        this.arraySlimes[i].resetChase()
+      }
+      else {
+        return
+      }
+
+    }
+
+
+    // if (this.slime.body) {
+    //   this.slime.update();
+    //   this.slime.checkIsDead();
+    //   this.slime.resetChase();
+
+    // } else {
+    //   return
+    // }
   }
 
 
@@ -242,10 +260,15 @@ export class Scene1 extends Phaser.Scene {
     }
   }
 
-  endScene() {
-    console.log("Escena Detenida");
+
+
+  slimeLogic() {
+
+
+
 
   }
+
 
 
 

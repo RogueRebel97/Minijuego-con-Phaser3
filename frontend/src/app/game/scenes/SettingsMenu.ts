@@ -22,7 +22,7 @@ export default class SettingsMenu {
   private optionText: Phaser.GameObjects.Text
   private backToMenuButton: Phaser.GameObjects.Image;
   private backText: Phaser.GameObjects.Text
-
+  private resetButton: Phaser.GameObjects.Image
 
   private open = false;
 
@@ -49,7 +49,7 @@ export default class SettingsMenu {
 
     this.pauseBackground = this.activeScene.add.rectangle(screenCenterX, screenCenterY, this.width, this.height, 0xff0000, 0)
     this.container = scene.add.container(width + 300, screenCenterY - 250); // Comienza escondido en la Derecha (width+300)
-    this.panel = scene.add.nineslice(0, 0, 340, 300, 'setting_panel', 24).setOrigin(0.5, 0);
+    this.panel = scene.add.nineslice(0, 0, 340, 300, 'setting_panelv2', 24).setOrigin(0.5, 0); // origen en el medio
 
 
     this.pauseText = scene.add.text
@@ -57,6 +57,10 @@ export default class SettingsMenu {
         { color: 'black', fontFamily: 'pixel', fontSize: '24px' });
 
     this.cross = scene.add.image((this.panel.x - (this.panel.width / 2)) + 317, this.panel.y + 20, 'cross')
+
+    this.resetButton = scene.add.image((this.panel.x - (this.panel.width / 2)) + 317,
+      this.panel.y + (this.panel.height - 20), 'returnB')
+
 
 
     this.resumeButton = scene.add.image
@@ -86,6 +90,7 @@ export default class SettingsMenu {
         color: 'black', fontFamily: 'pixel', fontSize: '18px'
       }).setOrigin(0.5, 0);
 
+
     // const toggleButton = scene.add
     //   .image(-panel.width + 10, 250, 'small_button')
     //   .setOrigin(0, 0);
@@ -112,6 +117,7 @@ export default class SettingsMenu {
     this.container.add(this.panel);
     this.container.add(this.pauseText);
     this.container.add(this.cross);
+    this.container.add(this.resetButton)
     this.container.add(this.resumeButton)
     this.container.add(this.resumeText)
     this.container.add(this.optionButton)
@@ -143,6 +149,22 @@ export default class SettingsMenu {
     this.actionButton(this.resumeButton, 1)
     this.actionButton(this.optionButton, 2)
     this.actionButton(this.backToMenuButton, 3)
+
+    this.cross.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+      this.resume()
+    })
+    this.resetButton.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+
+      for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) {
+
+        if (this.activeScene.scene.manager.scenes[i].scene.key == 'ui-scene') {
+
+        } else if (this.activeScene.scene.manager.scenes[i].scene.isPaused()) {
+          this.activeScene.scene.stop(this.activeScene.scene.manager.scenes[i].scene.key);
+          this.activeScene.scene.start(this.activeScene.scene.manager.scenes[i].scene.key);
+        }
+      }
+    })
 
   }
 

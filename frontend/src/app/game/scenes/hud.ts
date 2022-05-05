@@ -15,18 +15,10 @@ export default class HUD {
     // private SettingMenu: Settings;
     private settingUI!: UIScene
 
-
-
-
-
-
     constructor(scene: Phaser.Scene) {
-
-
         this.activeScene = scene;
         this.width = this.activeScene.cameras.main.width;
         this.height = this.activeScene.cameras.main.height;
-
 
         const screenCenterX = this.activeScene.cameras.main.worldView.x + this.activeScene.cameras.main.width / 2;
         const screenCenterY = this.activeScene.cameras.main.worldView.y + this.activeScene.cameras.main.height / 2;
@@ -36,14 +28,6 @@ export default class HUD {
 
 
         this.create()
-
-
-
-
-
-
-
-
 
         this.container.add(this.healthTxT)
     }
@@ -58,6 +42,9 @@ export default class HUD {
                 { fontSize: '24px', color: '#FFFFFF', fontFamily: 'pixel' }).setScrollFactor(0);
 
 
+        this.activeScene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+            this.activeScene.events.off(Constants.EVENTS.HEALTH)
+        })
 
 
     }

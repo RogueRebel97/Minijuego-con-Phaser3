@@ -23,8 +23,6 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
     private allowMove: boolean = true
     private isDead: boolean = false;
     private isChasing: boolean = false;
-    private isPatrolling: boolean = true
-
     private aggro: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
 
 
@@ -43,10 +41,10 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
 
 
         //Register Variables
-        this.currentScene.registry
-            .set(Constants.ENEMIES.SLIME.STATS.MAXHEALTH, this.maxHealth)
-        this.currentScene.registry
-            .set(Constants.ENEMIES.SLIME.STATS.HEALTH, this.health)
+        // this.currentScene.registry
+        //     .set(Constants.ENEMIES.SLIME.STATS.MAXHEALTH, this.maxHealth)
+        // this.currentScene.registry
+        //     .set(Constants.ENEMIES.SLIME.STATS.HEALTH, this.health)
 
         // Physics
         this.currentScene.physics.world.enable(this)
@@ -57,12 +55,12 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         this.currentScene.physics.add.existing(this.aggro)
         this.aggro.body.setAllowGravity(false)
 
+        this.create()
     }
 
     create() {
         console.log(`hp de Slime: ${this.health}`);
         this.createAnimations();
-
         this.currentScene.physics.add.overlap
             (this.aggro, this.currentScene.registry.get(Constants.GROUPS.PLAYER), this.chase, this.checkIsChasing, this)
     }
@@ -108,24 +106,27 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
     }
 
     checkIsDead() {
-        var health = this.currentScene.registry.get(Constants.ENEMIES.SLIME.STATS.HEALTH)
+        var health = this.health
 
         if (health <= 0 && !this.isDead && this.allowMove) {
             console.log("Slime muerto");
             this.isDead = true;
             this.anims.stop();
-
             this.setVelocityX(0);
 
+            // remove body and aggro box
             this.currentScene.physics.world.remove(this.body)
+            this.currentScene.physics.world.remove(this.aggro.body)
             this.body.enable = false;
+            this.aggro.body.enable = false;
+            this.aggro.destroy();
             this.destroy()
 
         }
     }
 
     getDamage(damage: number) {
-        var health = this.currentScene.registry.get(Constants.ENEMIES.SLIME.STATS.HEALTH)
+        var health = this.health
 
         if (health > 0 && !this.isDead && !this.actions.damage.state) {
             console.log(`States: 
@@ -144,9 +145,9 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityX(0)
             this.anims.play(Constants.ENEMIES.SLIME.ANIMATIONS.HIT)
 
-            health = health - damage;
-            this.currentScene.registry.set(Constants.ENEMIES.SLIME.STATS.HEALTH, health)
-            console.log(`hp FINAL de Slime: ${this.currentScene.registry.get(Constants.ENEMIES.SLIME.STATS.HEALTH)}`);
+            this.health = health - damage;
+
+            console.log(`hp FINAL de Slime: ${this.health}`);
         }
 
 
@@ -228,13 +229,13 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         this.isChasing = true
 
 
-        if (this.isChasing && this.allowMove) {
+        if (this.isChasing && this.allowMove && !this.isDead) {
             if (distance > 0) {
                 this.flipX = true
-                this.setAccelerationX(40)
+                this.setVelocityX(40)
             } else {
                 this.flipX = false
-                this.setAccelerationX(-40)
+                this.setVelocityX(-40)
             }
         }
 
