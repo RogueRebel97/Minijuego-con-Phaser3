@@ -6,7 +6,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     private vRun: number = 125;
     private vJump: number = 250;
     private vSlide: number = 330;
-    private maxHealth: number = 100;
+    private maxHealth: number = 999;
     private health: number = this.maxHealth;
     private damage: number = 10;
 
@@ -300,9 +300,16 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    fallDeath() {
+    deathCheck(): boolean {
+        return this.playerIsDead;
+    }
+
+    deathFall() {
+        console.log("Sa Matao Paco");
+
         this.currentScene.cameras.main.stopFollow()
         this.health = 0
+        this.playerIsDead = true
         this.currentScene.physics.world.removeCollider(this.currentScene.registry.get(Constants.REGISTRY.COLLIDERS.DEATHZONE))
         this.setCollideWorldBounds(false)
     }

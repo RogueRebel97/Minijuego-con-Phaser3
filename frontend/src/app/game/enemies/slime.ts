@@ -114,13 +114,24 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
             this.anims.stop();
             this.setVelocityX(0);
 
+
+
+
             // remove body and aggro box
             this.currentScene.physics.world.remove(this.body)
             this.currentScene.physics.world.remove(this.aggro.body)
             this.body.enable = false;
             this.aggro.body.enable = false;
+
+
+            console.log(`body en Muerte:`);
+            console.log(this.body);
+            console.log("boolean the body en muerte: " + this.body.enable);
+
             this.aggro.destroy();
             this.destroy()
+
+
 
         }
     }
@@ -129,14 +140,19 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         var health = this.health
 
         if (health > 0 && !this.isDead && !this.actions.damage.state) {
-            console.log(`States: 
-            Muerto:${this.isDead}
-            RecibioDaño:${this.actions.damage.state} 
-           `);
-            console.log("hp INICIAL Slime: " + health);
-            console.log("HIT");
-            console.log('derecha: ' + this.actions.right.state);
-            console.log('izquierda: ' + this.actions.left.state);
+            //     console.log(`States: 
+            //     Muerto:${this.isDead}
+            //     RecibioDaño:${this.actions.damage.state} 
+            //    `);
+            //     console.log("hp INICIAL Slime: " + health);
+            //     console.log("HIT");
+            //     console.log('derecha: ' + this.actions.right.state);
+            //     console.log('izquierda: ' + this.actions.left.state);
+
+            console.log(`body en Dañado:`);
+            console.log(this.body);
+            console.log("boolean the body en Dañado: " + this.body.enable);
+
 
 
             this.blockMove('damage'); // Parar movimientos del enemigo y evitar que realice otra accion por X ms
@@ -253,6 +269,13 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
 
     resetChase() {
         this.isChasing = false
+    }
+
+    deathCheck(): boolean {
+
+        return this.isDead;
+
+
     }
 
 }

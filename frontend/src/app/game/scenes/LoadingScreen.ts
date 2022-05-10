@@ -70,8 +70,13 @@ export class LoadingScreen extends Phaser.Scene {
 
     // Assets for Menu
     this.load.image(
-      'glass-panel',
+      'settingPanelRed',
       'assets/graphics/uiAssets/PNG/metalPanel_red.png'
+    );
+
+    this.load.image(
+      'glass-panel',
+      'assets/graphics/uiAssets/PNG/glassPanel.png'
     );
     this.load.image(
       'cursor-hand',

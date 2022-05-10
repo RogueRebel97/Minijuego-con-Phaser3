@@ -119,7 +119,9 @@ const Constants = {
     REGISTRY: {
         COLLIDERS: {
             ENEMY: 'enemyCollider',
-            DEATHZONE: 'deathZone'
+            DEATHZONE: 'deathZone',
+            PLATFORMS: 'platformsCollider',
+            GOAL: 'goalCollider'
 
         }
     }
