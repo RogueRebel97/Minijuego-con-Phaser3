@@ -23,7 +23,7 @@ export default class SettingsMenu {
   private backToMenuButton: Phaser.GameObjects.Image;
   private backText: Phaser.GameObjects.Text
   private resetButton: Phaser.GameObjects.Image
-
+  private resetText: Phaser.GameObjects.Text;
   private open = false;
 
   private width: number;
@@ -49,7 +49,7 @@ export default class SettingsMenu {
 
     this.pauseBackground = this.activeScene.add.rectangle(screenCenterX, screenCenterY, this.width, this.height, 0xff0000, 0)
     this.container = scene.add.container(width + 300, screenCenterY - 250); // Comienza escondido en la Derecha (width+300)
-    this.panel = scene.add.nineslice(0, 0, 340, 300, 'setting_panelv2', 24).setOrigin(0.5, 0); // origen en el medio
+    this.panel = scene.add.nineslice(0, 0, 340, 340, 'setting_panelv2', 24).setOrigin(0.5, 0); // origen en el medio
 
 
     this.pauseText = scene.add.text
@@ -58,8 +58,6 @@ export default class SettingsMenu {
 
     // this.cross = scene.add.image((this.panel.x - (this.panel.width / 2)) + 317, this.panel.y + 20, 'cross')
 
-    this.resetButton = scene.add.image((this.panel.x - (this.panel.width / 2)) + 317,
-      this.panel.y + (this.panel.height - 20), 'returnB')
 
 
 
@@ -86,9 +84,15 @@ export default class SettingsMenu {
       (this.panel.x / 2, this.optionButton.y + 69, 'menuButton-1')
 
     this.backText = scene.add.text
-      (this.backToMenuButton.x / 2, this.backToMenuButton.y - 10, 'Main Menu', {
+      (this.backToMenuButton.x / 2, this.backToMenuButton.y - 10, 'MAIN MENU', {
         color: 'black', fontFamily: 'pixel', fontSize: '18px'
       }).setOrigin(0.5, 0);
+
+    this.resetButton = scene.add.image
+      (this.panel.x / 2, this.backToMenuButton.y + 69, 'menuButton-1')
+    this.resetText = scene.add.text(this.resetButton.x / 2, this.resetButton.y - 10, 'RESET', {
+      color: 'black', fontFamily: 'pixel', fontSize: '18px'
+    }).setOrigin(0.5, 0);
 
 
     // const toggleButton = scene.add
@@ -124,6 +128,8 @@ export default class SettingsMenu {
     this.container.add(this.optionText)
     this.container.add(this.backToMenuButton)
     this.container.add(this.backText)
+    this.container.add(this.resetButton)
+    this.container.add(this.resetText)
 
     // this.container.add(toggleButton);
     // this.container.add(this.checkmark);
@@ -149,6 +155,7 @@ export default class SettingsMenu {
     this.actionButton(this.resumeButton, 1)
     this.actionButton(this.optionButton, 2)
     this.actionButton(this.backToMenuButton, 3)
+    this.actionButton(this.resetButton, 4)
 
     // this.cross.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
     //   this.resume()
@@ -283,6 +290,10 @@ export default class SettingsMenu {
             console.log(id)
             this.backToMenu()
             break;
+          case 4:
+            console.log(id)
+            this.reset()
+            break;
           default:
             return
 
@@ -300,6 +311,27 @@ export default class SettingsMenu {
     }
     this.activeScene.scene.start('MainMenu')
     this.activeScene.scene.bringToTop('MainMenu')
+  }
+
+
+
+  reset() {
+    for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) {
+
+      if (this.activeScene.scene.manager.scenes[i].scene.key == 'gameOver') {
+
+      } else if (this.activeScene.scene.manager.scenes[i].scene.isActive()) {
+
+        this.activeScene.cameras.main.fadeOut(600, 0, 0, 0)
+        this.activeScene.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
+          (cam: any, effect: any) => {
+
+            this.activeScene.scene.stop(this.activeScene.scene.manager.scenes[i].scene.key);
+            this.activeScene.scene.start(this.activeScene.scene.manager.scenes[i].scene.key);
+          })
+
+      }
+    }
   }
 
 }

@@ -6,7 +6,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     private vRun: number = 125;
     private vJump: number = 250;
     private vSlide: number = 330;
-    private maxHealth: number = 20;
+    private maxHealth: number = 999;
     private health: number = this.maxHealth;
     private damage: number = 10;
 
@@ -58,6 +58,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.currentScene.physics.world.enable(this);
         this.currentScene.add.existing(this);
         this.setCollideWorldBounds(false);
+
         this.body.setSize(20, 38);
         // this.displayWidth = 240;
         // this.displayHeight = 160;
@@ -169,10 +170,22 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             //crouch
             if ((this.controls.DOWN.isDown || this.controls.S.isDown)) {
                 this.setVelocityX(0)
+
                 this.crouch = true
+                // this.body.setOffset(this.width * 0.5 - 5, this.height * 0.5);
+                this.setBodySize(20, 30)
+                // this.body.setSize(20, 30);
+
             }
             else {
                 this.crouch = false
+                // this.body.setSize(20, 38);
+                if (this.flipX) {
+                    this.body.setOffset(this.width * 0.5 - 5, this.height * 0.5);
+                } else {
+                    this.body.setOffset(this.width * 0.5 - 15, this.height * 0.5);
+                }
+
             }
 
 
