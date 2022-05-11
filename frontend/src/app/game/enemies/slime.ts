@@ -68,7 +68,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
     override update() {
         if (this.isDead) this.allowMove = false
 
-        if (!this.actions.damage.state) this.anims.play(Constants.ENEMIES.SLIME.ANIMATIONS.IDLE, true)
+        if (!this.actions.damage.state) this.anims.play(Constants.ENEMIES.SLIME.BLUE.ANIMATIONS.IDLE_RUN, true)
 
         //Patrolling
         if (this.allowMove && !this.isChasing && !this.actions.damage.state) {
@@ -91,15 +91,15 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
     createAnimations() {
 
         this.anims.create({
-            key: Constants.ENEMIES.SLIME.ANIMATIONS.IDLE,
-            frames: this.anims.generateFrameNumbers(Constants.ENEMIES.SLIME.ID, { start: 0, end: 9 }),
+            key: Constants.ENEMIES.SLIME.BLUE.ANIMATIONS.IDLE_RUN,
+            frames: this.anims.generateFrameNumbers(Constants.ENEMIES.SLIME.BLUE.ANIMATIONS.IDLE_RUN, { start: 0, end: 9 }),
             frameRate: 15,
             repeat: -1,
         });
 
         this.anims.create({
-            key: Constants.ENEMIES.SLIME.ANIMATIONS.HIT,
-            frames: this.anims.generateFrameNumbers(Constants.ENEMIES.SLIME.ANIMATIONS.HIT, { start: 0, end: 4 }),
+            key: Constants.ENEMIES.SLIME.BLUE.ANIMATIONS.HIT,
+            frames: this.anims.generateFrameNumbers(Constants.ENEMIES.SLIME.BLUE.ANIMATIONS.HIT, { start: 0, end: 4 }),
             frameRate: 10,
 
         });
@@ -159,7 +159,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
             this.cooldown('damage') // Evitar que reciba daño de nuevo por X ms
             this.anims.stop()
             this.setVelocityX(0)
-            this.anims.play(Constants.ENEMIES.SLIME.ANIMATIONS.HIT)
+            this.anims.play(Constants.ENEMIES.SLIME.BLUE.ANIMATIONS.HIT)
 
             this.health = health - damage;
 

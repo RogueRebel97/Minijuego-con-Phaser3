@@ -21,7 +21,8 @@ export class Scene1 extends Phaser.Scene {
   private deathZoneCollider!: Phaser.Physics.Arcade.Collider;
   private platformsColliders!: Phaser.Physics.Arcade.Collider;
   private goalCollider!: Phaser.Physics.Arcade.Collider;
-  // private invulnerable = false;
+  private gameOver!: boolean;
+  private win!: boolean;
 
   private controls!: any
 
@@ -58,7 +59,7 @@ export class Scene1 extends Phaser.Scene {
   private tileMapLayer!: Phaser.Tilemaps.TilemapLayer;
 
 
-  private GameOver!: GameOver;
+  private GameOverScreen!: GameOver;
 
 
   constructor() {
@@ -74,11 +75,12 @@ export class Scene1 extends Phaser.Scene {
 
     // this.scene.launch('hud');
     // this.scene.bringToTop('hud')
-    this.scene.launch('gameOver');
-    this.scene.bringToTop('gameOver')
+
     this.scene.launch('ui-scene')
     this.scene.bringToTop('ui-scene')
 
+    this.win = false;
+    this.gameOver = false
 
     this.width = this.cameras.main.width;
     this.height = this.cameras.main.height;
@@ -89,8 +91,9 @@ export class Scene1 extends Phaser.Scene {
 
   create() {
     console.log('create iniciado');
+    //Efecto fadeIN
+    this.cameras.main.fadeIn(1000, 0, 0, 0);
 
-    this.GameOver = new GameOver;
 
     // MAP & Background
 
@@ -127,6 +130,7 @@ export class Scene1 extends Phaser.Scene {
     this.invisibleWallsPlayer = this.tileMap.createLayer('InvisibleWalls/playerWalls', this.tileSets)
     this.deathZone = this.tileMap.createLayer('deathZone/deathZone', this.tileSets)
     this.goalLayer = this.tileMap.createLayer('InvisibleWalls/goal', this.tileSets)
+    this.goalLayer.setAlpha(0)
     this.deathZone.setAlpha(0)
     this.invisibleWallsEnemy.setAlpha(0)
     this.invisibleWallsPlayer.setAlpha(0)
@@ -155,10 +159,7 @@ export class Scene1 extends Phaser.Scene {
     this.player.setCollideWorldBounds(true)
 
 
-    // Slimes Group Pyshics with and platforms and Walls
-    // this.physics.add.collider(this.slimes, this.plataformsLayer)
-    // this.physics.add.collider(this.slimes, this.wallsLayer);
-    // this.physics.add.collider(this.slimes, this.invisibleWallsEnemy);
+    // Crear enemigos:
 
     this.slimeLayer = this.tileMap.getObjectLayer('slimes')
     this.slimeLayer.objects.forEach(slimeObj => {
@@ -167,7 +168,7 @@ export class Scene1 extends Phaser.Scene {
         currentScene: this,
         x: slimeObj.x,
         y: slimeObj.y,
-        texture: Constants.ENEMIES.SLIME.ID,
+        texture: Constants.ENEMIES.SLIME.BLUE.ANIMATIONS.IDLE_RUN,
         maxHealth: 30
       })
       // this.slimes = this.physics.add.group(slime);
@@ -194,19 +195,23 @@ export class Scene1 extends Phaser.Scene {
 
     // Player Colliders
     this.platformsColliders = this.physics.add.collider(this.player, this.plataformsLayer);
+
+
+
+
+
+
     this.registry.set(Constants.REGISTRY.COLLIDERS.PLATFORMS, this.platformsColliders)
     this.physics.add.collider(this.player, this.wallsLayer);
     this.physics.add.collider(this.player, this.invisibleWallsPlayer);
 
-
     //Player and Goal zone
     this.goalCollider = this.physics.add.collider(this.player, this.goalLayer, (goal, player) => {
-      this.player.deathFall()
+      this.player.reachGoal()
+      this.win = true;
     })
 
     this.registry.set(Constants.REGISTRY.COLLIDERS.GOAL, this.goalCollider)
-
-
 
     //Player andDeath zone
     this.deathZoneCollider = this.physics.add.collider(this.player, this.deathZone, (deathzone, player) => {
@@ -248,32 +253,29 @@ export class Scene1 extends Phaser.Scene {
       return
     }
 
-
+    this.slimeLogic()
 
     // console.log(this.arraySlimes)
 
-    for (let i = 0; i < this.arraySlimes.length; i++) {
-      if (this.arraySlimes[i].body && !this.arraySlimes[i].deathCheck()) {
-        this.arraySlimes[i].update()
-        this.arraySlimes[i].checkIsDead()
-        this.arraySlimes[i].resetChase()
-      }
+    if (this.player.deathCheck() && !this.gameOver) {
+      this.gameOver = true
 
+      this.time.delayedCall(1000, () => {
+        this.scene.stop('ui-scene')
+        this.scene.launch('gameOver', { defeat: true })
+        this.scene.bringToTop('gameOver')
+        console.log('muertoooo');
+      }, [], this);
+
+    } else if (this.win && !this.player.deathCheck()) {
+      this.win = false
+      this.time.delayedCall(700, () => {
+        this.scene.stop('ui-scene')
+        this.scene.launch('gameOver', { defeat: false })
+        this.scene.bringToTop('gameOver')
+        console.log('victoria');
+      }, [], this);
     }
-    if (this.player.deathCheck()) {
-      this.GameOver.defeat();
-
-    }
-
-
-    // if (this.slime.body) {
-    //   this.slime.update();
-    //   this.slime.checkIsDead();
-    //   this.slime.resetChase();
-
-    // } else {
-    //   return
-    // }
   }
 
 
@@ -291,8 +293,14 @@ export class Scene1 extends Phaser.Scene {
 
 
   slimeLogic() {
+    for (let i = 0; i < this.arraySlimes.length; i++) {
+      if (this.arraySlimes[i].body && !this.arraySlimes[i].deathCheck()) {
+        this.arraySlimes[i].update()
+        this.arraySlimes[i].checkIsDead()
+        this.arraySlimes[i].resetChase()
+      }
 
-
+    }
 
 
   }

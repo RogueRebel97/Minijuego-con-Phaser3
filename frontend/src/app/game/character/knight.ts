@@ -6,7 +6,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     private vRun: number = 125;
     private vJump: number = 250;
     private vSlide: number = 330;
-    private maxHealth: number = 999;
+    private maxHealth: number = 20;
     private health: number = this.maxHealth;
     private damage: number = 10;
 
@@ -18,6 +18,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         invulnerable: { state: true, cooldown: 325 }
     }
     private allowMove: boolean = true;
+    private crouch: boolean = false
     private playerIsDead: boolean = false;
     // private allowDamage: boolean = true;
 
@@ -132,6 +133,18 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             frames: this.currentScene.anims.generateFrameNumbers('death', { start: 0, end: 9 }),
             frameRate: 20,
         });
+        this.anims.create({
+            key: 'crouch',
+            frames: this.currentScene.anims.generateFrameNumbers('crouch', { start: 0, end: 2 }),
+            frameRate: 20,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: 'crouchWalk',
+            frames: this.currentScene.anims.generateFrameNumbers('crouchWalk', { start: 0, end: 7 }),
+            frameRate: 15,
+            repeat: -1
+        });
 
         // Sword and Enemy Colliders
         this.currentScene.physics.add.overlap
@@ -144,6 +157,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
     override update() {
 
+        console.log("Agachado: " + this.crouch);
 
         let key = Phaser.Input.Keyboard;
 
@@ -152,44 +166,94 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         // Actions set
         if (this.allowMove) {
 
-            // Displace
-            if ((this.controls.LEFT.isDown || this.controls.A.isDown)) { // Left <==
-
-
-                // Left Speed
-                this.setVelocityX(-this.vRun);
-
-                // Animation and Turn
-                if (this.flipX && this.body.blocked.down) {
-                    this.anims.play('left', true);
-                } else {
-                    this.anims.stop();
-                    this.flipX = true;
-                }
-
-                // hitbox adjust
-                this.body.setOffset(this.width * 0.5 - 5, this.height * 0.5);
-
-            } else if ((this.controls.RIGHT.isDown || this.controls.D.isDown)) { // Right ==>
-
-                // Right speed
-                this.setVelocityX(this.vRun);
-
-                // Animation & Turn
-                if (!this.flipX && this.body.blocked.down) {
-                    this.anims.play('right', true);
-                } else {
-                    this.anims.stop();
-                    this.flipX = false;
-                }
-
-                // hitbox adjust
-                this.body.setOffset(this.width * 0.5 - 15, this.height * 0.5);
-
-            } else if (this.body.blocked.down) { // Idle
-                this.setVelocityX(0);
-                this.anims.play('idle', true);
+            //crouch
+            if ((this.controls.DOWN.isDown || this.controls.S.isDown)) {
+                this.setVelocityX(0)
+                this.crouch = true
             }
+            else {
+                this.crouch = false
+            }
+
+
+            // Run
+            if (!this.crouch) {
+                if ((this.controls.LEFT.isDown || this.controls.A.isDown)) { // Left <==
+
+
+                    // Left Speed
+                    this.setVelocityX(-this.vRun);
+
+                    // Animation and Turn
+                    if (this.flipX && this.body.blocked.down) {
+                        this.anims.play('left', true);
+                    } else {
+                        this.anims.stop();
+                        this.flipX = true;
+                    }
+
+                    // hitbox adjust
+                    this.body.setOffset(this.width * 0.5 - 5, this.height * 0.5);
+
+                } else if ((this.controls.RIGHT.isDown || this.controls.D.isDown)) { // Right ==>
+
+                    // Right speed
+                    this.setVelocityX(this.vRun);
+
+                    // Animation & Turn
+                    if (!this.flipX && this.body.blocked.down) {
+                        this.anims.play('right', true);
+                    } else {
+                        this.anims.stop();
+                        this.flipX = false;
+                    }
+
+                    // hitbox adjust
+                    this.body.setOffset(this.width * 0.5 - 15, this.height * 0.5);
+
+                } else if (this.body.blocked.down) { // Idle
+                    this.setVelocityX(0);
+                    this.anims.play('idle', true);
+                } else {
+                    this.setVelocityX(0)
+                }
+            } else { // Crouch Movement
+                // Crouch walk left
+                if ((this.controls.LEFT.isDown || this.controls.A.isDown)) {
+
+                    // Left Speed
+                    this.setVelocityX(-this.vRun * 0.6);
+
+                    // Animation and Turn
+                    if (this.flipX && this.body.blocked.down) {
+                        this.anims.play('crouchWalk', true);
+                    } else {
+                        this.anims.stop();
+                        this.flipX = true;
+                    }
+
+                } else if ((this.controls.RIGHT.isDown || this.controls.D.isDown)) {
+                    // Right speed
+                    this.setVelocityX(this.vRun * 0.6);
+
+                    // Animation & Turn
+                    if (!this.flipX && this.body.blocked.down) {
+                        this.anims.play('crouchWalk', true);
+                    } else {
+                        this.anims.stop();
+                        this.flipX = false;
+                    }
+
+                } else if (this.body.blocked.down) //idle crouch
+                {
+                    this.setVelocityX(0);
+                    this.anims.play('crouch');
+                } else {
+                    this.setVelocityX(0);
+                }
+            }
+
+
 
             // Jump
             if ((key.JustDown(this.controls.UP) || key.JustDown(this.controls.W)) && this.body.blocked.down) {
@@ -198,13 +262,6 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('jump');
 
             }
-
-            // X speed on Air conservation
-            // if (this.body.velocity.x != 0 && !this.body.blocked.down) { }
-            // {
-            //     this.setVelocityX(this.body.velocity.x)
-            // }
-
 
 
             // Fall
@@ -306,10 +363,9 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
     deathFall() {
         console.log("Sa Matao Paco");
-
         this.currentScene.cameras.main.stopFollow()
-        this.health = 0
         this.playerIsDead = true
+        this.health = 0
         this.currentScene.physics.world.removeCollider(this.currentScene.registry.get(Constants.REGISTRY.COLLIDERS.DEATHZONE))
         this.setCollideWorldBounds(false)
     }
@@ -386,6 +442,17 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
         enemy = obj2;
         enemy.getDamage(10)
+    }
+
+    reachGoal() {
+        console.log("Has llegado a la meta");
+
+        this.anims.stop()
+        this.anims.play('idle')
+        this.allowMove = false
+        this.setVelocityX(0)
+        this.setVelocityY(0)
+
     }
 
 

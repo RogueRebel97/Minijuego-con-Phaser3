@@ -11,7 +11,7 @@ export default class SettingsMenu {
   private container!: Phaser.GameObjects.Container;
   private checkmark!: Phaser.GameObjects.Image;
   private panel: any
-  private cross: Phaser.GameObjects.Image;
+  // private cross: Phaser.GameObjects.Image;
   private pauseBackground!: Phaser.GameObjects.Rectangle
 
 
@@ -56,7 +56,7 @@ export default class SettingsMenu {
       ((this.panel.x - (this.panel.width / 2)) + 10, this.panel.y + 10, 'PAUSA',
         { color: 'black', fontFamily: 'pixel', fontSize: '24px' });
 
-    this.cross = scene.add.image((this.panel.x - (this.panel.width / 2)) + 317, this.panel.y + 20, 'cross')
+    // this.cross = scene.add.image((this.panel.x - (this.panel.width / 2)) + 317, this.panel.y + 20, 'cross')
 
     this.resetButton = scene.add.image((this.panel.x - (this.panel.width / 2)) + 317,
       this.panel.y + (this.panel.height - 20), 'returnB')
@@ -116,7 +116,7 @@ export default class SettingsMenu {
     // this.container.add(this.pauseBackground);
     this.container.add(this.panel);
     this.container.add(this.pauseText);
-    this.container.add(this.cross);
+    // this.container.add(this.cross);
     this.container.add(this.resetButton)
     this.container.add(this.resumeButton)
     this.container.add(this.resumeText)
@@ -150,9 +150,9 @@ export default class SettingsMenu {
     this.actionButton(this.optionButton, 2)
     this.actionButton(this.backToMenuButton, 3)
 
-    this.cross.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
-      this.resume()
-    })
+    // this.cross.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+    //   this.resume()
+    // })
     this.resetButton.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
 
       for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) {

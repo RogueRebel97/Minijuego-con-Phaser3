@@ -99,19 +99,38 @@ const Constants = {
     },
     ENEMIES: {
         SLIME: {
-            ID: 'slime',
-            ANIMATIONS: {
-                IDLE: 'idleSlime',
-                HIT: 'slimeHit'
-
+            GREEN: {
+                ID: 'gSlime',
+                ANIMATIONS: {
+                    IDLE_RUN: 'gIdleRun',
+                    HIT: 'ghit',
+                }
+            },
+            BLUE: {
+                ID: 'bSlime',
+                ANIMATIONS: {
+                    IDLE_RUN: 'bIdleRun',
+                    HIT: 'bhit',
+                }
+            },
+            PURPLE: {
+                ID: 'pSlime',
+                ANIMATIONS: {
+                    IDLE_RUN: 'pIdleRun',
+                    HIT: 'phit',
+                },
             },
             STATS: {
                 MAXHEALTH: 'maxHealth-slime',
                 HEALTH: 'healthValue-slime',
                 DAMAGE: '10'
             }
-        }
+
+        },
+
+
     },
+
     GROUPS: {
         ENEMIES: 'enemies',
         PLAYER: 'player'

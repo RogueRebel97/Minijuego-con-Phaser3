@@ -143,6 +143,7 @@ export class LoadingScreen extends Phaser.Scene {
     this.load.image(Constants.MAPS.SCENERY.PLAINS.DECORATOR.PLAINSDECORS, 'assets/graphics/decorations/plainsDecors.png')
 
     // Backgrounds for Map
+
     //Forest
     this.load.image(
       'forestBckgr-1',
@@ -163,81 +164,123 @@ export class LoadingScreen extends Phaser.Scene {
     this.load.image('plainsBG1', 'assets/SpritesSheets/plains/BG2.png')
     this.load.image('plainsBG2', 'assets/SpritesSheets/plains/BG3.png')
 
-
-
-
-
     // SpriteSheets del caballero
     this.load.spritesheet(
       Constants.PLAYER.ID,
-      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Idle.png',
+      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_Idle.png',
       { frameWidth: 120, frameHeight: 80 }
     );
     this.load.spritesheet(
       'run',
-      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Run.png',
+      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_Run.png',
       { frameWidth: 120, frameHeight: 80 }
     );
     this.load.spritesheet(
       'jump',
-      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Jump.png',
+      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_Jump.png',
       { frameWidth: 120, frameHeight: 80 }
     );
 
     this.load.spritesheet(
       'fall',
-      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Fall.png',
+      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_Fall.png',
       { frameWidth: 120, frameHeight: 80 }
     );
 
     this.load.spritesheet(
       'dash',
-      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Dash.png',
+      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_Dash.png',
       { frameWidth: 120, frameHeight: 80 }
     );
 
     this.load.spritesheet(
       'downAttack',
-      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Attack.png',
+      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_Attack.png',
       { frameWidth: 120, frameHeight: 80 }
     );
 
     this.load.spritesheet(
       'slide',
-      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_SlideFull.png',
+      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_SlideFull.png',
       { frameWidth: 120, frameHeight: 80 }
     );
 
     this.load.spritesheet(
       'death',
-      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Death.png',
+      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_Death.png',
       { frameWidth: 120, frameHeight: 80 }
     );
 
     this.load.spritesheet(
       'hit',
-      'assets/SpritesSheets/FreeKnight/Colour1/NoOutline/120x80_PNGSheets/_Hit.png',
+      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_Hit.png',
+      { frameWidth: 120, frameHeight: 80 }
+    );
+
+    this.load.spritesheet(
+      'crouch',
+      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_CrouchFull.png',
+      { frameWidth: 120, frameHeight: 80 }
+    );
+
+    this.load.spritesheet(
+      'crouchWalk',
+      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_CrouchWalk.png',
       { frameWidth: 120, frameHeight: 80 }
     );
 
 
     // Enemies
+    // Green Slime
     this.load.spritesheet(
-      'slime',
+      Constants.ENEMIES.SLIME.GREEN.ANIMATIONS.IDLE_RUN,
       'assets/SpritesSheets/Enemies/Slime/Idle-Run.png',
       { frameWidth: 44, frameHeight: 30 }
     );
     this.load.spritesheet(
-      Constants.ENEMIES.SLIME.ANIMATIONS.HIT,
+      Constants.ENEMIES.SLIME.GREEN.ANIMATIONS.HIT,
       'assets/SpritesSheets/Enemies/Slime/Hit(44x30).png',
       { frameWidth: 44, frameHeight: 30 }
     );
     this.load.spritesheet(
-      'slimeParticles',
+      'gSlimeParticles',
       'assets/SpritesSheets/Enemies/Slime/Particles(62x16).png',
       { frameWidth: 62, frameHeight: 16 }
     );
 
+    // Blue Slime
+    this.load.spritesheet(
+      Constants.ENEMIES.SLIME.BLUE.ANIMATIONS.IDLE_RUN,
+      'assets/SpritesSheets/Enemies/Slime/2Idle-Run.png',
+      { frameWidth: 44, frameHeight: 30 }
+    );
+    this.load.spritesheet(
+      Constants.ENEMIES.SLIME.BLUE.ANIMATIONS.HIT,
+      'assets/SpritesSheets/Enemies/Slime/2Hit(44x30).png',
+      { frameWidth: 44, frameHeight: 30 }
+    );
+    this.load.spritesheet(
+      'bSlimeParticles',
+      'assets/SpritesSheets/Enemies/Slime/2Particles(62x16).png',
+      { frameWidth: 62, frameHeight: 16 }
+    );
+
+    // Purple Slime
+    this.load.spritesheet(
+      Constants.ENEMIES.SLIME.PURPLE.ANIMATIONS.IDLE_RUN,
+      'assets/SpritesSheets/Enemies/Slime/2Idle-Run.png',
+      { frameWidth: 44, frameHeight: 30 }
+    );
+    this.load.spritesheet(
+      Constants.ENEMIES.SLIME.PURPLE.ANIMATIONS.HIT,
+      'assets/SpritesSheets/Enemies/Slime/2Hit(44x30).png',
+      { frameWidth: 44, frameHeight: 30 }
+    );
+    this.load.spritesheet(
+      'pSlimeParticles',
+      'assets/SpritesSheets/Enemies/Slime/2Particles(62x16).png',
+      { frameWidth: 62, frameHeight: 16 }
+    );
 
 
 
@@ -289,8 +332,9 @@ export class LoadingScreen extends Phaser.Scene {
     startTxT.setOrigin(0.5, -1.5);
     startTxT.setText('Pulsa la tecla espacio para comenzar');
 
+    // fade to black
     this.input.keyboard.once('keydown-SPACE', () => {
-      // fade to black
+
       this.cameras.main.fadeOut(1500, 0, 0, 0);
     });
 
