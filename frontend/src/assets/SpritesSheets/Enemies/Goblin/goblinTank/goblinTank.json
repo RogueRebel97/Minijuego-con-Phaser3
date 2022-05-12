@@ -1,0 +1,995 @@
+{
+	"textures": [
+		{
+			"image": "goblinTank-0.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 4056,
+				"h": 3868
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "goblinTank-attack-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 367,
+						"y": 207,
+						"w": 786,
+						"h": 626
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 786,
+						"h": 626
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-attack-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 367,
+						"y": 367,
+						"w": 850,
+						"h": 466
+					},
+					"frame": {
+						"x": 789,
+						"y": 1,
+						"w": 850,
+						"h": 466
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-attack-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 367,
+						"y": 367,
+						"w": 802,
+						"h": 466
+					},
+					"frame": {
+						"x": 1641,
+						"y": 1,
+						"w": 802,
+						"h": 466
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-attack-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 367,
+						"y": 367,
+						"w": 802,
+						"h": 466
+					},
+					"frame": {
+						"x": 2445,
+						"y": 1,
+						"w": 802,
+						"h": 466
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-walk-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 111,
+						"y": 255,
+						"w": 690,
+						"h": 578
+					},
+					"frame": {
+						"x": 1,
+						"y": 629,
+						"w": 690,
+						"h": 578
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-attack-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 79,
+						"y": 239,
+						"w": 674,
+						"h": 594
+					},
+					"frame": {
+						"x": 1,
+						"y": 1209,
+						"w": 674,
+						"h": 594
+					},
+					"anchor": {
+						"x": 0.53605769,
+						"y": 0.51533019
+					}
+				},
+				{
+					"filename": "goblinTank-attack-11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 79,
+						"y": 239,
+						"w": 674,
+						"h": 594
+					},
+					"frame": {
+						"x": 1,
+						"y": 1805,
+						"w": 674,
+						"h": 594
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-die-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 79,
+						"y": 239,
+						"w": 674,
+						"h": 594
+					},
+					"frame": {
+						"x": 1,
+						"y": 2401,
+						"w": 674,
+						"h": 594
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-idle-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 79,
+						"y": 239,
+						"w": 674,
+						"h": 594
+					},
+					"frame": {
+						"x": 1,
+						"y": 2997,
+						"w": 674,
+						"h": 594
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-attack-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 47,
+						"y": 287,
+						"w": 690,
+						"h": 546
+					},
+					"frame": {
+						"x": 3249,
+						"y": 1,
+						"w": 690,
+						"h": 546
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-die-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 79,
+						"y": 559,
+						"w": 754,
+						"h": 274
+					},
+					"frame": {
+						"x": 1,
+						"y": 3593,
+						"w": 754,
+						"h": 274
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-die-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 79,
+						"y": 607,
+						"w": 786,
+						"h": 226
+					},
+					"frame": {
+						"x": 789,
+						"y": 469,
+						"w": 786,
+						"h": 226
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-die-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 79,
+						"y": 287,
+						"w": 674,
+						"h": 546
+					},
+					"frame": {
+						"x": 693,
+						"y": 697,
+						"w": 674,
+						"h": 546
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-idle-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 79,
+						"y": 239,
+						"w": 674,
+						"h": 594
+					},
+					"frame": {
+						"x": 677,
+						"y": 1245,
+						"w": 674,
+						"h": 594
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-idle-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 79,
+						"y": 239,
+						"w": 674,
+						"h": 594
+					},
+					"frame": {
+						"x": 677,
+						"y": 1841,
+						"w": 674,
+						"h": 594
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-idle-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 79,
+						"y": 239,
+						"w": 674,
+						"h": 594
+					},
+					"frame": {
+						"x": 677,
+						"y": 2437,
+						"w": 674,
+						"h": 594
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-die-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 111,
+						"y": 383,
+						"w": 658,
+						"h": 450
+					},
+					"frame": {
+						"x": 677,
+						"y": 3033,
+						"w": 658,
+						"h": 450
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-die-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 79,
+						"y": 607,
+						"w": 786,
+						"h": 226
+					},
+					"frame": {
+						"x": 1577,
+						"y": 469,
+						"w": 786,
+						"h": 226
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-attack-10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 95,
+						"y": 255,
+						"w": 674,
+						"h": 578
+					},
+					"frame": {
+						"x": 1369,
+						"y": 697,
+						"w": 674,
+						"h": 578
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-walk-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 79,
+						"y": 239,
+						"w": 674,
+						"h": 594
+					},
+					"frame": {
+						"x": 1353,
+						"y": 1277,
+						"w": 674,
+						"h": 594
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-walk-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 143,
+						"y": 239,
+						"w": 674,
+						"h": 594
+					},
+					"frame": {
+						"x": 1353,
+						"y": 1873,
+						"w": 674,
+						"h": 594
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-attack-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 95,
+						"y": 255,
+						"w": 674,
+						"h": 578
+					},
+					"frame": {
+						"x": 1353,
+						"y": 2469,
+						"w": 674,
+						"h": 578
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-attack-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 95,
+						"y": 255,
+						"w": 674,
+						"h": 578
+					},
+					"frame": {
+						"x": 1337,
+						"y": 3049,
+						"w": 674,
+						"h": 578
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-die-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 79,
+						"y": 607,
+						"w": 786,
+						"h": 226
+					},
+					"frame": {
+						"x": 2365,
+						"y": 469,
+						"w": 786,
+						"h": 226
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-die-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 63,
+						"y": 255,
+						"w": 674,
+						"h": 578
+					},
+					"frame": {
+						"x": 2045,
+						"y": 697,
+						"w": 674,
+						"h": 578
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-die-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 63,
+						"y": 255,
+						"w": 674,
+						"h": 578
+					},
+					"frame": {
+						"x": 2029,
+						"y": 1277,
+						"w": 674,
+						"h": 578
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-hit-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 63,
+						"y": 255,
+						"w": 674,
+						"h": 578
+					},
+					"frame": {
+						"x": 2029,
+						"y": 1857,
+						"w": 674,
+						"h": 578
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-hit-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 63,
+						"y": 255,
+						"w": 674,
+						"h": 578
+					},
+					"frame": {
+						"x": 2029,
+						"y": 2437,
+						"w": 674,
+						"h": 578
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-hit-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 63,
+						"y": 255,
+						"w": 674,
+						"h": 578
+					},
+					"frame": {
+						"x": 2721,
+						"y": 697,
+						"w": 674,
+						"h": 578
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-hit-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 63,
+						"y": 255,
+						"w": 674,
+						"h": 578
+					},
+					"frame": {
+						"x": 2705,
+						"y": 1277,
+						"w": 674,
+						"h": 578
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-idle-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 63,
+						"y": 255,
+						"w": 674,
+						"h": 578
+					},
+					"frame": {
+						"x": 2705,
+						"y": 1857,
+						"w": 674,
+						"h": 578
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-idle-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 63,
+						"y": 255,
+						"w": 674,
+						"h": 578
+					},
+					"frame": {
+						"x": 2705,
+						"y": 2437,
+						"w": 674,
+						"h": 578
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-idle-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 95,
+						"y": 255,
+						"w": 674,
+						"h": 578
+					},
+					"frame": {
+						"x": 3381,
+						"y": 1277,
+						"w": 674,
+						"h": 578
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-idle-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 95,
+						"y": 255,
+						"w": 674,
+						"h": 578
+					},
+					"frame": {
+						"x": 3381,
+						"y": 1857,
+						"w": 674,
+						"h": 578
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-walk-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 95,
+						"y": 255,
+						"w": 674,
+						"h": 578
+					},
+					"frame": {
+						"x": 3381,
+						"y": 2437,
+						"w": 674,
+						"h": 578
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-attack-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 367,
+						"y": 367,
+						"w": 434,
+						"h": 466
+					},
+					"frame": {
+						"x": 3397,
+						"y": 549,
+						"w": 434,
+						"h": 466
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-walk-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 95,
+						"y": 255,
+						"w": 674,
+						"h": 578
+					},
+					"frame": {
+						"x": 2029,
+						"y": 3017,
+						"w": 674,
+						"h": 578
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-walk-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 159,
+						"y": 255,
+						"w": 674,
+						"h": 578
+					},
+					"frame": {
+						"x": 2705,
+						"y": 3017,
+						"w": 674,
+						"h": 578
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "goblinTank-attack-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1248,
+						"h": 848
+					},
+					"spriteSourceSize": {
+						"x": 367,
+						"y": 47,
+						"w": 418,
+						"h": 786
+					},
+					"frame": {
+						"x": 3381,
+						"y": 3017,
+						"w": 418,
+						"h": 786
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:dd07725f88b95d2c740e14a6307f3bc2:b1036a0c36d245344168b053f4f91d10:be50c135928c91af16fa5b6c0718d9e1$"
+	}
+}

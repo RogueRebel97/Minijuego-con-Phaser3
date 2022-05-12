@@ -5,8 +5,8 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
 
     // Attributes 
     private vRun: number = 150
-    private maxHealth: number
-    private health: number
+    private maxHealth: number = 30
+    private health: number = this.maxHealth
 
     private moveTime: number = 0
 
@@ -17,7 +17,6 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         right: { state: false },
         attack: { state: true, duration: 200, cooldown: 400 },
         damage: { state: false, duration: 500, cooldown: 400 },
-        // invulnerable: { state: true, cooldown: 325 },
     }
 
     private allowMove: boolean = true
@@ -32,11 +31,11 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
     constructor(config: any) {
         console.log('slime creado');
 
-        super(config.currentScene, config.x, config.y, config.texture, config.maxHealth);
+        super(config.currentScene, config.x, config.y, config.texture);
 
         this.currentScene = config.currentScene
-        this.maxHealth = config.maxHealth
-        this.health = this.maxHealth
+        // this.maxHealth = config.maxHealth
+        // this.health = this.maxHealth
         this.initialDirection()
 
 
@@ -55,7 +54,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
     }
 
     create() {
-        console.log(`hp de Slime: ${this.health}`);
+        // console.log(`hp de Slime: ${this.health}`);
         this.createAnimations();
         this.currentScene.physics.add.overlap
             (this.aggro, this.currentScene.registry.get(Constants.GROUPS.PLAYER), this.chase, this.checkIsChasing, this)

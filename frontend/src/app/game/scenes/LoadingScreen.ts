@@ -282,6 +282,12 @@ export class LoadingScreen extends Phaser.Scene {
       { frameWidth: 62, frameHeight: 16 }
     );
 
+    //Goblin atlas
+    this.load.atlas('goblinAtlas',
+      'assets/SpritesSheets/Enemies/Goblin/goblinTank/goblinTank-0.png',
+      'assets/SpritesSheets/Enemies/Goblin/goblinTank/goblinTank.json'
+    )
+
 
 
     // fin de Assets

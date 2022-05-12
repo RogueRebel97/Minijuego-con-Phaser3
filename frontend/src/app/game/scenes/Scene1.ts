@@ -2,6 +2,7 @@ import { Game, Physics, Scene } from 'phaser';
 import { delay, map } from 'rxjs';
 import Knight from '../character/knight';
 import Slime from '../enemies/slime';
+import Goblin from '../enemies/goblin';
 import Constants from '../Constants';
 import HUD from './hud';
 import GameOver from './GameOver';
@@ -11,10 +12,15 @@ export class Scene1 extends Phaser.Scene {
   // Propiedades
   private player!: Knight;
   private hud!: HUD
-  // private slime!: Slime
 
+  // Enemigos
   private slimes!: Physics.Arcade.Group
   private arraySlimes!: Slime[]
+  private slimeLayer!: Phaser.Tilemaps.ObjectLayer
+
+  private goblins!: Physics.Arcade.Group
+  private arrayGoblins!: Goblin[]
+  private goblinLayer!: Phaser.Tilemaps.ObjectLayer
 
   // Colliders para Registro
   private enemyCollider!: Phaser.Physics.Arcade.Collider;
@@ -53,8 +59,9 @@ export class Scene1 extends Phaser.Scene {
   private invisibleWallsPlayer!: Phaser.Tilemaps.TilemapLayer
   private invisibleWallsEnemy!: Phaser.Tilemaps.TilemapLayer
   private deathZone!: Phaser.Tilemaps.TilemapLayer
-  private slimeLayer!: Phaser.Tilemaps.ObjectLayer
   private goalLayer!: Phaser.Tilemaps.TilemapLayer
+
+
 
   private tileMapLayer!: Phaser.Tilemaps.TilemapLayer;
 
@@ -86,14 +93,15 @@ export class Scene1 extends Phaser.Scene {
     this.height = this.cameras.main.height;
 
     this.slimes = this.physics.add.group()
+    this.goblins = this.physics.add.group()
     this.arraySlimes = []
+    this.arrayGoblins = []
   }
 
   create() {
     console.log('create iniciado');
     //Efecto fadeIN
     this.cameras.main.fadeIn(1000, 0, 0, 0);
-
 
     // MAP & Background
 
@@ -143,13 +151,8 @@ export class Scene1 extends Phaser.Scene {
     this.backgroundsLayer1, this.backgroundsLayer2, this.invisibleWallsEnemy, this.invisibleWallsPlayer, this.deathZone, this.goalLayer]
 
     for (let i = 0; i < this.mapLayers.length; i++) { //innecesario añadir .setCollisions... despues de definir cada Layer
-
       this.mapLayers[i].setCollisionByExclusion([-1])
-
-
     }
-    //Plataforms Collide
-
 
     // Plataform Layers Colision: Only up
     this.plataformsLayer.layer.data.forEach((row) => {
@@ -160,8 +163,6 @@ export class Scene1 extends Phaser.Scene {
         tile.collideUp = true
       })
     })
-
-
     this.registry.set(Constants.REGISTRY.COLLIDERS.PLATFORMS, this.plataformsLayer)
 
     //Player
@@ -183,6 +184,7 @@ export class Scene1 extends Phaser.Scene {
 
     // Crear enemigos:
 
+    //Slime
     this.slimeLayer = this.tileMap.getObjectLayer('slimes')
     this.slimeLayer.objects.forEach(slimeObj => {
       // console.log(slimeObj);
@@ -190,8 +192,7 @@ export class Scene1 extends Phaser.Scene {
         currentScene: this,
         x: slimeObj.x,
         y: slimeObj.y,
-        texture: Constants.ENEMIES.SLIME.BLUE.ANIMATIONS.IDLE_RUN,
-        maxHealth: 30
+        texture: Constants.ENEMIES.SLIME.BLUE.ANIMATIONS.IDLE_RUN
       })
       // this.slimes = this.physics.add.group(slime);
       this.slimes.add(slime); //add slime to  Physics.Arcade.Group
@@ -201,12 +202,26 @@ export class Scene1 extends Phaser.Scene {
       this.physics.add.collider(slime, this.invisibleWallsEnemy);
 
     })
-
     this.registry.set(Constants.GROUPS.ENEMIES, this.slimes);
 
-    // this.slime.create()
-    this.player.create();
+    this.goblinLayer = this.tileMap.getObjectLayer('goblin')
+    this.goblinLayer.objects.forEach(goblinObj => {
+      const goblin = new Goblin({
+        currentScene: this,
+        x: goblinObj.x,
+        y: goblinObj.y,
+        texture: 'goblinAtlas'
+      })
+      this.goblins.add(goblin);
+      this.arrayGoblins.push(goblin);
+      this.physics.add.collider(goblin, this.plataformsLayer)
+      this.physics.add.collider(goblin, this.wallsLayer);
+      this.physics.add.collider(goblin, this.invisibleWallsEnemy);
+    })
+    this.registry.set(Constants.GROUPS.ENEMIES, this.goblins);
 
+    // create player  ?¿?¿
+    this.player.create();
     //create hud
     this.hud = new HUD(this)
 
@@ -216,16 +231,6 @@ export class Scene1 extends Phaser.Scene {
     this.cameras.main.zoom = 2;
 
     // Player Colliders
-
-
-
-
-
-
-
-
-
-
     this.physics.add.collider(this.player, this.wallsLayer);
     this.physics.add.collider(this.player, this.invisibleWallsPlayer);
 
@@ -256,13 +261,14 @@ export class Scene1 extends Phaser.Scene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.player.removeAllListeners()
       this.slimes.removeAllListeners()
+      this.goblins.removeAllListeners()
     })
 
 
-    for (let i = 0; i < this.arraySlimes.length; i++) {
-      console.log(this.arraySlimes[i]);
+    // for (let i = 0; i < this.arraySlimes.length; i++) {
+    //   console.log(this.arraySlimes[i]);
 
-    }
+    // }
 
   }
 
@@ -278,6 +284,7 @@ export class Scene1 extends Phaser.Scene {
     }
 
     this.slimeLogic()
+    this.goblinLogic()
 
     // console.log(this.arraySlimes)
 
@@ -325,17 +332,21 @@ export class Scene1 extends Phaser.Scene {
       }
 
     }
-
-
   }
 
-  // platformColliding() {
-  //   this.player.checkPlatformCollider(true)
-  // }
+  goblinLogic() {
+    for (let i = 0; i < this.arrayGoblins.length; i++) {
+      if (this.arrayGoblins[i].body) {
+        this.arrayGoblins[i].update()
+        // this.arrayGoblins[i].checkIsDead()
+        // this.arrayGoblins[i].resetChase()
+        // && !this.arrayGoblins[i].deathCheck()
+      }
 
-  // checkPlatformColliding() {
-  //   this.player.checkPlatformCollider(false)
-  // }
+    }
+  }
+
+
 
 
 
