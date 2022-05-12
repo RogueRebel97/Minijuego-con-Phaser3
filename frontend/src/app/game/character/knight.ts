@@ -1,3 +1,4 @@
+import { keyframes } from "@angular/animations";
 import Constants from "../Constants";
 import Slime from "../enemies/slime";
 
@@ -9,6 +10,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     private maxHealth: number = 999;
     private health: number = this.maxHealth;
     private damage: number = 10;
+
 
     // Actions & states
     private actions: any = {
@@ -28,6 +30,10 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     // Current Game Scene
     private currentScene!: Phaser.Scene;
 
+    //Platform Collider
+
+    private platformCollider!: Phaser.Physics.Arcade.Collider;
+
     //Sword Hitbox
     private swordHitbox: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
 
@@ -42,14 +48,23 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
         // Player Controls
         this.controls = this.currentScene.input.keyboard.addKeys({
+            // Conf 1
             'UP': Phaser.Input.Keyboard.KeyCodes.UP,
             'DOWN': Phaser.Input.Keyboard.KeyCodes.DOWN,
             'LEFT': Phaser.Input.Keyboard.KeyCodes.LEFT,
             'RIGHT': Phaser.Input.Keyboard.KeyCodes.RIGHT,
+            'Z': Phaser.Input.Keyboard.KeyCodes.Z,
+            'X': Phaser.Input.Keyboard.KeyCodes.X,
+            'C': Phaser.Input.Keyboard.KeyCodes.C,
+            //Conf 2
             'W': Phaser.Input.Keyboard.KeyCodes.W,
             'A': Phaser.Input.Keyboard.KeyCodes.A,
             'S': Phaser.Input.Keyboard.KeyCodes.S,
             'D': Phaser.Input.Keyboard.KeyCodes.D,
+            'J': Phaser.Input.Keyboard.KeyCodes.J,
+            'K': Phaser.Input.Keyboard.KeyCodes.K,
+            'L': Phaser.Input.Keyboard.KeyCodes.L,
+
             'SHIFT': Phaser.Input.Keyboard.KeyCodes.SHIFT,
             'SPACE': Phaser.Input.Keyboard.KeyCodes.SPACE,
         });
@@ -58,6 +73,8 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.currentScene.physics.world.enable(this);
         this.currentScene.add.existing(this);
         this.setCollideWorldBounds(false);
+
+
 
         this.body.setSize(20, 38);
         // this.displayWidth = 240;
@@ -73,7 +90,15 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.currentScene.physics.world.remove(this.swordHitbox.body)
     }
 
-    create() { // Character animations
+    create() {
+
+        // character platform collide
+
+
+        this.platformCollider = this.currentScene.physics.add.collider
+            (this, this.currentScene.registry.get(Constants.REGISTRY.COLLIDERS.PLATFORMS))
+
+        // Character animations
         this.anims.create({
             key: 'left',
             frames: this.currentScene.anims.generateFrameNumbers('run', { start: 0, end: 9 }),
@@ -157,10 +182,9 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     }
 
     override update() {
-
-        console.log("Agachado: " + this.crouch);
-
         let key = Phaser.Input.Keyboard;
+
+        // console.log(`plataform colliding: ${this.checkPlatformCollider}`);
 
         if (this.playerIsDead) this.allowMove = false;
 
@@ -173,26 +197,26 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
                 this.crouch = true
                 // this.body.setOffset(this.width * 0.5 - 5, this.height * 0.5);
-                this.setBodySize(20, 30)
                 // this.body.setSize(20, 30);
 
             }
-            else {
+            else { //Reset crouch state 
                 this.crouch = false
+
                 // this.body.setSize(20, 38);
-                if (this.flipX) {
-                    this.body.setOffset(this.width * 0.5 - 5, this.height * 0.5);
-                } else {
-                    this.body.setOffset(this.width * 0.5 - 15, this.height * 0.5);
-                }
+                // if (this.flipX) {
+                //     this.body.setOffset(this.width * 0.5 - 5, this.height * 0.5);
+                // } else {
+                //     this.body.setOffset(this.width * 0.5 - 15, this.height * 0.5);
+                // }
 
             }
 
 
             // Run
             if (!this.crouch) {
-                if ((this.controls.LEFT.isDown || this.controls.A.isDown)) { // Left <==
 
+                if ((this.controls.LEFT.isDown || this.controls.A.isDown)) { // Left <==
 
                     // Left Speed
                     this.setVelocityX(-this.vRun);
@@ -230,7 +254,15 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 } else {
                     this.setVelocityX(0)
                 }
-            } else { // Crouch Movement
+
+                // Jump
+                if ((key.JustDown(this.controls.UP) || key.JustDown(this.controls.W)) && this.body.blocked.down) {
+                    this.anims.stop();
+                    this.setVelocityY(-this.vJump);
+                    this.anims.play('jump');
+                }
+            } else // Crouch Movement  crouch == true
+            {
                 // Crouch walk left
                 if ((this.controls.LEFT.isDown || this.controls.A.isDown)) {
 
@@ -264,17 +296,19 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 } else {
                     this.setVelocityX(0);
                 }
+                if ((key.JustDown(this.controls.UP) || key.JustDown(this.controls.W)) && this.body.blocked.down) {
+
+                    this.platformCollider.active = false
+                    this.currentScene.time.delayedCall(400, () => {
+                        this.platformCollider.active = true
+                    }, [], this);
+                }
+
+
             }
 
 
 
-            // Jump
-            if ((key.JustDown(this.controls.UP) || key.JustDown(this.controls.W)) && this.body.blocked.down) {
-                this.anims.stop();
-                this.setVelocityY(-this.vJump);
-                this.anims.play('jump');
-
-            }
 
 
             // Fall
@@ -284,7 +318,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             }
 
             // Attack: Down Swing
-            if (key.JustDown(this.controls.SPACE) && this.body.blocked.down && this.actions.attack.state) {
+            if (key.JustDown(this.controls.J) || key.JustDown(this.controls.Z) && this.body.blocked.down && this.actions.attack.state) {
                 this.setVelocityX(0); //parar el pj
                 this.blockMove('attack') // bloquear otros inputs de usuario por x milisegundos
                 this.cooldown('attack');    // impide que se vuelva a ejecutar otro ataque durante x ms
@@ -316,12 +350,6 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                     this.swordHitbox.body.enable = false;
                     this.currentScene.physics.world.remove(this.swordHitbox.body)
                 })
-
-
-
-
-
-
             }
 
             // Slide
@@ -338,6 +366,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 if (this.flipX) this.setVelocityX(-this.vSlide);
                 else this.setVelocityX(this.vSlide);
             }
+
         }
     }
 
@@ -465,9 +494,31 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.allowMove = false
         this.setVelocityX(0)
         this.setVelocityY(0)
-
     }
 
+
+
+    // downPlatform(platform: any, knight: any) {
+    //     // let key!: typeof Phaser.Input.Keyboard
+    //     // if ((key.JustDown(this.controls.UP) || key.JustDown(this.controls.W)) && this.body.blocked.down) {
+    //     //     console.log("saltar Plataforma");
+
+    //     // }
+
+
+    //     this.platformCollide = true
+    // }
+    // checkPlatformCollider() {
+
+    //     if (this.platformCollide) {
+    //         return true
+    //     }
+    //     else {
+    //         this.platformCollide = false
+    //         return false
+    //     }
+
+    // }
 
 }
 

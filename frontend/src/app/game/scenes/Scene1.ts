@@ -126,24 +126,43 @@ export class Scene1 extends Phaser.Scene {
 
     this.wallsLayer = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.PLATAFORMS.WALLS, this.tileSets)
     this.plataformsLayer = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.PLATAFORMS.PLATAFORMS, this.tileSets)
+
     this.invisibleWallsEnemy = this.tileMap.createLayer('InvisibleWalls/enemywalls', this.tileSets)
     this.invisibleWallsPlayer = this.tileMap.createLayer('InvisibleWalls/playerWalls', this.tileSets)
+
+    //Invisible Zones (alpha 0)
     this.deathZone = this.tileMap.createLayer('deathZone/deathZone', this.tileSets)
     this.goalLayer = this.tileMap.createLayer('InvisibleWalls/goal', this.tileSets)
     this.goalLayer.setAlpha(0)
     this.deathZone.setAlpha(0)
     this.invisibleWallsEnemy.setAlpha(0)
     this.invisibleWallsPlayer.setAlpha(0)
-    // this.goalLayer.setAlpha(0)
 
+    //Add layers to mapLayers Array.
     this.mapLayers = [this.plataformsLayer, this.wallsLayer, this.decorsLayer1, this.decorsLayer2, this.decorsLayer3,
     this.backgroundsLayer1, this.backgroundsLayer2, this.invisibleWallsEnemy, this.invisibleWallsPlayer, this.deathZone, this.goalLayer]
 
     for (let i = 0; i < this.mapLayers.length; i++) { //innecesario añadir .setCollisions... despues de definir cada Layer
-      // console.log(this.mapLayers[i]);
-      this.mapLayers[i].setCollisionByExclusion([-1])
-    }
 
+      this.mapLayers[i].setCollisionByExclusion([-1])
+
+
+    }
+    //Plataforms Collide
+
+
+    // Plataform Layers Colision: Only up
+    this.plataformsLayer.layer.data.forEach((row) => {
+      row.forEach((tile) => {
+        tile.collideDown = false
+        tile.collideLeft = false
+        tile.collideRight = false
+        tile.collideUp = true
+      })
+    })
+
+
+    this.registry.set(Constants.REGISTRY.COLLIDERS.PLATFORMS, this.plataformsLayer)
 
     //Player
     this.tileMap.findObject(Constants.PLAYER.ID, (d: any) => {
@@ -157,6 +176,9 @@ export class Scene1 extends Phaser.Scene {
     this.registry.set(Constants.GROUPS.PLAYER, this.player)
 
     this.player.setCollideWorldBounds(true)
+
+    // this.platformsColliders = this.physics.add.collider(this.player, this.plataformsLayer);
+    // this.registry.set(Constants.REGISTRY.COLLIDERS.PLATFORMS, this.platformsColliders)
 
 
     // Crear enemigos:
@@ -194,14 +216,16 @@ export class Scene1 extends Phaser.Scene {
     this.cameras.main.zoom = 2;
 
     // Player Colliders
-    this.platformsColliders = this.physics.add.collider(this.player, this.plataformsLayer);
 
 
 
 
 
 
-    this.registry.set(Constants.REGISTRY.COLLIDERS.PLATFORMS, this.platformsColliders)
+
+
+
+
     this.physics.add.collider(this.player, this.wallsLayer);
     this.physics.add.collider(this.player, this.invisibleWallsPlayer);
 
@@ -305,7 +329,13 @@ export class Scene1 extends Phaser.Scene {
 
   }
 
+  // platformColliding() {
+  //   this.player.checkPlatformCollider(true)
+  // }
 
+  // checkPlatformColliding() {
+  //   this.player.checkPlatformCollider(false)
+  // }
 
 
 

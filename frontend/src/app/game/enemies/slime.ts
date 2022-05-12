@@ -40,11 +40,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         this.initialDirection()
 
 
-        //Register Variables
-        // this.currentScene.registry
-        //     .set(Constants.ENEMIES.SLIME.STATS.MAXHEALTH, this.maxHealth)
-        // this.currentScene.registry
-        //     .set(Constants.ENEMIES.SLIME.STATS.HEALTH, this.health)
+
 
         // Physics
         this.currentScene.physics.world.enable(this)
@@ -114,15 +110,11 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
             this.anims.stop();
             this.setVelocityX(0);
 
-
-
-
             // remove body and aggro box
             this.currentScene.physics.world.remove(this.body)
             this.currentScene.physics.world.remove(this.aggro.body)
             this.body.enable = false;
             this.aggro.body.enable = false;
-
 
             console.log(`body en Muerte:`);
             console.log(this.body);
@@ -130,7 +122,6 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
 
             this.aggro.destroy();
             this.destroy()
-
 
 
         }
