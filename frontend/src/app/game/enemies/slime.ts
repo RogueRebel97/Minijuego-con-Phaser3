@@ -70,10 +70,10 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
             // console.log('entro en patrol');
 
             if (this.actions.left.state) {
-                this.moveLeftUpdate(1)
+                this.moveLeft(1)
             }
             if (this.actions.right.state) {
-                this.moveRightUpdate(1)
+                this.moveRight(1)
             }
         }
 
@@ -126,18 +126,21 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    getDamage(damage: number) {
-        var health = this.health
+    getDamage(damage: number, playerX: number) {
+        // var health = this.health
 
-        if (health > 0 && !this.isDead && !this.actions.damage.state) {
-            //     console.log(`States: 
-            //     Muerto:${this.isDead}
-            //     RecibioDaño:${this.actions.damage.state} 
-            //    `);
-            //     console.log("hp INICIAL Slime: " + health);
-            //     console.log("HIT");
-            //     console.log('derecha: ' + this.actions.right.state);
-            //     console.log('izquierda: ' + this.actions.left.state);
+        console.log('dañado');
+
+
+        if (this.health > 0 && !this.isDead && !this.actions.damage.state) {
+            console.log(`States: 
+                Muerto:${this.isDead}
+                RecibioDaño:${this.actions.damage.state} 
+               `);
+            console.log("hp INICIAL Slime: " + this.health);
+            console.log("HIT");
+            console.log('derecha: ' + this.actions.right.state);
+            console.log('izquierda: ' + this.actions.left.state);
 
             console.log(`body en Dañado:`);
             console.log(this.body);
@@ -151,7 +154,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityX(0)
             this.anims.play(Constants.ENEMIES.SLIME.BLUE.ANIMATIONS.HIT)
 
-            this.health = health - damage;
+            this.health = this.health - damage;
 
             console.log(`hp FINAL de Slime: ${this.health}`);
         }
@@ -186,7 +189,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    moveLeftUpdate(time: number) {
+    moveLeft(time: number) {
         if (this.flipX) this.flipX = false // turn to rigth direction
         this.moveTime += time // Aumentar el contador con cada paso
 
@@ -207,7 +210,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    moveRightUpdate(time: number) {
+    moveRight(time: number) {
         if (!this.flipX) this.flipX = true // turn to rigth direction
 
         this.moveTime += time // Aumentar el contador con cada paso
@@ -233,6 +236,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         var distance: number = player.x - enemy.x;
 
         this.isChasing = true
+
 
 
         if (this.isChasing && this.allowMove && !this.isDead) {

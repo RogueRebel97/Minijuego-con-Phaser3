@@ -668,8 +668,8 @@
                  "type":"goblin",
                  "visible":true,
                  "width":0,
-                 "x":2524.5,
-                 "y":134.5
+                 "x":2470.5,
+                 "y":126.5
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -701,7 +701,7 @@
          "y":0
         }],
  "nextlayerid":27,
- "nextobjectid":21,
+ "nextobjectid":23,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.8.4",

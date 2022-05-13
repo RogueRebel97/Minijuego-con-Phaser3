@@ -93,8 +93,6 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     create() {
 
         // character platform collide
-
-
         this.platformCollider = this.currentScene.physics.add.collider
             (this, this.currentScene.registry.get(Constants.REGISTRY.COLLIDERS.PLATFORMS))
 
@@ -174,9 +172,11 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
         // Sword and Enemy Colliders
         this.currentScene.physics.add.overlap
-            (this.swordHitbox, this.currentScene.registry.get(Constants.GROUPS.ENEMIES), this.attackCollide)
+            (this.swordHitbox,
+                this.currentScene.registry.get(Constants.GROUPS.ENEMIES),
+                this.attackCollide)
 
-        console.log("Grupo de enemigos:" + this.currentScene.registry.get(Constants.GROUPS.ENEMIES));
+
 
 
     }
@@ -185,7 +185,6 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         let key = Phaser.Input.Keyboard;
 
         // console.log(`plataform colliding: ${this.checkPlatformCollider}`);
-
         if (this.playerIsDead) this.allowMove = false;
 
         // Actions set
@@ -325,7 +324,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 this.anims.stop(); // detener animaciones en curso
                 this.anims.play('downSwing');
 
-                // cambiar el Frame en el ataque es efectivo
+                // cambiar el Frame en el ataque se hace efectivo
                 const startHit = (anim: Phaser.Animations.Animation, frame: Phaser.Animations.AnimationFrame) => {
                     if (frame.index < 1) { // empieza en el frame 1
                         return
@@ -343,13 +342,14 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                     this.swordHitbox.body.enable = true
                     this.currentScene.physics.world.add(this.swordHitbox.body)
                 }
-                this.on(Phaser.Animations.Events.ANIMATION_UPDATE, startHit) // cuando la animacion avance llama a startHi para saber cuando comenzar
+                this.on(Phaser.Animations.Events.ANIMATION_UPDATE, startHit) // cuando la animacion avance llama a startHit para saber cuando comenzar
 
                 // desactivar la hitbox al acabar la animacion
                 this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'downSwing', () => {
                     this.swordHitbox.body.enable = false;
                     this.currentScene.physics.world.remove(this.swordHitbox.body)
                 })
+
             }
 
             // Slide
@@ -368,6 +368,10 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             }
 
         }
+
+
+
+
     }
 
     private blockMove(action: string) {
@@ -482,8 +486,9 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     attackCollide(obj1: any, obj2: any) {
         var enemy: Slime;
 
+
         enemy = obj2;
-        enemy.getDamage(10)
+        enemy.getDamage(10, obj1.x)
     }
 
     reachGoal() {

@@ -14,13 +14,14 @@ export class Scene1 extends Phaser.Scene {
   private hud!: HUD
 
   // Enemigos
-  private slimes!: Physics.Arcade.Group
   private arraySlimes!: Slime[]
   private slimeLayer!: Phaser.Tilemaps.ObjectLayer
 
-  private goblins!: Physics.Arcade.Group
+  // private goblins!: Physics.Arcade.Group
   private arrayGoblins!: Goblin[]
   private goblinLayer!: Phaser.Tilemaps.ObjectLayer
+
+  private enemies!: Physics.Arcade.Group
 
   // Colliders para Registro
   private enemyCollider!: Phaser.Physics.Arcade.Collider;
@@ -92,8 +93,8 @@ export class Scene1 extends Phaser.Scene {
     this.width = this.cameras.main.width;
     this.height = this.cameras.main.height;
 
-    this.slimes = this.physics.add.group()
-    this.goblins = this.physics.add.group()
+    this.enemies = this.physics.add.group()
+    // this.goblins = this.physics.add.group()
     this.arraySlimes = []
     this.arrayGoblins = []
   }
@@ -178,6 +179,8 @@ export class Scene1 extends Phaser.Scene {
 
     this.player.setCollideWorldBounds(true)
 
+
+
     // this.platformsColliders = this.physics.add.collider(this.player, this.plataformsLayer);
     // this.registry.set(Constants.REGISTRY.COLLIDERS.PLATFORMS, this.platformsColliders)
 
@@ -195,14 +198,14 @@ export class Scene1 extends Phaser.Scene {
         texture: Constants.ENEMIES.SLIME.BLUE.ANIMATIONS.IDLE_RUN
       })
       // this.slimes = this.physics.add.group(slime);
-      this.slimes.add(slime); //add slime to  Physics.Arcade.Group
+      this.enemies.add(slime); //add slime to  Physics.Arcade.Group
       this.arraySlimes.push(slime) // push slime into Array of Slime (class)
       this.physics.add.collider(slime, this.plataformsLayer)
       this.physics.add.collider(slime, this.wallsLayer);
       this.physics.add.collider(slime, this.invisibleWallsEnemy);
 
     })
-    this.registry.set(Constants.GROUPS.ENEMIES, this.slimes);
+
 
     this.goblinLayer = this.tileMap.getObjectLayer('goblin')
     this.goblinLayer.objects.forEach(goblinObj => {
@@ -212,13 +215,15 @@ export class Scene1 extends Phaser.Scene {
         y: goblinObj.y,
         texture: 'goblinAtlas'
       })
-      this.goblins.add(goblin);
+      this.enemies.add(goblin);
       this.arrayGoblins.push(goblin);
       this.physics.add.collider(goblin, this.plataformsLayer)
       this.physics.add.collider(goblin, this.wallsLayer);
       this.physics.add.collider(goblin, this.invisibleWallsEnemy);
     })
-    this.registry.set(Constants.GROUPS.ENEMIES, this.goblins);
+    this.registry.set(Constants.GROUPS.ENEMIES, this.enemies);
+
+
 
     // create player  ?¿?¿
     this.player.create();
@@ -252,7 +257,7 @@ export class Scene1 extends Phaser.Scene {
 
 
     //player touch Slime
-    this.enemyCollider = this.physics.add.overlap(this.slimes, this.player, (slime, player) => {
+    this.enemyCollider = this.physics.add.overlap(this.arraySlimes, this.player, (slime, player) => {
       this.player.getDamage(10);
     });
     this.registry.set(Constants.REGISTRY.COLLIDERS.ENEMY, this.enemyCollider)
@@ -260,8 +265,8 @@ export class Scene1 extends Phaser.Scene {
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.player.removeAllListeners()
-      this.slimes.removeAllListeners()
-      this.goblins.removeAllListeners()
+      this.enemies.removeAllListeners()
+
     })
 
 
@@ -336,11 +341,11 @@ export class Scene1 extends Phaser.Scene {
 
   goblinLogic() {
     for (let i = 0; i < this.arrayGoblins.length; i++) {
-      if (this.arrayGoblins[i].body) {
+      if (this.arrayGoblins[i].body && !this.arrayGoblins[i].deathCheck()) {
         this.arrayGoblins[i].update()
-        // this.arrayGoblins[i].checkIsDead()
-        // this.arrayGoblins[i].resetChase()
-        // && !this.arrayGoblins[i].deathCheck()
+        this.arrayGoblins[i].checkIsDead()
+        this.arrayGoblins[i].resetChase()
+
       }
 
     }
