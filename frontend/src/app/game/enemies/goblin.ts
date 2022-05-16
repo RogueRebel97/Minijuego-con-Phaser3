@@ -11,6 +11,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
 
 
     private moveTime: number = 0
+    private controls!: any
 
     //Actions & States
     private actions: any = {
@@ -23,6 +24,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
     private allowMove: boolean = true
     private isDead: boolean = false;
     private isChasing: boolean = false;
+    private isPatrolling: boolean = true
     private aggro: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
 
 
@@ -31,13 +33,15 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
     private currentScene!: Phaser.Scene
 
     constructor(config: any) {
-
-        // console.log("goblin Creado");
-
+        console.log("goblin Creado");
         super(config.currentScene, config.x, config.y, config.texture)
 
         this.currentScene = config.currentScene
 
+        // Controls 
+        this.controls = this.currentScene.input.keyboard.addKeys({
+            'P': Phaser.Input.Keyboard.KeyCodes.P
+        })
 
         // Physics
         this.currentScene.physics.world.enable(this)
@@ -64,6 +68,19 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
 
         this.currentScene.physics.add.overlap
             (this.aggro, this.currentScene.registry.get(Constants.GROUPS.PLAYER), this.chase, this.checkIsChasing, this)
+
+        this.aggro.on('overlapend', () => {
+            console.log("Saliste de Agro");
+
+            this.isChasing = false
+            this.isPatrolling = true
+        })
+        this.aggro.on('overlapstart', () => {
+            this.isChasing = true
+            this.isPatrolling = false
+            console.log("Entraste en Aggro");
+
+        })
     }
 
 
@@ -71,14 +88,26 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
 
 
     override update() {
-        // console.log(this.isChasing);
+        let key = Phaser.Input.Keyboard;
+
+        // events for enter and exit the Aggro Area
+        var touching = !this.aggro.body.touching.none
+        var wasTouching = !this.aggro.body.wasTouching.none
+
+        if (touching && !wasTouching) {
+            this.aggro.emit('overlapstart')
+        } else if (!touching && wasTouching) {
+            this.aggro.emit('overlapend')
+        }
 
         if (this.isDead) this.allowMove = false
 
         // if (!this.actions.damage.state) this.anims.play('goblinIdle', true) no necesita idle.
 
+        if (!this.actions.damage.state && !this.isPatrolling && this.isChasing && this.allowMove) { this.anims.play('goblinMove', true) } // walking animation
+
         //Patrolling
-        if (this.allowMove && !this.actions.damage.state && !this.isChasing) {
+        if (this.allowMove && !this.actions.damage.state && !this.isChasing && this.isPatrolling) {
             // console.log('entro en patrol');
 
             if (this.actions.left.state) {
@@ -92,6 +121,15 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
 
         this.aggro.x = this.x
         this.aggro.y = this.y
+
+        if (key.JustDown(this.controls.P)) {
+            console.log(
+                `
+          GOBLIN isChasing:    ${this.isChasing}
+          GOBLIN isPatrolling: ${this.isPatrolling}
+          GOBLIN AllowMove:    ${this.allowMove}`);
+
+        }
     }
 
 
@@ -316,17 +354,15 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
 
     chase(enemy: any, player: any) {
         var distance: number = player.x - enemy.x;
-        this.isChasing = true
-        // console.log("chasing");
 
-        if (this.isChasing && this.allowMove && !this.isDead) {
+        if (this.isChasing && this.allowMove && !this.isDead && !this.isPatrolling) {
+            // console.log("chasing");
             if (distance > 0) {
                 this.flipX = false
                 this.setVelocityX(this.vRun)
-                if (distance <= 40) {
+                if (distance <= 35) {
                     // this.setAccelerationX(0)
                     this.setVelocityX(0);
-
                     this.blockMove('attack')
                     this.cooldown('attack')
                     this.anims.stop();
@@ -337,7 +373,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
             } else {
                 this.flipX = true
                 this.setVelocityX(-this.vRun)
-                if (distance >= -40) {
+                if (distance >= -35) {
                     // this.setAccelerationX(0)
                     this.setVelocityX(0);
 
@@ -356,9 +392,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
 
 
     }
-    resetChase() {
-        this.isChasing = false
-    }
+
 
 
 

@@ -333,7 +333,7 @@ export class Scene1 extends Phaser.Scene {
       if (this.arraySlimes[i].body && !this.arraySlimes[i].deathCheck()) {
         this.arraySlimes[i].update()
         this.arraySlimes[i].checkIsDead()
-        this.arraySlimes[i].resetChase()
+
       }
 
     }
@@ -344,7 +344,7 @@ export class Scene1 extends Phaser.Scene {
       if (this.arrayGoblins[i].body && !this.arrayGoblins[i].deathCheck()) {
         this.arrayGoblins[i].update()
         this.arrayGoblins[i].checkIsDead()
-        this.arrayGoblins[i].resetChase()
+
 
       }
 

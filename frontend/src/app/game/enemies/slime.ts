@@ -1,3 +1,4 @@
+
 import { retry } from "rxjs";
 import Constants from "../Constants";
 
@@ -9,6 +10,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
     private health: number = this.maxHealth
 
     private moveTime: number = 0
+    private controls!: any
 
 
     //Actions & States
@@ -22,6 +24,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
     private allowMove: boolean = true
     private isDead: boolean = false;
     private isChasing: boolean = false;
+    private isPatrolling: boolean = true
     private aggro: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
 
 
@@ -34,12 +37,12 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         super(config.currentScene, config.x, config.y, config.texture);
 
         this.currentScene = config.currentScene
-        // this.maxHealth = config.maxHealth
-        // this.health = this.maxHealth
         this.initialDirection()
 
-
-
+        // Controls 
+        this.controls = this.currentScene.input.keyboard.addKeys({
+            'O': Phaser.Input.Keyboard.KeyCodes.O
+        })
 
         // Physics
         this.currentScene.physics.world.enable(this)
@@ -58,16 +61,40 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         this.createAnimations();
         this.currentScene.physics.add.overlap
             (this.aggro, this.currentScene.registry.get(Constants.GROUPS.PLAYER), this.chase, this.checkIsChasing, this)
+
+        this.aggro.on('overlapEnd', () => {
+            console.log("Saliste de Agro");
+
+            this.isChasing = false
+            this.isPatrolling = true
+        })
+        this.aggro.on('overlapStart', () => {
+            this.isChasing = true
+            this.isPatrolling = false
+            console.log("Entraste en Aggro");
+
+        })
     }
 
     override update() {
+        let key = Phaser.Input.Keyboard;
+
+        var touching = !this.aggro.body.touching.none
+        var wasTouching = !this.aggro.body.wasTouching.none
+
+        if (touching && !wasTouching) {
+            this.aggro.emit('overlapStart')
+        } else if (!touching && wasTouching) {
+            this.aggro.emit('overlapEnd')
+        }
+
         if (this.isDead) this.allowMove = false
 
         if (!this.actions.damage.state) this.anims.play(Constants.ENEMIES.SLIME.BLUE.ANIMATIONS.IDLE_RUN, true)
 
         //Patrolling
-        if (this.allowMove && !this.isChasing && !this.actions.damage.state) {
-            // console.log('entro en patrol');
+        if (this.allowMove && !this.isChasing && !this.actions.damage.state && !this.isDead && this.isPatrolling) {
+            // console.log('SLIME: entro en patrol');
 
             if (this.actions.left.state) {
                 this.moveLeft(1)
@@ -81,6 +108,15 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         // Field of view Aggro follow slime
         this.aggro.x = this.x
         this.aggro.y = this.y
+
+        if (key.JustDown(this.controls.O)) {
+            console.log(
+                `
+          SLIME isChasing:    ${this.isChasing}
+          SLIME isPatrolling: ${this.isPatrolling}
+          SLIME AllowMove:    ${this.allowMove}`);
+
+        }
     }
 
     createAnimations() {
@@ -235,11 +271,9 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
     chase(enemy: any, player: any) {
         var distance: number = player.x - enemy.x;
 
-        this.isChasing = true
-
-
-
-        if (this.isChasing && this.allowMove && !this.isDead) {
+        if (this.isChasing && this.allowMove && !this.isDead && !this.isPatrolling) {
+            // this.isPatrolling = false
+            // console.log("SLIME: chasing");
             if (distance > 0) {
                 this.flipX = true
                 this.setVelocityX(40)
@@ -248,22 +282,26 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
                 this.setVelocityX(-40)
             }
         }
+        else {
 
-
-
-
-
-
+        }
 
     }
     checkIsChasing() {
+        // if (this.isChasing == false && this.isPatrolling == true) {
+        //     this.isChasing = true
+        //     return true
+        // } else {
+        //     this.isPatrolling = false
+        //     return false
+        // }
+
+
 
 
     }
 
-    resetChase() {
-        this.isChasing = false
-    }
+
 
     deathCheck(): boolean {
 
