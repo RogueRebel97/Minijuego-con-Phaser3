@@ -180,11 +180,6 @@ export class Scene1 extends Phaser.Scene {
     this.player.setCollideWorldBounds(true)
 
 
-
-    // this.platformsColliders = this.physics.add.collider(this.player, this.plataformsLayer);
-    // this.registry.set(Constants.REGISTRY.COLLIDERS.PLATFORMS, this.platformsColliders)
-
-
     // Crear enemigos:
 
     //Slime
@@ -224,9 +219,9 @@ export class Scene1 extends Phaser.Scene {
     this.registry.set(Constants.GROUPS.ENEMIES, this.enemies);
 
 
-
     // create player  ?¿?¿
     this.player.create();
+
     //create hud
     this.hud = new HUD(this)
 

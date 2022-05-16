@@ -194,8 +194,13 @@ export class LoadingScreen extends Phaser.Scene {
     );
 
     this.load.spritesheet(
-      'downAttack',
-      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_Attack.png',
+      'downAttack_noMove',
+      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_AttackNoMovement.png',
+      { frameWidth: 120, frameHeight: 80 }
+    );
+    this.load.spritesheet(
+      'swing_noMove',
+      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_Attack2NoMovement.png',
       { frameWidth: 120, frameHeight: 80 }
     );
 

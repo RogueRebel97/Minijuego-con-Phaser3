@@ -1,4 +1,5 @@
 import { keyframes } from "@angular/animations";
+import { UP } from "phaser";
 import Constants from "../Constants";
 import Slime from "../enemies/slime";
 
@@ -14,7 +15,8 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
     // Actions & states
     private actions: any = {
-        attack: { state: true, duration: 300, cooldown: 350 },
+        attack: { state: true, duration: 350, cooldown: 800 },
+        attack2: { state: true, duration: 500, cooldown: 0 },
         slide: { state: true, duration: 300, cooldown: 800 },
         damage: { state: true, duration: 500, cooldown: 1500 },
         invulnerable: { state: true, cooldown: 325 }
@@ -22,10 +24,14 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     private allowMove: boolean = true;
     private crouch: boolean = false
     private playerIsDead: boolean = false;
-    // private allowDamage: boolean = true;
+
 
     // Key controls
     private controls!: any;
+
+    //Key Combo
+    private combo!: Phaser.Input.Keyboard.KeyCombo;
+    private konami!: Phaser.Input.Keyboard.KeyCombo;
 
     // Current Game Scene
     private currentScene!: Phaser.Scene;
@@ -64,11 +70,12 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             'J': Phaser.Input.Keyboard.KeyCodes.J,
             'K': Phaser.Input.Keyboard.KeyCodes.K,
             'L': Phaser.Input.Keyboard.KeyCodes.L,
+            'I': Phaser.Input.Keyboard.KeyCodes.I,
 
             'SHIFT': Phaser.Input.Keyboard.KeyCodes.SHIFT,
             'SPACE': Phaser.Input.Keyboard.KeyCodes.SPACE,
         });
-
+        let key = Phaser.Input.Keyboard;
         // Sprite Physics
         this.currentScene.physics.world.enable(this);
         this.currentScene.add.existing(this);
@@ -88,6 +95,16 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.swordHitbox.body.setAllowGravity(false)
         this.swordHitbox.body.enable = false;
         this.currentScene.physics.world.remove(this.swordHitbox.body)
+
+
+        //Combos
+        this.konami = this.currentScene.input.keyboard.createCombo([38, 38, 40, 40, 37, 39, 37, 39], { resetOnMatch: true });
+
+        this.currentScene.input.keyboard.on('keycombomatch', (event: any) => {
+
+            console.log('Konami Code entered!');
+
+        });
     }
 
     create() {
@@ -96,88 +113,12 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.platformCollider = this.currentScene.physics.add.collider
             (this, this.currentScene.registry.get(Constants.REGISTRY.COLLIDERS.PLATFORMS))
 
-        // Character animations
-        this.anims.create({
-            key: 'left',
-            frames: this.currentScene.anims.generateFrameNumbers('run', { start: 0, end: 9 }),
-            frameRate: 20,
-            repeat: -1,
-        });
-        this.anims.create({
-            key: 'idle',
-            frames: this.currentScene.anims.generateFrameNumbers('knight', { start: 0, end: 9 }),
-            frameRate: 10,
-            repeat: -1,
-        });
-        this.anims.create({
-            key: 'left',
-            frames: this.currentScene.anims.generateFrameNumbers('run', { start: 0, end: 9 }),
-            frameRate: 20,
-            repeat: -1,
-        });
-        this.anims.create({
-            key: 'jump',
-            frames: this.currentScene.anims.generateFrameNumbers('jump', { start: 0, end: 2 }),
-            frameRate: 20,
-        });
-        this.anims.create({
-            key: 'fall',
-            frames: this.currentScene.anims.generateFrameNumbers('fall', { start: 0, end: 2 }),
-            frameRate: 20,
-        });
-        this.anims.create({
-            key: 'right',
-            frames: this.currentScene.anims.generateFrameNumbers('run', { start: 0, end: 9 }),
-            frameRate: 20,
-            repeat: -1,
-        });
-        this.anims.create({
-            key: 'dash',
-            frames: this.anims.generateFrameNumbers('dash', { start: 0, end: 1 }),
-            frameRate: 40
-        });
-        this.anims.create({
-            key: 'slide',
-            frames: this.currentScene.anims.generateFrameNumbers('slide', { start: 0, end: 3 }),
-            frameRate: 40
-        });
-        this.anims.create({
-            key: 'downSwing',
-            frames: this.currentScene.anims.generateFrameNumbers('downAttack', { start: 0, end: 3 }),
-            frameRate: 20,
-        });
-        this.anims.create({
-            key: 'hit',
-            frames: this.currentScene.anims.generateFrameNumbers('hit', { start: 0 }),
-            frameRate: 5,
-            repeat: -1,
-        });
-        this.anims.create({
-            key: 'death',
-            frames: this.currentScene.anims.generateFrameNumbers('death', { start: 0, end: 9 }),
-            frameRate: 20,
-        });
-        this.anims.create({
-            key: 'crouch',
-            frames: this.currentScene.anims.generateFrameNumbers('crouch', { start: 0, end: 2 }),
-            frameRate: 20,
-            repeat: -1,
-        });
-        this.anims.create({
-            key: 'crouchWalk',
-            frames: this.currentScene.anims.generateFrameNumbers('crouchWalk', { start: 0, end: 7 }),
-            frameRate: 15,
-            repeat: -1
-        });
-
+        this.createAnimations()
         // Sword and Enemy Colliders
         this.currentScene.physics.add.overlap
             (this.swordHitbox,
                 this.currentScene.registry.get(Constants.GROUPS.ENEMIES),
                 this.attackCollide)
-
-
-
 
     }
 
@@ -306,23 +247,22 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
             }
 
-
-
-
-
             // Fall
             if (this.body.velocity.y >= 0 && !this.body.blocked.down) {
                 this.anims.stop();
                 this.anims.play('fall');
             }
 
-            // Attack: Down Swing
-            if (key.JustDown(this.controls.J) || key.JustDown(this.controls.Z) && this.body.blocked.down && this.actions.attack.state) {
+            // Attack: Combo downSwing + Swing   attackState = true for default, is AllowAttack
+
+            if ((key.JustDown(this.controls.J) || key.JustDown(this.controls.Z)) && this.body.blocked.down && this.actions.attack.state && this.actions.attack2.state) {
+                console.log("ATTACK1");
+
                 this.setVelocityX(0); //parar el pj
                 this.blockMove('attack') // bloquear otros inputs de usuario por x milisegundos
                 this.cooldown('attack');    // impide que se vuelva a ejecutar otro ataque durante x ms
                 this.anims.stop(); // detener animaciones en curso
-                this.anims.play('downSwing');
+                this.anims.play('downSwing_noMove');
 
                 // cambiar el Frame en el ataque se hace efectivo
                 const startHit = (anim: Phaser.Animations.Animation, frame: Phaser.Animations.AnimationFrame) => {
@@ -344,13 +284,55 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 }
                 this.on(Phaser.Animations.Events.ANIMATION_UPDATE, startHit) // cuando la animacion avance llama a startHit para saber cuando comenzar
 
-                // desactivar la hitbox al acabar la animacion
-                this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'downSwing', () => {
+                // desactivar la hitbox al acabar la animacion y permitir un segundo golpe
+                this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'downSwing_noMove', () => {
+
                     this.swordHitbox.body.enable = false;
                     this.currentScene.physics.world.remove(this.swordHitbox.body)
+
                 })
 
             }
+            this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'downSwing_noMove', () => {
+                if ((key.JustDown(this.controls.J) || key.JustDown(this.controls.Z))
+                    && this.body.blocked.down) {
+                    console.log("ATTACK2");
+                    this.setVelocityX(0);
+                    // this.blockMove('attack2')
+                    this.anims.stop()
+                    this.anims.play('swing_noMove');
+
+
+
+
+                    const startHit = (anim: Phaser.Animations.Animation, frame: Phaser.Animations.AnimationFrame) => {
+                        if (frame.index < 1) { // empieza en el frame 1
+                            return
+                        }
+                        this.off(Phaser.Animations.Events.ANIMATION_UPDATE, startHit) // apaga evento.
+
+                        this.swordHitbox.x = this.flipX
+                            ? this.x - this.width * 0.4
+                            : this.x + this.width * 0.4
+                        this.swordHitbox.y = this.y + this.body.height * 0.5
+
+                        // To-Do ajustar temporalmente la hitbox del caballero para que se adapte a la animacion
+
+                        // activa la hitbox 
+                        this.swordHitbox.body.enable = true
+                        this.currentScene.physics.world.add(this.swordHitbox.body)
+                    }
+                    this.on(Phaser.Animations.Events.ANIMATION_UPDATE, startHit)
+
+                    this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'swing_noMove', () => {
+
+                        this.swordHitbox.body.enable = false;
+                        this.currentScene.physics.world.remove(this.swordHitbox.body)
+
+                    })
+                }
+            })
+
 
             // Slide
             if (key.JustDown(this.controls.SHIFT) &&
@@ -369,8 +351,32 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
         }
 
+        if (key.JustDown(this.controls.I)) {
+            console.log(`
+            Attack1: ${this.actions.attack.state}
+            Attack2: ${this.actions.attack2.state}
+            Slide: ${this.actions.slide.state}
+            Damaged: ${this.actions.damage.state}
+            Invulnerable: ${this.actions.invulnerable.state}
+            
+            AllowMove: ${this.allowMove}
+            Crouch: ${this.crouch}
+            IsDead: ${this.playerIsDead}
+            `);
 
+        }
 
+        // Actions & states
+        // private actions: any = {
+        //     attack: { state: true, duration: 350, cooldown: 5000 },
+        //     attack2: { state: true, duration: 800, cooldown: 0 },
+        //     slide: { state: true, duration: 300, cooldown: 800 },
+        //     damage: { state: true, duration: 500, cooldown: 1500 },
+        //     invulnerable: { state: true, cooldown: 325 }
+        // }
+        // private allowMove: boolean = true;
+        // private crouch: boolean = false
+        // private playerIsDead: boolean = false;
 
     }
 
@@ -382,9 +388,12 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     }
 
     private cooldown(action: string) {
+
         this.actions[action].state = false;
         this.currentScene.time.delayedCall(this.actions[action].cooldown, () => {
+
             this.actions[action].state = true
+
         }, [], this);
 
     }
@@ -486,6 +495,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     attackCollide(obj1: any, obj2: any) {
         var enemy: Slime;
 
+        console.log("ATAQUE");
 
         enemy = obj2;
         enemy.getDamage(10, obj1.x)
@@ -502,28 +512,87 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     }
 
 
+    createAnimations() {
+        // Character animations
+        this.anims.create({
+            key: 'left',
+            frames: this.currentScene.anims.generateFrameNumbers('run', { start: 0, end: 9 }),
+            frameRate: 20,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: 'idle',
+            frames: this.currentScene.anims.generateFrameNumbers('knight', { start: 0, end: 9 }),
+            frameRate: 10,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: 'left',
+            frames: this.currentScene.anims.generateFrameNumbers('run', { start: 0, end: 9 }),
+            frameRate: 20,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: 'jump',
+            frames: this.currentScene.anims.generateFrameNumbers('jump', { start: 0, end: 2 }),
+            frameRate: 20,
+        });
+        this.anims.create({
+            key: 'fall',
+            frames: this.currentScene.anims.generateFrameNumbers('fall', { start: 0, end: 2 }),
+            frameRate: 20,
+        });
+        this.anims.create({
+            key: 'right',
+            frames: this.currentScene.anims.generateFrameNumbers('run', { start: 0, end: 9 }),
+            frameRate: 20,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: 'dash',
+            frames: this.anims.generateFrameNumbers('dash', { start: 0, end: 1 }),
+            frameRate: 40
+        });
+        this.anims.create({
+            key: 'slide',
+            frames: this.currentScene.anims.generateFrameNumbers('slide', { start: 0, end: 3 }),
+            frameRate: 40
+        });
+        this.anims.create({
+            key: 'downSwing_noMove',
+            frames: this.currentScene.anims.generateFrameNumbers('downAttack_noMove', { start: 0, end: 3 }),
+            frameRate: 20,
+        });
+        this.anims.create({
+            key: 'swing_noMove',
+            frames: this.currentScene.anims.generateFrameNumbers('swing_noMove', { start: 0, end: 5 }),
+            frameRate: 20,
+        });
+        this.anims.create({
+            key: 'hit',
+            frames: this.currentScene.anims.generateFrameNumbers('hit', { start: 0 }),
+            frameRate: 5,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: 'death',
+            frames: this.currentScene.anims.generateFrameNumbers('death', { start: 0, end: 9 }),
+            frameRate: 20,
+        });
+        this.anims.create({
+            key: 'crouch',
+            frames: this.currentScene.anims.generateFrameNumbers('crouch', { start: 0, end: 2 }),
+            frameRate: 20,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: 'crouchWalk',
+            frames: this.currentScene.anims.generateFrameNumbers('crouchWalk', { start: 0, end: 7 }),
+            frameRate: 15,
+            repeat: -1
+        });
 
-    // downPlatform(platform: any, knight: any) {
-    //     // let key!: typeof Phaser.Input.Keyboard
-    //     // if ((key.JustDown(this.controls.UP) || key.JustDown(this.controls.W)) && this.body.blocked.down) {
-    //     //     console.log("saltar Plataforma");
-
-    //     // }
-
-
-    //     this.platformCollide = true
-    // }
-    // checkPlatformCollider() {
-
-    //     if (this.platformCollide) {
-    //         return true
-    //     }
-    //     else {
-    //         this.platformCollide = false
-    //         return false
-    //     }
-
-    // }
+    }
 
 }
 
