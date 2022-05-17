@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as Phaser from 'phaser';
 import Config from './config';
+import { playerScore } from './scenes/Scene1';
 
 @Component({
   selector: 'app-game',
@@ -22,7 +23,7 @@ export class GameComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.phaserGame = new Phaser.Game(Config);
 
-    this.score = parseInt(localStorage.getItem('score')!) || 0;
-    console.log('puntuacion del localStorage:' + this.score);
+    // this.score = parseInt(localStorage.getItem('score')!) || 0;
+    // console.log('puntuacion del localStorage:' + this.score);
   }
 }

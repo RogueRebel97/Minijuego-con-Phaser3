@@ -6,14 +6,21 @@ import Goblin from '../enemies/goblin';
 import Constants from '../Constants';
 import HUD from './hud';
 import GameOver from './GameOver';
+import { UserService } from 'src/app/user/user.service';
+import { Injectable } from '@angular/core';
 
+let contexto: any
+
+
+// @Injectable({
+//   providedIn: 'root',
+// })
 
 export class Scene1 extends Phaser.Scene {
   // Propiedades
   private player!: Knight;
   private hud!: HUD
   private score: number = 0
-
 
   // Enemigos
   private arraySlimes!: Slime[]
@@ -247,6 +254,7 @@ export class Scene1 extends Phaser.Scene {
     //Player and Goal zone
     this.goalCollider = this.physics.add.collider(this.player, this.goalLayer, (goal, player) => {
       this.events.emit(Constants.EVENTS.SCORE, 100)
+      contexto.UserService.showscore(this.score)
       this.player.reachGoal()
       this.win = true;
     })
@@ -265,6 +273,7 @@ export class Scene1 extends Phaser.Scene {
     //player touch Slime
     this.enemyCollider = this.physics.add.overlap(this.arraySlimes, this.player, (slime, player) => {
       this.player.getDamage(10);
+      contexto.UserService.showscore(this.score)
     });
     this.registry.set(Constants.REGISTRY.COLLIDERS.ENEMY, this.enemyCollider)
 
@@ -358,11 +367,11 @@ export class Scene1 extends Phaser.Scene {
 
 
 
+}
 
+export const playerScore = (ctx: any) => {
 
+  contexto = ctx;
 
-
-
-
-
+  return Scene1
 }
