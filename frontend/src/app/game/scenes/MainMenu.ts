@@ -37,13 +37,14 @@ export class MainMenu extends Phaser.Scene {
 
     const { width, height } = this.scale;
 
+
     // Play button
     const playButton = this.add
       .image(width * 0.5, height * 0.6, 'glass-panel')
       .setDisplaySize(150, 50);
 
     this.add
-      .text(playButton.x, playButton.y, 'Jugar', { color: 'black' })
+      .text(playButton.x, playButton.y, 'Jugar', { color: 'black', fontFamily: 'pixel' })
       .setOrigin(0.5);
 
     // Settings button
@@ -56,8 +57,8 @@ export class MainMenu extends Phaser.Scene {
       .setDisplaySize(150, 50);
 
     this.add
-      .text(settingsButton.x, settingsButton.y, 'Puntuaciones', {
-        color: 'black',
+      .text(settingsButton.x, settingsButton.y, 'Score', {
+        color: 'black', fontFamily: 'pixel'
       })
       .setOrigin(0.5);
 
@@ -71,7 +72,7 @@ export class MainMenu extends Phaser.Scene {
       .setDisplaySize(150, 50);
 
     this.add
-      .text(creditsButton.x, creditsButton.y, 'Creditos', { color: 'black' })
+      .text(creditsButton.x, creditsButton.y, 'Creditos', { color: 'black', fontFamily: 'pixel' })
       .setOrigin(0.5);
 
     this.buttons.push(playButton);
@@ -99,6 +100,10 @@ export class MainMenu extends Phaser.Scene {
 
     settingsButton.on('selected', () => {
       console.log('settings');
+      this.scene.start('ScoreBoard')
+      this.scene.bringToTop('ScoreBoard')
+      this.scene.launch('ui-scene')
+      this.scene.bringToTop('ui-scene')
     });
 
     creditsButton.on('selected', () => {

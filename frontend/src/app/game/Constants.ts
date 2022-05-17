@@ -2,10 +2,13 @@ const Constants = {
     EVENTS: {
         HEALTH: 'alterHealth',
         SCORE: 'alterScore'
+
+
     },
     HUD: {
         MAXHEALTH: 'maxHealth',
-        HEALTH: 'healthValue'
+        HEALTH: 'healthValue',
+        SCORE: 'score'
     },
 
     MAPS: {

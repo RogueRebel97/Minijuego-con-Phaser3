@@ -3,39 +3,38 @@ import * as Phaser from "phaser";
 
 
 //Angular context
-let contexto:any;
+let contexto: any;
 
-export class SceneName extends Phaser.Scene{
+export class SceneName extends Phaser.Scene {
 
-// Propiedades
+    // Propiedades
 
 
-constructor()
-{
-    super({ key: 'SceneName' });
-}
+    constructor() {
+        super({ key: 'SceneName' });
+    }
 
-init(){
+    init() {
 
-}
-preload(){
+    }
+    preload() {
 
-}
+    }
 
-create(){
+    create() {
 
-}
+    }
 
-override update(){
-    
-}
+    override update() {
 
+    }
 
 
 
 
 
-    
+
+
 
 
 

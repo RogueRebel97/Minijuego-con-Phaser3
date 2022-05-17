@@ -8,54 +8,67 @@ export default class HUD {
 
 
     private container!: Phaser.GameObjects.Container;
-    private activeScene: Phaser.Scene;
+    private currentScene: Phaser.Scene;
     private healthTxT!: Phaser.GameObjects.Text;
+    private scoreTXT!: Phaser.GameObjects.Text;
+    private scoreNumber!: Phaser.GameObjects.Text;
+    private score: number
+
     private width: number;
     private height: number;
     // private SettingMenu: Settings;
     private settingUI!: UIScene
 
     constructor(scene: Phaser.Scene) {
-        this.activeScene = scene;
-        this.width = this.activeScene.cameras.main.width;
-        this.height = this.activeScene.cameras.main.height;
+        console.log('hud iniciado');
 
-        const screenCenterX = this.activeScene.cameras.main.worldView.x + this.activeScene.cameras.main.width / 2;
-        const screenCenterY = this.activeScene.cameras.main.worldView.y + this.activeScene.cameras.main.height / 2;
+        this.currentScene = scene;
+        this.width = this.currentScene.cameras.main.width;
+        this.height = this.currentScene.cameras.main.height;
+        this.score = this.currentScene.registry.get(Constants.HUD.SCORE);
+
+        const screenCenterX = this.currentScene.cameras.main.worldView.x + this.currentScene.cameras.main.width / 2;
+        const screenCenterY = this.currentScene.cameras.main.worldView.y + this.currentScene.cameras.main.height / 2;
         const { width } = scene.scale;
 
-        this.container = scene.add.container(width, screenCenterY - 250);
+        this.container = scene.add.container(screenCenterX - 190, screenCenterY - 125);
 
 
         this.create()
 
-        this.container.add(this.healthTxT)
+        // this.container.add(this.healthTxT)
+        this.container.add(this.scoreTXT)
     }
 
 
     create() {
-        this.activeScene.events.on(Constants.EVENTS.HEALTH, this.alterHealth, this)
+        //Event Player Damaged
+        this.currentScene.events.on(Constants.EVENTS.SCORE, this.alterScore, this)
 
-        this.healthTxT = this.activeScene.add.text
-            ((this.container.width / 2) - 750, this.height - 625,
-                this.activeScene.registry.get(Constants.PLAYER.STATS.HEALTH) + '/' + this.activeScene.registry.get(Constants.PLAYER.STATS.MAXHEALTH),
-                { fontSize: '24px', color: '#FFFFFF', fontFamily: 'pixel' }).setScrollFactor(0);
+        this.scoreTXT = this.currentScene.add.text(0, 0, 'SCORE:' + this.score, {
+            fontSize: '16px', color: '#FFFFFF', fontFamily: 'pixel'
+        }).setOrigin(0, 0.5).setScrollFactor(0)
 
-
-        this.activeScene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-            this.activeScene.events.off(Constants.EVENTS.HEALTH)
+        this.currentScene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+            this.currentScene.events.off(Constants.EVENTS.SCORE)
         })
 
 
     }
 
-    alterHealth() {
-        this.healthTxT.text = this.activeScene.registry.get(Constants.PLAYER.STATS.HEALTH) + '/' + this.activeScene.registry.get(Constants.PLAYER.STATS.MAXHEALTH)
+    alterScore(score: number) {
+        this.score = this.score + score
+
+        if (this.score < 0) {
+            this.score = 0
+        }
+
+        this.scoreTXT.text = 'SCORE:' + (this.score)
+
     }
 
-
     getCurrentScene() {
-        return this.activeScene;
+        return this.currentScene;
     }
 
 }

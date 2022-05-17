@@ -10,6 +10,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
     private maxHealth: number = 50
     private health: number = this.maxHealth
     private dmg: number = 20
+    private score: number = 30
 
 
     private moveTime: number = 0
@@ -214,6 +215,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
 
             this.setVelocityX(0);
             this.anims.play('goblinDead')
+            this.currentScene.events.emit(Constants.EVENTS.SCORE, this.score)
             // remove body and aggro box
             this.currentScene.physics.world.remove(this.body)
             this.currentScene.physics.world.remove(this.aggro.body)

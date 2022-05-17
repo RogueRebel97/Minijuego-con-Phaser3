@@ -15,7 +15,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
     // Actions & states
     private actions: any = {
-        attack: { state: true, duration: 350, cooldown: 800 },
+        attack: { state: true, duration: 350, cooldown: 400 },
         attack2: { state: true, duration: 500, cooldown: 0 },
         slide: { state: true, duration: 300, cooldown: 800 },
         damage: { state: true, duration: 500, cooldown: 1500 },
@@ -48,6 +48,8 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
         this.currentScene = config.currentScene;
         console.log('caballero creado');
+        console.log(`Hp Inicial: ${this.health}`);
+
         //Register global Variables
         this.currentScene.registry.set(Constants.PLAYER.STATS.MAXHEALTH, this.maxHealth)
         this.currentScene.registry.set(Constants.PLAYER.STATS.HEALTH, this.health)
@@ -99,11 +101,16 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
         //Combos
         this.konami = this.currentScene.input.keyboard.createCombo([38, 38, 40, 40, 37, 39, 37, 39], { resetOnMatch: true });
+        this.combo = this.currentScene.input.keyboard.createCombo(this.controls.J)
 
         this.currentScene.input.keyboard.on('keycombomatch', (event: any) => {
 
-            console.log('Konami Code entered!');
+            console.log('Codigo Konami!');
 
+        });
+
+        this.currentScene.input.keyboard.on('keycombomatch', (event: any) => {
+            console.log('Code entered!');
         });
     }
 
@@ -293,45 +300,46 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 })
 
             }
-            this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'downSwing_noMove', () => {
-                if ((key.JustDown(this.controls.J) || key.JustDown(this.controls.Z))
-                    && this.body.blocked.down) {
-                    console.log("ATTACK2");
-                    this.setVelocityX(0);
-                    // this.blockMove('attack2')
-                    this.anims.stop()
-                    this.anims.play('swing_noMove');
+
+            // this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'downSwing_noMove', () => {
+            //     if ((key.JustDown(this.controls.J) || key.JustDown(this.controls.Z))
+            //         && this.body.blocked.down) {
+            //         console.log("ATTACK2");
+            //         this.setVelocityX(0);
+            //         // this.blockMove('attack2')
+            //         this.anims.stop()
+            //         this.anims.play('swing_noMove');
 
 
 
 
-                    const startHit = (anim: Phaser.Animations.Animation, frame: Phaser.Animations.AnimationFrame) => {
-                        if (frame.index < 1) { // empieza en el frame 1
-                            return
-                        }
-                        this.off(Phaser.Animations.Events.ANIMATION_UPDATE, startHit) // apaga evento.
+            //         const startHit = (anim: Phaser.Animations.Animation, frame: Phaser.Animations.AnimationFrame) => {
+            //             if (frame.index < 1) { // empieza en el frame 1
+            //                 return
+            //             }
+            //             this.off(Phaser.Animations.Events.ANIMATION_UPDATE, startHit) // apaga evento.
 
-                        this.swordHitbox.x = this.flipX
-                            ? this.x - this.width * 0.4
-                            : this.x + this.width * 0.4
-                        this.swordHitbox.y = this.y + this.body.height * 0.5
+            //             this.swordHitbox.x = this.flipX
+            //                 ? this.x - this.width * 0.4
+            //                 : this.x + this.width * 0.4
+            //             this.swordHitbox.y = this.y + this.body.height * 0.5
 
-                        // To-Do ajustar temporalmente la hitbox del caballero para que se adapte a la animacion
+            //             // To-Do ajustar temporalmente la hitbox del caballero para que se adapte a la animacion
 
-                        // activa la hitbox 
-                        this.swordHitbox.body.enable = true
-                        this.currentScene.physics.world.add(this.swordHitbox.body)
-                    }
-                    this.on(Phaser.Animations.Events.ANIMATION_UPDATE, startHit)
+            //             // activa la hitbox 
+            //             this.swordHitbox.body.enable = true
+            //             this.currentScene.physics.world.add(this.swordHitbox.body)
+            //         }
+            //         this.on(Phaser.Animations.Events.ANIMATION_UPDATE, startHit)
 
-                    this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'swing_noMove', () => {
+            //         this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'swing_noMove', () => {
 
-                        this.swordHitbox.body.enable = false;
-                        this.currentScene.physics.world.remove(this.swordHitbox.body)
+            //             this.swordHitbox.body.enable = false;
+            //             this.currentScene.physics.world.remove(this.swordHitbox.body)
 
-                    })
-                }
-            })
+            //         })
+            //     }
+            // })
 
 
             // Slide
@@ -366,17 +374,6 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
         }
 
-        // Actions & states
-        // private actions: any = {
-        //     attack: { state: true, duration: 350, cooldown: 5000 },
-        //     attack2: { state: true, duration: 800, cooldown: 0 },
-        //     slide: { state: true, duration: 300, cooldown: 800 },
-        //     damage: { state: true, duration: 500, cooldown: 1500 },
-        //     invulnerable: { state: true, cooldown: 325 }
-        // }
-        // private allowMove: boolean = true;
-        // private crouch: boolean = false
-        // private playerIsDead: boolean = false;
 
     }
 
@@ -399,16 +396,17 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     }
 
     checkIsDead() {
-        var health = this.currentScene.registry.get(Constants.PLAYER.STATS.HEALTH);
 
-        if (health <= 0 && !this.playerIsDead && this.allowMove && this.body.blocked.down) {
+
+        if (this.health <= 0 && !this.playerIsDead && this.allowMove && this.body.blocked.down) {
             this.playerIsDead = true //boolean to check players Death
             this.anims.stop();
             this.setVelocityX(0);
             this.anims.play('death');
+            this.currentScene.events.emit(Constants.EVENTS.SCORE, -50)
             this.currentScene.physics.world.remove(this.body)
             this.body.enable = false;
-
+            console.log(`Hp: ${this.health}`);
         }
     }
 
@@ -421,13 +419,14 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.currentScene.cameras.main.stopFollow()
         this.playerIsDead = true
         this.health = 0
+        this.currentScene.events.emit(Constants.EVENTS.SCORE, - 50)
         this.currentScene.physics.world.removeCollider(this.currentScene.registry.get(Constants.REGISTRY.COLLIDERS.DEATHZONE))
         this.setCollideWorldBounds(false)
     }
 
     getDamage(damage: number) {
-        var health = this.currentScene.registry.get(Constants.PLAYER.STATS.HEALTH);
-        if (health > 0 && !this.playerIsDead && this.actions.damage.state && this.actions.invulnerable.state) {
+
+        if (this.health > 0 && !this.playerIsDead && this.actions.damage.state && this.actions.invulnerable.state) {
 
             this.blockMove('damage');
             this.cooldown('damage')
@@ -460,9 +459,10 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 }
             }
 
-            health = health - damage;
-            this.currentScene.registry.set(Constants.PLAYER.STATS.HEALTH, health)
-            this.currentScene.events.emit(Constants.EVENTS.HEALTH)
+            this.health = this.health - damage;
+            console.log(`Hp : ${this.health}`);
+
+            this.currentScene.events.emit(Constants.EVENTS.SCORE, -5)
         }
     }
 

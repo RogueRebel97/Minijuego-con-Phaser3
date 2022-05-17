@@ -12,6 +12,8 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
     private moveTime: number = 0
     private controls!: any
 
+    private score: number = 10
+
 
     //Actions & States
     private actions: any = {
@@ -141,6 +143,11 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
 
         if (health <= 0 && !this.isDead && this.allowMove) {
             console.log("Slime muerto");
+
+
+
+            this.currentScene.events.emit(Constants.EVENTS.SCORE, this.score)
+
             this.isDead = true;
             this.anims.stop();
             this.setVelocityX(0);
@@ -151,9 +158,9 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
             this.body.enable = false;
             this.aggro.body.enable = false;
 
-            console.log(`body en Muerte:`);
-            console.log(this.body);
-            console.log("boolean the body en muerte: " + this.body.enable);
+            // console.log(`body en Muerte:`);
+            // console.log(this.body);
+            // console.log("boolean the body en muerte: " + this.body.enable);
 
             this.aggro.destroy();
             this.destroy()

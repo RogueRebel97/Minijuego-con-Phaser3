@@ -144,6 +144,20 @@ export class LoadingScreen extends Phaser.Scene {
 
     // Backgrounds for Map
 
+    //Night
+    this.load.image(
+      'nightBckgr-1',
+      'assets/graphics/background/background_0.png'
+    );
+    this.load.image(
+      'nightBckgr-2',
+      'assets/graphics/background/background_1.png'
+    );
+    this.load.image(
+      'nightBckgr-3',
+      'assets/graphics/background/background_2.png'
+    );
+
     //Forest
     this.load.image(
       'forestBckgr-1',
@@ -352,8 +366,8 @@ export class LoadingScreen extends Phaser.Scene {
     this.cameras.main.once(
       Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
       (cam: any, effect: any) => {
-        // this.scene.launch('ui-scene');
-        // this.scene.bringToTop('ui-scene');
+        this.scene.launch('ui-scene');
+        this.scene.bringToTop('ui-scene');
         this.scene.start('Scene1');
         // this.scene.launch('hud');
         // this.scene.bringToTop('hud')

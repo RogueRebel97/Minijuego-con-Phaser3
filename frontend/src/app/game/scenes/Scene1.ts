@@ -12,6 +12,8 @@ export class Scene1 extends Phaser.Scene {
   // Propiedades
   private player!: Knight;
   private hud!: HUD
+  private score: number = 0
+
 
   // Enemigos
   private arraySlimes!: Slime[]
@@ -81,8 +83,11 @@ export class Scene1 extends Phaser.Scene {
   init() {
     console.log('Scene1 init Corriendo');
 
-    // this.scene.launch('hud');
-    // this.scene.bringToTop('hud')
+    //create hud
+
+
+    this.scene.launch('hud');
+    this.scene.bringToTop('hud')
 
     this.scene.launch('ui-scene')
     this.scene.bringToTop('ui-scene')
@@ -104,16 +109,21 @@ export class Scene1 extends Phaser.Scene {
     //Efecto fadeIN
     this.cameras.main.fadeIn(1000, 0, 0, 0);
 
+    this.registry.set(Constants.HUD.SCORE, this.score)
+
     // MAP & Background
 
     //background layer 1
     this.createBackground(this, 'plainsSky', 1, 0)
 
-    //background layer 2
+    // //background layer 2
     this.createBackground(this, 'plainsBG1', 15, 0.5)
 
-    //background layer 3
+    // //background layer 3
     this.createBackground(this, 'plainsBG2', 15, 1) //Todo: Reducir Tamañao
+
+
+
 
     //load tile map
     this.tileMap = this.make.tilemap({ key: Constants.MAPS.LEVELS.LEVEL1.TILEMAPJSON, tileWidth: 16, tileHeight: 16 });
@@ -222,7 +232,7 @@ export class Scene1 extends Phaser.Scene {
     // create player  ?¿?¿
     this.player.create();
 
-    //create hud
+    //create Hud Despues del resto de elementos para que el hud siempre este por encima
     this.hud = new HUD(this)
 
     //camera
@@ -236,6 +246,7 @@ export class Scene1 extends Phaser.Scene {
 
     //Player and Goal zone
     this.goalCollider = this.physics.add.collider(this.player, this.goalLayer, (goal, player) => {
+      this.events.emit(Constants.EVENTS.SCORE, 100)
       this.player.reachGoal()
       this.win = true;
     })
@@ -265,10 +276,9 @@ export class Scene1 extends Phaser.Scene {
     })
 
 
-    // for (let i = 0; i < this.arraySlimes.length; i++) {
-    //   console.log(this.arraySlimes[i]);
 
-    // }
+
+
 
   }
 

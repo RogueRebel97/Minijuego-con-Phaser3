@@ -2,18 +2,17 @@ import Phaser from "phaser";
 import { LoadingScreen } from "./scenes/LoadingScreen";
 import { MainMenu } from "./scenes/MainMenu";
 import { Scene1 } from "./scenes/Scene1";
+import { ScoreBoard } from "./scenes/ScoreBoard";
 import UIScene from "./scenes/UIScene";
 import GameOver from "./scenes/GameOver";
 
 import { Plugin as NineSlicePlugin } from 'phaser3-nineslice';
 
 
-
-
 const Config = {
   type: Phaser.AUTO,
   backgroundColor: '#ef9324',
-  scene: [LoadingScreen, UIScene, MainMenu, Scene1, GameOver],
+  scene: [LoadingScreen, UIScene, MainMenu, ScoreBoard, Scene1, GameOver],
 
   parent: 'gameScreen',
   scale: {

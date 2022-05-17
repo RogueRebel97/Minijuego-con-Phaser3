@@ -1,5 +1,6 @@
 //imports
 import * as Phaser from "phaser";
+import Constants from '../Constants';
 
 
 
@@ -92,6 +93,7 @@ export default class GameOver extends Phaser.Scene {
             this.actionButton(this.retryButton, 1);
 
         } else if (!data.defeat) {
+
             //VICTORIA
             this.defeatText = this.add.text(0, 0, 'VICTORIA', {
                 fontFamily: 'Germania One',
