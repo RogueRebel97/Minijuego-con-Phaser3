@@ -160,18 +160,18 @@ export default class SettingsMenu {
     // this.cross.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
     //   this.resume()
     // })
-    this.resetButton.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+    // this.resetButton.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
 
-      for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) {
+    //   for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) {
 
-        if (this.activeScene.scene.manager.scenes[i].scene.key == 'ui-scene') {
+    //     if (this.activeScene.scene.manager.scenes[i].scene.key == 'ui-scene') {
 
-        } else if (this.activeScene.scene.manager.scenes[i].scene.isPaused()) {
-          this.activeScene.scene.stop(this.activeScene.scene.manager.scenes[i].scene.key);
-          this.activeScene.scene.start(this.activeScene.scene.manager.scenes[i].scene.key);
-        }
-      }
-    })
+    //     } else if (this.activeScene.scene.manager.scenes[i].scene.isPaused()) {
+    //       this.activeScene.scene.stop(this.activeScene.scene.manager.scenes[i].scene.key);
+    //       this.activeScene.scene.start(this.activeScene.scene.manager.scenes[i].scene.key);
+    //     }
+    //   }
+    // })
 
   }
 
@@ -303,7 +303,7 @@ export default class SettingsMenu {
 
   backToMenu() {
 
-    for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) { //pausar escena activa
+    for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) {
       if (this.activeScene.scene.manager.scenes[i].scene.key == 'ui-scene') {
       } else if (this.activeScene.scene.manager.scenes[i].scene.isActive()) {
         this.activeScene.scene.stop(this.activeScene.scene.manager.scenes[i].scene.key);
@@ -318,9 +318,13 @@ export default class SettingsMenu {
   reset() {
     for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) {
 
-      if (this.activeScene.scene.manager.scenes[i].scene.key == 'gameOver') {
+      if (this.activeScene.scene.manager.scenes[i].scene.key == 'ui-scene') {
+        console.log("do nothing");
 
-      } else if (this.activeScene.scene.manager.scenes[i].scene.isActive()) {
+      } else if (this.activeScene.scene.manager.scenes[i].scene.isPaused()) {
+
+        console.log(this.activeScene.scene.manager.scenes[i].scene);
+        console.log("reseteando");
 
         this.activeScene.cameras.main.fadeOut(600, 0, 0, 0)
         this.activeScene.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,

@@ -1,7 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as Phaser from 'phaser';
 import Config from './config';
-import { playerScore } from './scenes/Scene1';
+
+import { GameService } from './game.service';
+
+import GameOver from './scenes/GameOver';
+import { LoadingScreen } from './scenes/LoadingScreen';
+import { MainMenu } from './scenes/MainMenu';
+import { scene1Score } from './scenes/Scene1';
+import { ScoreBoard } from './scenes/ScoreBoard';
+import UIScene from './scenes/UIScene';
+import { Plugin as NineSlicePlugin } from 'phaser3-nineslice';
+
 
 @Component({
   selector: 'app-game',
@@ -11,9 +21,32 @@ import { playerScore } from './scenes/Scene1';
 
 export class GameComponent implements OnInit, OnDestroy {
   phaserGame!: Phaser.Game;
-  private score: number = 0;
+  config: Phaser.Types.Core.GameConfig;
 
-  constructor() {
+  constructor(private gameService: GameService) {
+    this.config = {
+      type: Phaser.AUTO,
+      backgroundColor: '#ef9324',
+      scene: [LoadingScreen, UIScene, MainMenu, ScoreBoard, scene1Score(this), GameOver],
+
+      parent: 'gameScreen',
+      scale: {
+        width: 800,
+        height: 600,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+      },
+      pixelArt: true,
+      physics: {
+        default: 'arcade',
+        arcade: {
+          gravity: { y: 600 },
+          // debug: true,
+        },
+      },
+      plugins: {
+        global: [NineSlicePlugin.DefaultCfg],
+      },
+    };
   }
 
   ngOnDestroy(): void {
@@ -21,9 +54,26 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.phaserGame = new Phaser.Game(Config);
+    this.phaserGame = new Phaser.Game(this.config);
+  }
 
-    // this.score = parseInt(localStorage.getItem('score')!) || 0;
-    // console.log('puntuacion del localStorage:' + this.score);
+  // BUG:
+  // Crear el archivo de configuracion aparte produce un error ya que el archivo 
+  //llama a GameComponent antes de que este se cree
+
+
+  sendScore(score: number) {
+    console.log("Puntuacion: " + score);
+
+    this.gameService.sendScore(score).subscribe((data) => {
+      if (data) {
+        console.log('puntuacion subida con exito');
+      }
+      else {
+        console.log('error en el data');
+
+      }
+    })
+
   }
 }

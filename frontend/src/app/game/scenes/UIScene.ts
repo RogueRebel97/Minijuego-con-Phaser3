@@ -56,7 +56,9 @@ export default class UIScene extends Phaser.Scene {
 
   }
 
-  override update() { }
+  override update() {
+
+  }
 
 
   pauseResume() {

@@ -115,6 +115,7 @@ export class MainMenu extends Phaser.Scene {
   }
 
   override update() {
+
     const pressUp = Phaser.Input.Keyboard.JustDown(this.cursors.up!);
     const pressDown = Phaser.Input.Keyboard.JustDown(this.cursors.down!);
     const pressSpace = Phaser.Input.Keyboard.JustDown(this.cursors.space!);

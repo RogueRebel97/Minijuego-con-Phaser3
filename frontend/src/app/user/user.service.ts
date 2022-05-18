@@ -9,7 +9,7 @@ import { Observable, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private http: HttpClient, private cookieService: CookieService) {}
+  constructor(private http: HttpClient, private cookieService: CookieService) { }
 
   public userLogin(name: string, password: string) {
     console.log('Datos Recibidos desde Usuario: ' + name, password);
@@ -33,7 +33,4 @@ export class UserService {
     return this.cookieService.get('id');
   }
 
-  public showscore(score: number) {
-    console.log('Puntuacion enviada al servicio: ' + score);
-  }
 }

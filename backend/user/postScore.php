@@ -3,36 +3,40 @@ header('Access-Control-Allow-Origin: http://localhost:4200');
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: *");
 
-
 function connect()
 {
     $db=new mysqli("localhost","admin","admin","admin");
     return $db;
 }
 
+
 $dato=json_decode(file_get_contents("php://input")); 
 
 if(!$dato)
 {
-    exit("No se han enviado datos");
+    exit("No se Encontraron Datos");
 }
 
-$username= $dato     -> nombre;
+$score=$dato -> score;
+$id=$dato ->id;
 
 $db=connect();
 
-$sql='SELECT * FROM users WHERE nombre = "'.strtolower($username).'"';
+$sql1="UPDATE users SET score = '$score' WHERE id = '$id';";
+$result1 = mysqli_query($db,$sql1);
 
-$result = mysqli_query($db,$sql);
 
-if($result -> num_rows >0){
-    $available= 0;
-    }
-    else
-    {
-        $available= 1;
-    }
+    
+$sql2 = "UPDATE users SET record = '$score' WHERE id = '$id'AND record < score";
+$result2 = mysqli_query($db,$sql2);
 
-    echo($available);
-  
-  
+
+
+ 
+
+
+
+
+
+
+?>

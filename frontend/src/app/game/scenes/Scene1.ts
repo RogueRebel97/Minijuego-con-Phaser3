@@ -6,15 +6,15 @@ import Goblin from '../enemies/goblin';
 import Constants from '../Constants';
 import HUD from './hud';
 import GameOver from './GameOver';
-import { UserService } from 'src/app/user/user.service';
+import { GameService } from '../game.service';
 import { Injectable } from '@angular/core';
 
 let contexto: any
 
 
-// @Injectable({
-//   providedIn: 'root',
-// })
+@Injectable({
+  providedIn: 'root',
+})
 
 export class Scene1 extends Phaser.Scene {
   // Propiedades
@@ -91,14 +91,14 @@ export class Scene1 extends Phaser.Scene {
     console.log('Scene1 init Corriendo');
 
     //create hud
-
-
     this.scene.launch('hud');
     this.scene.bringToTop('hud')
 
+    //Bring to top Ui-Scene
     this.scene.launch('ui-scene')
     this.scene.bringToTop('ui-scene')
 
+    //initialice win and gameOver
     this.win = false;
     this.gameOver = false
 
@@ -116,6 +116,7 @@ export class Scene1 extends Phaser.Scene {
     //Efecto fadeIN
     this.cameras.main.fadeIn(1000, 0, 0, 0);
 
+    //Set Score
     this.registry.set(Constants.HUD.SCORE, this.score)
 
     // MAP & Background
@@ -131,6 +132,11 @@ export class Scene1 extends Phaser.Scene {
 
 
 
+    //Controls
+    this.controls = this.input.keyboard.addKeys({
+      'R': Phaser.Input.Keyboard.KeyCodes.R,
+      'T': Phaser.Input.Keyboard.KeyCodes.T,
+    })
 
     //load tile map
     this.tileMap = this.make.tilemap({ key: Constants.MAPS.LEVELS.LEVEL1.TILEMAPJSON, tileWidth: 16, tileHeight: 16 });
@@ -254,7 +260,7 @@ export class Scene1 extends Phaser.Scene {
     //Player and Goal zone
     this.goalCollider = this.physics.add.collider(this.player, this.goalLayer, (goal, player) => {
       this.events.emit(Constants.EVENTS.SCORE, 100)
-      contexto.UserService.showscore(this.score)
+
       this.player.reachGoal()
       this.win = true;
     })
@@ -273,7 +279,7 @@ export class Scene1 extends Phaser.Scene {
     //player touch Slime
     this.enemyCollider = this.physics.add.overlap(this.arraySlimes, this.player, (slime, player) => {
       this.player.getDamage(10);
-      contexto.UserService.showscore(this.score)
+
     });
     this.registry.set(Constants.REGISTRY.COLLIDERS.ENEMY, this.enemyCollider)
 
@@ -292,40 +298,30 @@ export class Scene1 extends Phaser.Scene {
   }
 
   override update() {
+    console.log('Nivel 1 update  corriendo');
 
-    // console.log('Nivel 1 update  corriendo');
-    if (this.player.body) {
-      this.player.update();
-      this.player.checkIsDead();
-    }
-    else {
-      return
+    let key = Phaser.Input.Keyboard;
+    //Call Angular Service
+    if (key.JustDown(this.controls.R)) {
+      if (contexto) {
+        contexto.sendScore(this.registry.get(Constants.HUD.SCORE))
+      } else {
+        console.log("contexto is undefined");
+
+      }
+
+
     }
 
+
+    this.playerLogic()
     this.slimeLogic()
     this.goblinLogic()
+    this.gameOverCheck()
 
     // console.log(this.arraySlimes)
 
-    if (this.player.deathCheck() && !this.gameOver) {
-      this.gameOver = true
 
-      this.time.delayedCall(1000, () => {
-        this.scene.stop('ui-scene')
-        this.scene.launch('gameOver', { defeat: true })
-        this.scene.bringToTop('gameOver')
-        console.log('muertoooo');
-      }, [], this);
-
-    } else if (this.win && !this.player.deathCheck()) {
-      this.win = false
-      this.time.delayedCall(700, () => {
-        this.scene.stop('ui-scene')
-        this.scene.launch('gameOver', { defeat: false })
-        this.scene.bringToTop('gameOver')
-        console.log('victoria');
-      }, [], this);
-    }
   }
 
 
@@ -340,7 +336,15 @@ export class Scene1 extends Phaser.Scene {
     }
   }
 
-
+  playerLogic() {
+    if (this.player.body) {
+      this.player.update();
+      this.player.checkIsDead();
+    }
+    else {
+      return
+    }
+  }
 
   slimeLogic() {
     for (let i = 0; i < this.arraySlimes.length; i++) {
@@ -365,13 +369,36 @@ export class Scene1 extends Phaser.Scene {
     }
   }
 
+  gameOverCheck() {
+    if (this.player.deathCheck() && !this.gameOver) {
+      this.gameOver = true
+      this.time.delayedCall(1000, () => {
+        this.scene.stop('ui-scene')
+        this.scene.launch('gameOver', { defeat: true })
+        this.scene.bringToTop('gameOver')
+        console.log('muertoooo');
+      }, [], this);
+
+    } else if (this.win && !this.player.deathCheck()) {
+      this.win = false
+      this.time.delayedCall(700, () => {
+        this.scene.stop('ui-scene')
+        this.scene.launch('gameOver', { defeat: false })
+        this.scene.bringToTop('gameOver')
+        console.log('victoria');
+      }, [], this);
+    }
+  }
+
 
 
 }
 
-export const playerScore = (ctx: any) => {
+export const scene1Score = (ctx: any) => {
+
+  console.log("contexto:");
+  console.log(ctx);
 
   contexto = ctx;
-
-  return Scene1
+  return Scene1;
 }

@@ -25,6 +25,8 @@ export default class HUD {
         this.currentScene = scene;
         this.width = this.currentScene.cameras.main.width;
         this.height = this.currentScene.cameras.main.height;
+
+        //Get score from scene
         this.score = this.currentScene.registry.get(Constants.HUD.SCORE);
 
         const screenCenterX = this.currentScene.cameras.main.worldView.x + this.currentScene.cameras.main.width / 2;
@@ -63,7 +65,10 @@ export default class HUD {
             this.score = 0
         }
 
+        // actualizar Score
+        this.currentScene.registry.set(Constants.HUD.SCORE, this.score)
         this.scoreTXT.text = 'SCORE:' + (this.score)
+
 
     }
 

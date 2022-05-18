@@ -54,6 +54,7 @@ export class ScoreBoard extends Phaser.Scene {
 
 
     override update() {
+        console.log("scoreBoard corriendo");
 
     }
 

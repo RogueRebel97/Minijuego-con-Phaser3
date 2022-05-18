@@ -132,6 +132,8 @@ export default class GameOver extends Phaser.Scene {
 
     override update() {
 
+        console.log("Gameover Corriendo");
+
     }
 
 
