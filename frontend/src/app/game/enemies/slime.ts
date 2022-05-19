@@ -295,13 +295,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
 
     }
     checkIsChasing() {
-        // if (this.isChasing == false && this.isPatrolling == true) {
-        //     this.isChasing = true
-        //     return true
-        // } else {
-        //     this.isPatrolling = false
-        //     return false
-        // }
+
 
 
 

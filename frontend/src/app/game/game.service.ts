@@ -23,12 +23,10 @@ export class GameService {
 
     return this.http.post("http://localhost/backend/user/postScore.php", { score: score, id: id });
 
+  }
 
-
-
-
-
-
+  getScoreboard() {
+    return this.http.get<UserModel>("http://localhost/backend/web/getRecords.php");
   }
 
 

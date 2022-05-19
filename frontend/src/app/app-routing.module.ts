@@ -5,11 +5,13 @@ import { SigninComponent } from './user/signin/signin.component';
 import { UserComponent } from './user/user.component';
 import { LandingComponent } from './landing/landing.component';
 import { GameComponent } from './game/game.component';
+import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 
 const routes: Routes = [
   { path: "login", component: UserComponent, },
   { path: "signin", component: SigninComponent, },
   { path: "landing", component: LandingComponent, canActivate: [AuthGuard] },
+  { path: "scoreboard", component: ScoreboardComponent, canActivate: [AuthGuard] },
   { path: "minijuego", component: GameComponent, canActivate: [AuthGuard] },
 ];
 

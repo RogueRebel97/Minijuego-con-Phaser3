@@ -13,6 +13,7 @@ import { Scene1 } from './game/scenes/Scene1';
 import { LoadingScreen } from './game/scenes/LoadingScreen';
 import { MainMenu } from './game/scenes/MainMenu';
 import Settings from './game/scenes/SettingsMenu';
+import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import Settings from './game/scenes/SettingsMenu';
     SigninComponent,
     LandingComponent,
     GameComponent,
+    ScoreboardComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
   providers: [CookieService, MainMenu, Scene1, LoadingScreen],

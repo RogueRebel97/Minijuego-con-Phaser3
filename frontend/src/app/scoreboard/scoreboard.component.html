@@ -1,0 +1,49 @@
+
+
+<script>
+
+</script>
+
+<div class="grid-container">
+    <div class="grid-title">YO TE RETRO!</div>
+    <div class="grid-header">TOP 10 JUGADORES</div>
+
+
+
+  
+    <div class="grid-scoreboard">
+
+        <div class="grid-item1"></div>
+        <div class="grid-scores">
+            <!-- LeaderBoard -->
+            <table id="scoreboard">
+                
+                <tr *ngFor="let record of records;let i = index">
+                    
+                    <td> {{i+1}}</td>
+                    <td>{{record.nombre}}</td>
+                    <td>{{record.record}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Personal Score -->
+  <div class="grid-item1"> 
+       <caption>TU MEJOR PUNTUACION</caption>
+    <table id="personalScore">
+       
+        <tr *ngFor="let record of records;let i = index">
+            
+            <ng-container *ngIf="record.id == cookie"> 
+            <td> {{i+1}}</td>
+            <td>{{record.nombre}}</td>
+            <td>{{record.record}}</td>
+        </ng-container>
+    </tr>
+    </table>
+     </div>
+       
+    </div>
+  
+  
+  </div>
