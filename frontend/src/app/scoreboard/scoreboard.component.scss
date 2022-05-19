@@ -1,0 +1,37 @@
+* {
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1 auto auto;
+
+    padding: 10px;
+}
+
+.grid-title {
+    font-size: 48px;
+    padding-bottom: 60px;
+}
+
+.grid-header {
+    font-size: 24px;
+    padding-bottom: 30px;
+}
+
+.grid-scoreboard {
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+
+#scoreboard {
+    text-align: center;
+
+}
+
+.grid-item1 {
+    caption-side: top;
+    padding: 20px;
+    text-align: center;
+}
