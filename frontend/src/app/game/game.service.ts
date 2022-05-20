@@ -10,6 +10,7 @@ import { map } from 'rxjs';
 
 
 export class GameService {
+  private id = this.cookieService.get('id')
 
   constructor(private http: HttpClient, private cookieService: CookieService) { }
 
@@ -17,11 +18,10 @@ export class GameService {
   sendScore(score: number) {
     console.log(`Score enviado desde Phaser: ${score}`);
 
-    var id = this.cookieService.get('id');
     console.log(`score: ${score}
-    id: ${id}`);
+    id: ${this.id}`);
 
-    return this.http.post("http://localhost/backend/user/postScore.php", { score: score, id: id });
+    return this.http.post("http://localhost/backend/user/postScore.php", { score: score, id: this.id });
 
   }
 
@@ -29,7 +29,9 @@ export class GameService {
     return this.http.get<UserModel>("http://localhost/backend/web/getRecords.php");
   }
 
-
+  getId() {
+    return this.id
+  }
 
 
 

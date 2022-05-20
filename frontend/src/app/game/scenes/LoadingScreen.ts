@@ -368,7 +368,8 @@ export class LoadingScreen extends Phaser.Scene {
       (cam: any, effect: any) => {
         this.scene.launch('ui-scene');
         this.scene.bringToTop('ui-scene');
-        this.scene.start('Scene1');
+        // this.scene.start('Scene1');
+        this.scene.start('ScoreBoard')
         // this.scene.launch('hud');
         // this.scene.bringToTop('hud')
         // this.scene.start('MainMenu');

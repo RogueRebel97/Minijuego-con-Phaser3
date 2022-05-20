@@ -6,7 +6,6 @@ import Goblin from '../enemies/goblin';
 import Constants from '../Constants';
 import HUD from './hud';
 import GameOver from './GameOver';
-import { GameService } from '../game.service';
 import { Injectable } from '@angular/core';
 
 let contexto: any
@@ -394,7 +393,7 @@ export class Scene1 extends Phaser.Scene {
 
 }
 
-export const scene1Score = (ctx: any) => {
+export const Level1 = (ctx: any) => {
 
   console.log("contexto:");
   console.log(ctx);

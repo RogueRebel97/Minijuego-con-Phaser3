@@ -13,7 +13,7 @@ function connect()
 
 $db=connect();
 
-$sql="SELECT id,nombre, record FROM users ORDER BY record DESC LIMIT 10";
+$sql="SELECT id,nombre, record FROM users ORDER BY record DESC";
 
 $result = mysqli_query($db,$sql);
 

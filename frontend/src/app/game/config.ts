@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { GameComponent } from "./game.component";
 import { LoadingScreen } from "./scenes/LoadingScreen";
 import { MainMenu } from "./scenes/MainMenu";
-import { scene1Score, Scene1 } from "./scenes/Scene1";
+import { Scene1 } from "./scenes/Scene1";
 import { ScoreBoard } from "./scenes/ScoreBoard";
 import UIScene from "./scenes/UIScene";
 import GameOver from "./scenes/GameOver";

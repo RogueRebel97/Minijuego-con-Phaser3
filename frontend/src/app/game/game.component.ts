@@ -7,8 +7,8 @@ import { GameService } from './game.service';
 import GameOver from './scenes/GameOver';
 import { LoadingScreen } from './scenes/LoadingScreen';
 import { MainMenu } from './scenes/MainMenu';
-import { scene1Score } from './scenes/Scene1';
-import { ScoreBoard } from './scenes/ScoreBoard';
+import { Level1 } from './scenes/Scene1';
+import { ScoreBoardScene } from './scenes/ScoreBoard';
 import UIScene from './scenes/UIScene';
 import { Plugin as NineSlicePlugin } from 'phaser3-nineslice';
 
@@ -22,12 +22,15 @@ import { Plugin as NineSlicePlugin } from 'phaser3-nineslice';
 export class GameComponent implements OnInit, OnDestroy {
   phaserGame!: Phaser.Game;
   config: Phaser.Types.Core.GameConfig;
+  arrayRecord!: any
+  id!: any
+
 
   constructor(private gameService: GameService) {
     this.config = {
       type: Phaser.AUTO,
       backgroundColor: '#ef9324',
-      scene: [LoadingScreen, UIScene, MainMenu, ScoreBoard, scene1Score(this), GameOver],
+      scene: [LoadingScreen, UIScene, MainMenu, ScoreBoardScene(this), Level1(this), GameOver],
 
       parent: 'gameScreen',
       scale: {
@@ -54,7 +57,11 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    //"recolectar" Array de usuarios e ID 
+    this.getScoreboard()
+    this.getID()
     this.phaserGame = new Phaser.Game(this.config);
+
   }
 
   // BUG:
@@ -75,5 +82,19 @@ export class GameComponent implements OnInit, OnDestroy {
       }
     })
 
+  }
+
+  getScoreboard() {
+    this.gameService.getScoreboard().subscribe((data) => {
+      this.arrayRecord = data
+    })
+  }
+
+  getID() {
+    // this.id = this.gameService.getId()
+    // console.log(`ID del Usuario en el Componente:
+    // ${this.id}`);
+    let id = this.gameService.getId()
+    return id
   }
 }

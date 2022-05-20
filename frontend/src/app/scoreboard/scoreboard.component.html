@@ -8,32 +8,30 @@
     <div class="grid-title">YO TE RETRO!</div>
     <div class="grid-header">TOP 10 JUGADORES</div>
 
-
-
-  
     <div class="grid-scoreboard">
 
-        <div class="grid-item1"></div>
+        <div class="grid-item1">
+
+        </div>
         <div class="grid-scores">
             <!-- LeaderBoard -->
             <table id="scoreboard">
-                
                 <tr *ngFor="let record of records;let i = index">
-                    
-                    <td> {{i+1}}</td>
-                    <td>{{record.nombre}}</td>
-                    <td>{{record.record}}</td>
+                    <ng-container *ngIf="i<10" >    
+                         <td class="number"> {{i+1}}</td>
+                        <td class="userName">{{record.nombre}}</td>
+                        <td class="record">{{record.record}}</td>
+                    </ng-container>
+               
                 </tr>
             </table>
         </div>
 
         <!-- Personal Score -->
   <div class="grid-item1"> 
-       <caption>TU MEJOR PUNTUACION</caption>
+   <p class="scoreHeader">TU MEJOR PUNTUACIÓN</p>
     <table id="personalScore">
-       
         <tr *ngFor="let record of records;let i = index">
-            
             <ng-container *ngIf="record.id == cookie"> 
             <td> {{i+1}}</td>
             <td>{{record.nombre}}</td>
