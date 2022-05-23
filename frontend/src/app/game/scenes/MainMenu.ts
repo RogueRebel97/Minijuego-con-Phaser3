@@ -87,8 +87,6 @@ export class MainMenu extends Phaser.Scene {
       console.log('play');
 
       this.scene.start('Scene1');
-      this.scene.start('hud');
-      this.scene.bringToTop('hud')
       // this.scene.stop('MainMenu');
     });
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
@@ -101,9 +99,6 @@ export class MainMenu extends Phaser.Scene {
     settingsButton.on('selected', () => {
       console.log('settings');
       this.scene.start('ScoreBoard')
-      this.scene.bringToTop('ScoreBoard')
-      this.scene.launch('ui-scene')
-      this.scene.bringToTop('ui-scene')
     });
 
     creditsButton.on('selected', () => {

@@ -12,7 +12,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
     private moveTime: number = 0
     private controls!: any
 
-    private score: number = 10
+    private score: number = 500
 
 
     //Actions & States

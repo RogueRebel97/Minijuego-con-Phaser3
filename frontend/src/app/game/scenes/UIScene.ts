@@ -29,7 +29,7 @@ export default class UIScene extends Phaser.Scene {
     const settingButton = this.add.image(width - 10, 10, 'small_button').setOrigin(1, 0);
 
     //Icono de boton de pausa
-    this.add.image(settingButton.x - settingButton.width * 0.5, settingButton.y + settingButton.height * 0.5, 'option_button').setScale(1);
+    this.add.image(settingButton.x - settingButton.width * 0.5, settingButton.y + settingButton.height * 0.4, 'option_button').setScale(1);
 
     settingButton
       .setInteractive()
@@ -40,7 +40,7 @@ export default class UIScene extends Phaser.Scene {
         settingButton.setTint(0xffffff);
       })
       .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => { // colorear al pulsar
-        settingButton.setTint(0x8afbff);
+        settingButton.setTint(0xdedede);
       })
       .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {  // reset color
         settingButton.setTint(0xffffff);

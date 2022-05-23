@@ -1,23 +1,24 @@
 * {
     font-family: 'Press Start 2P', cursive;
-    text-align: center;
+
 }
 
 .grid-container {
     display: grid;
     grid-template-columns: 1 auto auto;
-
     padding: 10px;
 }
 
 .grid-title {
     font-size: 48px;
     padding-bottom: 60px;
+    text-align: center;
 }
 
 .grid-header {
     font-size: 32px;
     padding-bottom: 30px;
+    text-align: left;
 }
 
 .grid-scoreboard {
@@ -25,21 +26,36 @@
     grid-template-columns: auto auto auto;
 }
 
-.grid-scores {
-
-    margin-left: auto;
-    margin-right: auto;
+.grid-Leaderboard {
+    margin-left: 2rem;
 }
+
+// .scoreHeader {
+
+// }
+
+.grid-item1 {
+    font-size: 24px;
+    text-align: right;
+    margin-left: 5rem;
+}
+
+.number {
+    text-align: right;
+}
+
+.userName {
+    padding-right: 5rem;
+}
+
+.record {
+    text-align: left;
+}
+
+
 
 th,
 td {
     padding: 10px;
     font-size: x-large;
-}
-
-.grid-item1 {
-    font-size: 24px;
-    margin-left: auto;
-    margin-right: auto;
-
 }

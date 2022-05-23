@@ -52,6 +52,7 @@ export class Scene1 extends Phaser.Scene {
   //Tilesets
   private plainsTileSet_1!: Phaser.Tilemaps.Tileset;
   private plainsTileSet_2!: Phaser.Tilemaps.Tileset;
+  private woodTileSet!: Phaser.Tilemaps.Tileset;
   private plainsDecors!: Phaser.Tilemaps.Tileset
 
   //TilemapLayers
@@ -70,17 +71,12 @@ export class Scene1 extends Phaser.Scene {
   private deathZone!: Phaser.Tilemaps.TilemapLayer
   private goalLayer!: Phaser.Tilemaps.TilemapLayer
 
-
-
   private tileMapLayer!: Phaser.Tilemaps.TilemapLayer;
-
 
   private GameOverScreen!: GameOver;
 
-
   constructor() {
     super({ key: 'Scene1' });
-
     console.log('constructor iniciado');
 
 
@@ -101,21 +97,29 @@ export class Scene1 extends Phaser.Scene {
     this.win = false;
     this.gameOver = false
 
+    // Scales
     this.width = this.cameras.main.width;
     this.height = this.cameras.main.height;
 
+    // initialice groups
     this.enemies = this.physics.add.group()
-    // this.goblins = this.physics.add.group()
     this.arraySlimes = []
     this.arrayGoblins = []
   }
 
   create() {
     console.log('create iniciado');
+
     //Efecto fadeIN
     this.cameras.main.fadeIn(1000, 0, 0, 0);
 
-    //Set Score
+    //Controls 
+    this.controls = this.input.keyboard.addKeys({
+      'R': Phaser.Input.Keyboard.KeyCodes.R,
+      'T': Phaser.Input.Keyboard.KeyCodes.T,
+    })
+
+    //Set Score at 0
     this.registry.set(Constants.HUD.SCORE, this.score)
 
     // MAP & Background
@@ -129,14 +133,6 @@ export class Scene1 extends Phaser.Scene {
     // //background layer 3
     this.createBackground(this, 'plainsBG2', 15, 1) //Todo: Reducir Tamañao
 
-
-
-    //Controls
-    this.controls = this.input.keyboard.addKeys({
-      'R': Phaser.Input.Keyboard.KeyCodes.R,
-      'T': Phaser.Input.Keyboard.KeyCodes.T,
-    })
-
     //load tile map
     this.tileMap = this.make.tilemap({ key: Constants.MAPS.LEVELS.LEVEL1.TILEMAPJSON, tileWidth: 16, tileHeight: 16 });
     this.physics.world.bounds.setTo(0, 0, this.tileMap.widthInPixels, this.tileMap.heightInPixels);
@@ -144,8 +140,9 @@ export class Scene1 extends Phaser.Scene {
     //TileSet & decors
     this.plainsTileSet_1 = this.tileMap.addTilesetImage(Constants.MAPS.SCENERY.PLAINS.TILESET.PLAINS_1);
     this.plainsTileSet_2 = this.tileMap.addTilesetImage(Constants.MAPS.SCENERY.PLAINS.TILESET.PLAINS_2);
+    this.woodTileSet = this.tileMap.addTilesetImage(Constants.MAPS.SCENERY.FOREST.TILESET.WOODSTERRAIN);
     this.plainsDecors = this.tileMap.addTilesetImage(Constants.MAPS.SCENERY.PLAINS.DECORATOR.PLAINSDECORS)
-    this.tileSets = [this.plainsTileSet_1, this.plainsTileSet_2, this.plainsDecors] //Add every tileset and decor to Tileset Group
+    this.tileSets = [this.plainsTileSet_1, this.plainsTileSet_2, this.plainsDecors, this.woodTileSet] //Add every tileset and decor to Tileset Group
 
     //Layers
     this.decorsLayer3 = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.DECORS.LAYER3, this.tileSets)
@@ -262,6 +259,8 @@ export class Scene1 extends Phaser.Scene {
 
       this.player.reachGoal()
       this.win = true;
+
+
     })
 
     this.registry.set(Constants.REGISTRY.COLLIDERS.GOAL, this.goalCollider)
@@ -269,6 +268,7 @@ export class Scene1 extends Phaser.Scene {
     //Player andDeath zone
     this.deathZoneCollider = this.physics.add.collider(this.player, this.deathZone, (deathzone, player) => {
       this.player.deathFall()
+
 
     })
 
@@ -284,6 +284,7 @@ export class Scene1 extends Phaser.Scene {
 
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.uploadScore()
       this.player.removeAllListeners()
       this.enemies.removeAllListeners()
 
@@ -304,6 +305,8 @@ export class Scene1 extends Phaser.Scene {
     if (key.JustDown(this.controls.R)) {
       if (contexto) {
         contexto.sendScore(this.registry.get(Constants.HUD.SCORE))
+        console.log("Nueva Puntuacion Guardada!");
+
       } else {
         console.log("contexto is undefined");
 
@@ -375,6 +378,7 @@ export class Scene1 extends Phaser.Scene {
         this.scene.stop('ui-scene')
         this.scene.launch('gameOver', { defeat: true })
         this.scene.bringToTop('gameOver')
+        this.uploadScore()
         console.log('muertoooo');
       }, [], this);
 
@@ -384,12 +388,24 @@ export class Scene1 extends Phaser.Scene {
         this.scene.stop('ui-scene')
         this.scene.launch('gameOver', { defeat: false })
         this.scene.bringToTop('gameOver')
+        this.uploadScore()
         console.log('victoria');
       }, [], this);
     }
   }
 
 
+  uploadScore() {
+    if (contexto) {
+      contexto.sendScore(this.registry.get(Constants.HUD.SCORE))
+      contexto.getScoreboard()
+      console.log("Nueva Puntuacion Guardada!");
+
+    } else {
+      console.log("contexto is undefined");
+
+    }
+  }
 
 }
 

@@ -366,13 +366,13 @@ export class LoadingScreen extends Phaser.Scene {
     this.cameras.main.once(
       Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
       (cam: any, effect: any) => {
-        this.scene.launch('ui-scene');
-        this.scene.bringToTop('ui-scene');
+        // this.scene.launch('ui-scene');
+        // this.scene.bringToTop('ui-scene');
         // this.scene.start('Scene1');
-        this.scene.start('ScoreBoard')
+        // this.scene.start('ScoreBoard')
         // this.scene.launch('hud');
         // this.scene.bringToTop('hud')
-        // this.scene.start('MainMenu');
+        this.scene.start('MainMenu');
       }
     );
   }

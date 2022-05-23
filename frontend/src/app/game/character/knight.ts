@@ -13,6 +13,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     private damage: number = 10;
 
 
+
     // Actions & states
     private actions: any = {
         attack: { state: true, duration: 350, cooldown: 400 },
@@ -104,7 +105,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.combo = this.currentScene.input.keyboard.createCombo(this.controls.J)
 
         this.currentScene.input.keyboard.on('keycombomatch', (event: any) => {
-
+            this.currentScene.events.emit(Constants.EVENTS.SCORE, +50)
             console.log('Codigo Konami!');
 
         });

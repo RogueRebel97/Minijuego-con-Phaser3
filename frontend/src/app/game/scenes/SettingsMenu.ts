@@ -261,7 +261,7 @@ export default class SettingsMenu {
     this.pauseBackground.setAlpha(0.1)
   }
 
-  actionButton(button: Phaser.GameObjects.Image, id: number) {
+  actionButton(button: Phaser.GameObjects.Image, id?: number) {
 
     button.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
       button.setTint(0xe0e0e0);
@@ -304,13 +304,20 @@ export default class SettingsMenu {
   backToMenu() {
 
     for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) {
-      if (this.activeScene.scene.manager.scenes[i].scene.key == 'ui-scene') {
-      } else if (this.activeScene.scene.manager.scenes[i].scene.isActive()) {
+      if (this.activeScene.scene.manager.scenes[i].scene.isPaused()) {
+        // console.log(this.activeScene.scene.manager.scenes[i].scene.key);
         this.activeScene.scene.stop(this.activeScene.scene.manager.scenes[i].scene.key);
+        this.activeScene.scene.start('MainMenu')
       }
     }
-    this.activeScene.scene.start('MainMenu')
-    this.activeScene.scene.bringToTop('MainMenu')
+
+
+
+
+
+
+
+
   }
 
 
@@ -318,10 +325,7 @@ export default class SettingsMenu {
   reset() {
     for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) {
 
-      if (this.activeScene.scene.manager.scenes[i].scene.key == 'ui-scene') {
-        console.log("do nothing");
-
-      } else if (this.activeScene.scene.manager.scenes[i].scene.isPaused()) {
+      if (this.activeScene.scene.manager.scenes[i].scene.isPaused()) {
 
         console.log(this.activeScene.scene.manager.scenes[i].scene);
         console.log("reseteando");
