@@ -304,8 +304,9 @@ export class Scene1 extends Phaser.Scene {
     //Call Angular Service
     if (key.JustDown(this.controls.R)) {
       if (contexto) {
-        contexto.sendScore(this.registry.get(Constants.HUD.SCORE))
-        console.log("Nueva Puntuacion Guardada!");
+        // contexto.sendScore(this.registry.get(Constants.HUD.SCORE))
+        // console.log("Nueva Puntuacion Guardada!");
+        this.uploadScore()
 
       } else {
         console.log("contexto is undefined");
@@ -378,9 +379,11 @@ export class Scene1 extends Phaser.Scene {
         this.scene.stop('ui-scene')
         this.scene.launch('gameOver', { defeat: true })
         this.scene.bringToTop('gameOver')
-        this.uploadScore()
+
         console.log('muertoooo');
       }, [], this);
+
+      this.uploadScore()
 
     } else if (this.win && !this.player.deathCheck()) {
       this.win = false
@@ -388,9 +391,9 @@ export class Scene1 extends Phaser.Scene {
         this.scene.stop('ui-scene')
         this.scene.launch('gameOver', { defeat: false })
         this.scene.bringToTop('gameOver')
-        this.uploadScore()
         console.log('victoria');
       }, [], this);
+      this.uploadScore()
     }
   }
 

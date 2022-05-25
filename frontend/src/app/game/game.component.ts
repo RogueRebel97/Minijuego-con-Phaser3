@@ -58,7 +58,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     //"recolectar" Array de usuarios e ID 
-    this.getScoreboard()
+    this.getScoreboard() // Al inicial el componente asigna a la variable arrayRecord el array recibido de la BD
     this.getID()
     this.phaserGame = new Phaser.Game(this.config);
 
@@ -70,28 +70,28 @@ export class GameComponent implements OnInit, OnDestroy {
 
 
   sendScore(score: number) {
-    console.log("Puntuacion: " + score);
+
 
     this.gameService.sendScore(score).subscribe((data) => {
-      if (data) {
-        console.log('puntuacion subida con exito');
-      }
-      else {
-        console.log('error en el data');
 
-      }
+
     })
 
   }
 
   getScoreboard() {
     this.gameService.getScoreboard().subscribe((data) => {
-      this.arrayRecord = data
+      this.arrayRecord = data // asignar datos recibidos a Variable
+
+      console.log('array de BD:');
+      console.log(this.arrayRecord);
+
+
     })
   }
 
   getID() {
-    // this.id = this.gameService.getId()
+
     // console.log(`ID del Usuario en el Componente:
     // ${this.id}`);
     let id = this.gameService.getId()

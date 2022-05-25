@@ -3,7 +3,7 @@ import * as Phaser from "phaser";
 
 
 //Angular context
-let contexto: any;
+let contexto: any; // = game.component.ts
 
 
 @Injectable({
@@ -17,14 +17,21 @@ export class ScoreBoard extends Phaser.Scene {
     private width!: number
     private height!: number
 
+    private background!: any
+
     private scoreText!: Phaser.GameObjects.Text
 
     private arrayUsuarios: any; // array de usuarios recibidos de la BD
+    private arrayUsuarios2: any // Copia para comprobar actualizaciones.
     private idUsuario: any //Id usuario recibido desde servicio de Cookies
+
+    private controls!: any
 
 
 
     private img!: Phaser.GameObjects.TileSprite
+    private img2!: Phaser.GameObjects.TileSprite
+    private img3!: Phaser.GameObjects.TileSprite
 
     constructor() {
         super({ key: 'ScoreBoard' });
@@ -39,7 +46,14 @@ export class ScoreBoard extends Phaser.Scene {
 
 
         this.arrayUsuarios = contexto.arrayRecord
+        this.arrayUsuarios2 = this.arrayUsuarios
+        console.log('Array1:');
         console.log(this.arrayUsuarios);
+        console.log('Array2:');
+        console.log(this.arrayUsuarios2);
+
+
+
 
     }
 
@@ -52,18 +66,18 @@ export class ScoreBoard extends Phaser.Scene {
         this.width = this.scale.width;
         this.height = this.scale.height;
 
-        // this.createBackground(this, 'nightBckgr-1', 1, 0)
-        // this.createBackground(this, 'nightBckgr-2', 1, 0)
-        // this.createBackground(this, 'nightBckgr-3', 1, 0)
 
-        // const img1 = this.add.image(0, this.scale.height, 'nightBckgr-1')
-        //     .setOrigin(0, 1)
-        // img1.displayWidth = this.sys.canvas.width;
-        // img1.displayHeight = this.sys.canvas.height;
+        this.controls = this.input.keyboard.addKeys({
+            'R': Phaser.Input.Keyboard.KeyCodes.R,
+            'T': Phaser.Input.Keyboard.KeyCodes.T,
+        })
 
-        this.img = this.add.tileSprite(this.width / 2, this.height / 2, 0, 0, 'nightBckgr-1')
+        //Background
 
-        this.img.setSize(this.width, this.height)
+        this.img = this.add.tileSprite(this.width / 2, this.height / 2, this.width, this.height, 'nightBckgr-1')
+        this.img2 = this.add.tileSprite(this.width / 2, this.height / 2, this.width, this.height, 'nightBckgr-2')
+        this.img3 = this.add.tileSprite(this.width / 2, this.height / 2, this.width, this.height, 'nightBckgr-3')
+
 
         // Boton Back to Menu
         const returnButton = this.add.image(this.width - 10, 10, 'small_button').setOrigin(1, 0);
@@ -75,20 +89,102 @@ export class ScoreBoard extends Phaser.Scene {
         this.animateButton(returnButton)
 
 
-        // Array de Puntuaciones:
-        if (contexto.arrayRecord) {
-
-        }
-
-
         //Id usuario
         this.idUsuario = contexto.getID()
 
         console.log(`ID del Usuario en el juego:
         ${this.idUsuario}`);;
 
+        this.drawLeaderboard()
 
 
+
+
+
+
+
+
+    }
+
+
+    override update() {
+        let key = Phaser.Input.Keyboard;
+        // console.log("scoreBoard corriendo");
+
+        this.img2.tilePositionX += 0.2
+        this.img3.tilePositionX += 0.5
+
+        if (key.JustDown(this.controls.R)) {
+
+            console.log('Antiguo Array:'); // Valor inical
+            console.log(contexto.arrayRecord);
+
+            contexto.getScoreboard() // reasignar variable que guarda los Records
+
+            console.log('Antiguo nuevo:'); // Nuevo Valor
+            console.log(contexto.arrayRecord);
+            this.arrayUsuarios = contexto.arrayRecord
+
+            if (this.arrayUsuarios != this.arrayUsuarios2) { //Volver  dibujar la scoreBoard
+                console.log("actualizcion encontrada");
+                console.log('Array1:');
+                console.log(this.arrayUsuarios);
+                console.log('Array2:');
+                console.log(this.arrayUsuarios2);
+
+                this.arrayUsuarios = this.arrayUsuarios2
+
+
+
+            }
+            else {
+                console.log('sin cambios');
+
+
+            }
+        }
+
+
+
+    }
+
+    updateScoreBoard() {
+        this.arrayUsuarios = contexto.arrayRecord
+    }
+
+
+    createBackground(scene: Phaser.Scene, texture: string, count: number, scrollFactor: number) {
+        let x = 0;
+        for (let i = 0; i < count; i++) {
+            const img = scene.add.image(x, scene.scale.height, texture)
+                .setOrigin(0, 1).setScrollFactor(scrollFactor)
+            img.displayWidth = this.sys.canvas.width;
+            img.displayHeight = this.sys.canvas.height;
+            x += img.displayWidth
+
+        }
+    }
+
+    animateButton(button: Phaser.GameObjects.Image) {
+
+        button.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
+            button.setTint(0xe0e0e0);
+        })
+            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, () => {
+                button.setTint(0xffffff);
+            })
+            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+                button.setTint(0xe0e0e0);
+
+
+
+            }).on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+                button.setTint(0xffffff);
+                this.scene.start('MainMenu')
+            })
+    }
+
+    drawLeaderboard() {
         // LEADERBOARD -----------------------------
 
         // header
@@ -133,31 +229,7 @@ export class ScoreBoard extends Phaser.Scene {
         }
 
 
-
-
-
     }
-
-
-    override update() {
-        console.log("scoreBoard corriendo");
-        this.img.tilePositionX++
-        this.arrayUsuarios = contexto.arrayRecord
-    }
-
-
-    createBackground(scene: Phaser.Scene, texture: string, count: number, scrollFactor: number) {
-        let x = 0;
-        for (let i = 0; i < count; i++) {
-            const img = scene.add.image(x, scene.scale.height, texture)
-                .setOrigin(0, 1).setScrollFactor(scrollFactor)
-            img.displayWidth = this.sys.canvas.width;
-            img.displayHeight = this.sys.canvas.height;
-            x += img.displayWidth
-
-        }
-    }
-
     createTable() {
         let y = this.scale.height * 0.2
         let x = this.width * 0.08
@@ -188,26 +260,6 @@ export class ScoreBoard extends Phaser.Scene {
         }
 
     }
-
-    animateButton(button: Phaser.GameObjects.Image) {
-
-        button.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
-            button.setTint(0xe0e0e0);
-        })
-            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, () => {
-                button.setTint(0xffffff);
-            })
-            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-                button.setTint(0xe0e0e0);
-
-
-
-            }).on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
-                button.setTint(0xffffff);
-                this.scene.start('MainMenu')
-            })
-    }
-
 }
 export const ScoreBoardScene = (ctx: any) => {
 

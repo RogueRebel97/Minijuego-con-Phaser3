@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ScoreBoardScene } from './ScoreBoard';
 
 // Angular context
 let contexto: any;
@@ -8,56 +9,136 @@ let contexto: any;
   providedIn: 'root',
 })
 export class MainMenu extends Phaser.Scene {
-  private buttons: Phaser.GameObjects.Image[] = [];
-  private selectedButtonIndex = 0;
-  private buttonSelector!: Phaser.GameObjects.Image;
+  private buttons!: Phaser.GameObjects.Image[]; //Array de botones
+  private selectedButtonIndex = 0; //Boton seleccionado
 
-  private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
 
+  // Key controls
+  private controls!: any;
+
+  private img!: Phaser.GameObjects.TileSprite
+  private img2!: Phaser.GameObjects.TileSprite
+  private img3!: Phaser.GameObjects.TileSprite
+
+  private plainTexture!: Phaser.Textures.Texture
 
 
   constructor() {
     super({ key: 'MainMenu' });
+
+
   }
 
   init() {
-    this.cursors = this.input.keyboard.createCursorKeys();
+
     console.log('mainMenu Corriendo');
-  }
-  preload() {
-    console.log('mainMenu preload Corriendo');
+
+    this.buttons = []
+
   }
 
   create() {
     console.log('mainMenu Create Corriendo');
+
+    console.log("indice boton seleccionado: " + this.selectedButtonIndex);
+
+
+    ///Controls
+    this.controls = this.input.keyboard.addKeys({
+      'UP': Phaser.Input.Keyboard.KeyCodes.UP,
+      'DOWN': Phaser.Input.Keyboard.KeyCodes.DOWN,
+      'W': Phaser.Input.Keyboard.KeyCodes.W,
+      'S': Phaser.Input.Keyboard.KeyCodes.S,
+      'SPACE': Phaser.Input.Keyboard.KeyCodes.SPACE,
+      'ENTER': Phaser.Input.Keyboard.KeyCodes.ENTER
+    })
+
+    const width = this.scale.width
+    const height = this.scale.height
+
     this.cameras.main.fadeIn(3000, 0, 0, 0);
 
-    this.add.image(400, 300, 'sky');
+    //Get textures
+    const plainsTexture = this.textures.getFrame('plainsSky');
 
 
-    const { width, height } = this.scale;
+    //Initialice BG = Bioma1 Plains
+    this.img = this.add.tileSprite(0, 0, width, height, 'plainsSky')
+      .setOrigin(0).setTileScale(width / plainsTexture.width, height / plainsTexture.height)
 
+    this.img2 = this.add.tileSprite(0, 0, width, height, 'plainsBG1')
+      .setOrigin(0).setTileScale(width / plainsTexture.width, height / plainsTexture.height)
+
+    this.img3 = this.add.tileSprite(0, 0, width, height, 'plainsBG2')
+      .setOrigin(0).setTileScale(width / plainsTexture.width, height / plainsTexture.height)
+
+    // Glass Panel
+    const glassPanel = this.add.image(width * 0.5, height * 0.6, 'glass-panel_Corners')
+      .setDisplaySize(300, 280)
+
+    // Buttons:
+    this.createButtons()
+
+    // Boton seleccionado por defecto
+    this.selectButton(0)
+
+  }
+
+  override update() {
+    // console.log('MainMenu Corriendo');
+
+    let key = Phaser.Input.Keyboard;
+
+    // BG movement
+    this.img2.tilePositionX += 0.2
+    this.img3.tilePositionX += 0.5
+
+    //Menu Controls
+
+    if (key.JustDown(this.controls.W) || key.JustDown(this.controls.UP)) {
+      this.selectNextButton(-1)
+
+
+
+    } else if (key.JustDown(this.controls.S) || key.JustDown(this.controls.DOWN)) {
+      this.selectNextButton(1)
+
+
+    } else if (key.JustDown(this.controls.SPACE) || key.JustDown(this.controls.ENTER)) {
+      this.confirmSelection()
+
+    }
+
+  }
+
+
+  createButtons() {
+    const width = this.scale.width
+    const height = this.scale.height
 
     // Play button
     const playButton = this.add
-      .image(width * 0.5, height * 0.6, 'glass-panel')
-      .setDisplaySize(150, 50);
+      .image(width * 0.5, height * 0.5, 'red_button1')
 
+    this.actionButton(playButton)
+
+    //Play Text
     this.add
-      .text(playButton.x, playButton.y, 'Jugar', { color: 'black', fontFamily: 'pixel' })
+      .text(playButton.x, playButton.y, 'JUGAR', { color: 'black', fontFamily: 'pixel' })
       .setOrigin(0.5);
 
-    // Settings button
-    const settingsButton = this.add
+    // ScoreBoard button
+    const scoreButton = this.add
       .image(
         playButton.x,
         playButton.y + playButton.displayHeight + 10,
-        'glass-panel'
+        'red_button1'
       )
-      .setDisplaySize(150, 50);
+    this.actionButton(scoreButton)
 
+    // ScoreBoard Text
     this.add
-      .text(settingsButton.x, settingsButton.y, 'Score', {
+      .text(scoreButton.x, scoreButton.y, 'PUNTUACION', {
         color: 'black', fontFamily: 'pixel'
       })
       .setOrigin(0.5);
@@ -65,111 +146,134 @@ export class MainMenu extends Phaser.Scene {
     // Credits button
     const creditsButton = this.add
       .image(
-        settingsButton.x,
-        settingsButton.y + settingsButton.displayHeight + 10,
-        'glass-panel'
+        scoreButton.x,
+        scoreButton.y + scoreButton.displayHeight + 10,
+        'red_button1'
       )
-      .setDisplaySize(150, 50);
+    this.actionButton(creditsButton)
 
+    //Credits text
     this.add
-      .text(creditsButton.x, creditsButton.y, 'Creditos', { color: 'black', fontFamily: 'pixel' })
+      .text(creditsButton.x, creditsButton.y, 'CREDITOS', { color: 'black', fontFamily: 'pixel' })
       .setOrigin(0.5);
 
     this.buttons.push(playButton);
-    this.buttons.push(settingsButton);
+    this.buttons.push(scoreButton);
     this.buttons.push(creditsButton);
 
-    this.buttonSelector = this.add.image(0, 0, 'cursor-hand');
+    console.log(this.buttons);
 
-    this.selectButton(0);
-
+    //Event Listeners
     playButton.on('selected', () => {
-      console.log('play');
+      console.log('jugar');
+      this.scene.start('Scene1')
+    })
 
-      this.scene.start('Scene1');
-      // this.scene.stop('MainMenu');
-    });
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-      playButton.off('selected');
-      settingsButton.off('selected');
-      creditsButton.off('selected');
-      console.log('EVENTOS CERRADOS');
-    });
-
-    settingsButton.on('selected', () => {
-      console.log('settings');
+    scoreButton.on('selected', () => {
+      console.log('scoreboard')
       this.scene.start('ScoreBoard')
-    });
+    })
 
     creditsButton.on('selected', () => {
-      console.log('credits');
-    });
+      console.log('credits')
+    })
 
-    this.selectNextButton(0);
-    this.selectButton(0);
-  }
+    //Limpiar Eventos
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      playButton.off('selected')
+      creditsButton.off('selected')
+      creditsButton.off('selected')
 
-  override update() {
-
-    const pressUp = Phaser.Input.Keyboard.JustDown(this.cursors.up!);
-    const pressDown = Phaser.Input.Keyboard.JustDown(this.cursors.down!);
-    const pressSpace = Phaser.Input.Keyboard.JustDown(this.cursors.space!);
-    console.log('MainMenu Corriendo');
+    })
 
 
-
-    if (pressUp) {
-      this.selectNextButton(-1);
-    } else if (pressDown) {
-      this.selectNextButton(1);
-    } else if (pressSpace) {
-      this.confirmSelection();
-    }
   }
 
   selectButton(index: number) {
-    console.log('selectButton');
+    console.log(`selectedButton: ${index}`);
 
-    const currentButton = this.buttons[this.selectedButtonIndex];
+    // Boton seleccionado, por defecto es indice 0
+    const currentButton = this.buttons[this.selectedButtonIndex]
 
-    // set the current selected button to a white tint
+
     currentButton.setTint(0xffffff);
 
-    const button = this.buttons[index];
+    const button = this.buttons[index]
 
-    // set the newly selected button to a green tint
+
     button.setTint(0x66ff7f);
 
-    // move the hand cursor to the right edge
-    this.buttonSelector.x = button.x + button.displayWidth * 0.5;
-    this.buttonSelector.y = button.y + 10;
-
-    // store the new selected index
-    this.selectedButtonIndex = index;
+    // guardar el indice del boton actual en Indice de boton seleccionado
+    this.selectedButtonIndex = index
   }
 
   selectNextButton(change = 1) {
-    console.log('selecnextButton');
 
-    let index = this.selectedButtonIndex + change;
+    // i = boton seleccionado +1 o -1 depende de si es Arriba o Abajo
+    let index = this.selectedButtonIndex + change
 
-    // wrap the index to the front or end of array
+    //Mantener index dentro de los limites
     if (index >= this.buttons.length) {
-      index = 0;
-    } else if (index < 0) {
-      index = this.buttons.length - 1;
+      index = 0
+    }
+    else if (index < 0) {
+      index = this.buttons.length - 1
     }
 
-    this.selectButton(index);
+    //llamar a selectButton
+    this.selectButton(index)
   }
 
   confirmSelection() {
-    console.log('confirmSelection');
+    // Boton seleccionado actualmente
+    const button = this.buttons[this.selectedButtonIndex]
 
-    // get the currently selected button
-    const button = this.buttons[this.selectedButtonIndex];
-
-    // emit the 'selected' event
-    button.emit('selected');
+    button.emit('selected')
   }
+
+
+  changeBioma() {
+    // ToDo Change backgrounds every 10s
+  }
+
+  actionButton(button: Phaser.GameObjects.Image, id?: number) {
+
+    button.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
+      button.setTint(0xe0e0e0);
+    })
+      .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, () => {
+        button.setTint(0xffffff);
+      })
+      .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+        button.setTint(0xe0e0e0);
+        button.setTexture('red_button2')
+
+
+      }).on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+        button.setTint(0xffffff);
+        button.setTexture('red_button3')
+
+        switch (id) {
+          case 1:
+            console.log(id);
+
+            break;
+          case 2:
+            console.log(id)
+            break;
+          case 3:
+            console.log(id)
+
+            break;
+          case 4:
+            console.log(id)
+
+            break;
+          default:
+            return
+
+        }
+      })
+  }
+
 }

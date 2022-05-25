@@ -78,6 +78,12 @@ export class LoadingScreen extends Phaser.Scene {
       'glass-panel',
       'assets/graphics/uiAssets/PNG/glassPanel.png'
     );
+
+    this.load.image(
+      'glass-panel_Corners',
+      'assets/graphics/uiAssets/PNG/glassPanel_corners.png'
+    );
+
     this.load.image(
       'cursor-hand',
       'assets/graphics/uiAssets/PNG/cursor_hand.png'
@@ -111,6 +117,21 @@ export class LoadingScreen extends Phaser.Scene {
       'menuButton-2',
       'assets/graphics/uiAssets2/PNG/grey_button04.png'
     );
+
+    this.load.image(
+      'red_button1',
+      'assets/graphics/uiAssets2/PNG/red_button11.png'
+    );
+
+    this.load.image(
+      'red_button2',
+      'assets/graphics/uiAssets2/PNG/red_button12.png'
+    );
+    this.load.image(
+      'red_button3',
+      'assets/graphics/uiAssets2/PNG/red_button13.png'
+    );
+
     this.load.image(
       'cross',
       'assets/graphics/gameIcons/PNG/Black/1x/cross.png'
@@ -147,15 +168,15 @@ export class LoadingScreen extends Phaser.Scene {
     //Night
     this.load.image(
       'nightBckgr-1',
-      'assets/graphics/background/background_0.png'
+      'assets/graphics/background/background_full.png'
     );
     this.load.image(
       'nightBckgr-2',
-      'assets/graphics/background/background_1.png'
+      'assets/graphics/background/background_1Full.png'
     );
     this.load.image(
       'nightBckgr-3',
-      'assets/graphics/background/background_2.png'
+      'assets/graphics/background/background_2Full.png'
     );
 
     //Forest

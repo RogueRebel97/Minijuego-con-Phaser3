@@ -38,7 +38,6 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     private currentScene!: Phaser.Scene;
 
     //Platform Collider
-
     private platformCollider!: Phaser.Physics.Arcade.Collider;
 
     //Sword Hitbox
@@ -78,7 +77,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             'SHIFT': Phaser.Input.Keyboard.KeyCodes.SHIFT,
             'SPACE': Phaser.Input.Keyboard.KeyCodes.SPACE,
         });
-        let key = Phaser.Input.Keyboard;
+
         // Sprite Physics
         this.currentScene.physics.world.enable(this);
         this.currentScene.add.existing(this);
@@ -563,6 +562,8 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             key: 'downSwing_noMove',
             frames: this.currentScene.anims.generateFrameNumbers('downAttack_noMove', { start: 0, end: 3 }),
             frameRate: 20,
+            yoyo: true
+
         });
         this.anims.create({
             key: 'swing_noMove',
