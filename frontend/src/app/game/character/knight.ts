@@ -11,13 +11,13 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     private maxHealth: number = 999;
     private health: number = this.maxHealth;
     private damage: number = 10;
+    private attackCounter: number = 0;
 
 
 
     // Actions & states
     private actions: any = {
-        attack: { state: true, duration: 350, cooldown: 400 },
-        attack2: { state: true, duration: 500, cooldown: 0 },
+        attack: { state: true, duration: 350, cooldown: 1000 },
         slide: { state: true, duration: 300, cooldown: 800 },
         damage: { state: true, duration: 500, cooldown: 1500 },
         invulnerable: { state: true, cooldown: 325 }
@@ -84,15 +84,13 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.setCollideWorldBounds(false);
 
 
-
+        //hit box default
         this.body.setSize(20, 38);
-        // this.displayWidth = 240;
-        // this.displayHeight = 160;
         this.body.setOffset(this.width * 0.5 - 15, this.height * 0.5);
 
 
         // Initialize Sword HitBox
-        this.swordHitbox = this.currentScene.add.rectangle(this.x, this.y, 50, 55, 0xFF0000, 0) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody
+        this.swordHitbox = this.currentScene.add.rectangle(this.x, this.y, 30, 40, 0xFF0000, 0) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody
         this.currentScene.physics.add.existing(this.swordHitbox)
         this.swordHitbox.body.setAllowGravity(false)
         this.swordHitbox.body.enable = false;
@@ -132,7 +130,6 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     override update() {
         let key = Phaser.Input.Keyboard;
 
-        // console.log(`plataform colliding: ${this.checkPlatformCollider}`);
         if (this.playerIsDead) this.allowMove = false;
 
         // Actions set
@@ -143,23 +140,11 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 this.setVelocityX(0)
 
                 this.crouch = true
-                // this.body.setOffset(this.width * 0.5 - 5, this.height * 0.5);
-                // this.body.setSize(20, 30);
-
             }
             else { //Reset crouch state 
                 this.crouch = false
 
-                // this.body.setSize(20, 38);
-                // if (this.flipX) {
-                //     this.body.setOffset(this.width * 0.5 - 5, this.height * 0.5);
-                // } else {
-                //     this.body.setOffset(this.width * 0.5 - 15, this.height * 0.5);
-                // }
-
             }
-
-
             // Run
             if (!this.crouch) {
 
@@ -260,16 +245,55 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('fall');
             }
 
-            // Attack: Combo downSwing + Swing   attackState = true for default, is AllowAttack
+            // Attack: inmovil
 
-            if ((key.JustDown(this.controls.J) || key.JustDown(this.controls.Z)) && this.body.blocked.down && this.actions.attack.state && this.actions.attack2.state) {
-                console.log("ATTACK1");
+            if ((key.JustDown(this.controls.J) || key.JustDown(this.controls.Z)) && this.body.blocked.down && this.actions.attack.state) {
 
-                this.setVelocityX(0); //parar el pj
+                //Attack counter
+                if (this.attackCounter > 1) {
+                    this.attackCounter = 0
+                    this.attackCounter++
+                }
+                else {
+                    this.attackCounter++
+                }
+
+                console.log("attacks: " + this.attackCounter);
+
                 this.blockMove('attack') // bloquear otros inputs de usuario por x milisegundos
-                this.cooldown('attack');    // impide que se vuelva a ejecutar otro ataque durante x ms
+                // this.cooldown('attack');    // impide que se vuelva a ejecutar otro ataque durante x ms
                 this.anims.stop(); // detener animaciones en curso
-                this.anims.play('downSwing_noMove');
+
+                // Ataque parado 
+                if (this.body.velocity.x == 0) {
+
+                    // Hit 1
+                    if (this.attackCounter < 2) {
+                        console.log("downSwing");
+                        this.anims.play('downSwing_noMove');
+                        // Hit 2
+                    } else {
+                        console.log("lateralSwing");
+                        this.anims.play('swing_noMove');
+                    }
+                    // Ataque en movimiento
+                } else {
+                    if (this.flipX) {
+                        this.setVelocityX(-this.vRun * 0.3);
+                    } else {
+                        this.setVelocityX(this.vRun * 0.3);
+                    }
+
+                    if (this.attackCounter < 2) {
+                        console.log("downSwing");
+                        this.anims.play('downSwing');
+                    } else {
+                        console.log("lateralSwing");
+                        this.anims.play('swing');
+                    }
+
+                }
+
 
                 // cambiar el Frame en el ataque se hace efectivo
                 const startHit = (anim: Phaser.Animations.Animation, frame: Phaser.Animations.AnimationFrame) => {
@@ -279,8 +303,8 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                     this.off(Phaser.Animations.Events.ANIMATION_UPDATE, startHit) // apaga evento.
 
                     this.swordHitbox.x = this.flipX
-                        ? this.x - this.width * 0.4
-                        : this.x + this.width * 0.4
+                        ? this.x - this.width * 0.2
+                        : this.x + this.width * 0.2
                     this.swordHitbox.y = this.y + this.body.height * 0.5
 
                     // To-Do ajustar temporalmente la hitbox del caballero para que se adapte a la animacion
@@ -291,62 +315,34 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 }
                 this.on(Phaser.Animations.Events.ANIMATION_UPDATE, startHit) // cuando la animacion avance llama a startHit para saber cuando comenzar
 
-                // desactivar la hitbox al acabar la animacion y permitir un segundo golpe
-                this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'downSwing_noMove', () => {
-
+                //Desactivar hitbox
+                const timedEvent = this.currentScene.time.delayedCall(this.actions.attack.duration, () => {
                     this.swordHitbox.body.enable = false;
                     this.currentScene.physics.world.remove(this.swordHitbox.body)
 
-                })
+
+                }, [], this)
+
+                //reset attack
+                // const resetAttacks = this.currentScene.time.delayedCall(this.actions.attack.cooldown, () => {
+                //     console.log("Attack reset");
+
+                //     this.attackCounter = 0
+
+
+                // }, [], this)
+
 
             }
 
-            // this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'downSwing_noMove', () => {
-            //     if ((key.JustDown(this.controls.J) || key.JustDown(this.controls.Z))
-            //         && this.body.blocked.down) {
-            //         console.log("ATTACK2");
-            //         this.setVelocityX(0);
-            //         // this.blockMove('attack2')
-            //         this.anims.stop()
-            //         this.anims.play('swing_noMove');
-
-
-
-
-            //         const startHit = (anim: Phaser.Animations.Animation, frame: Phaser.Animations.AnimationFrame) => {
-            //             if (frame.index < 1) { // empieza en el frame 1
-            //                 return
-            //             }
-            //             this.off(Phaser.Animations.Events.ANIMATION_UPDATE, startHit) // apaga evento.
-
-            //             this.swordHitbox.x = this.flipX
-            //                 ? this.x - this.width * 0.4
-            //                 : this.x + this.width * 0.4
-            //             this.swordHitbox.y = this.y + this.body.height * 0.5
-
-            //             // To-Do ajustar temporalmente la hitbox del caballero para que se adapte a la animacion
-
-            //             // activa la hitbox 
-            //             this.swordHitbox.body.enable = true
-            //             this.currentScene.physics.world.add(this.swordHitbox.body)
-            //         }
-            //         this.on(Phaser.Animations.Events.ANIMATION_UPDATE, startHit)
-
-            //         this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'swing_noMove', () => {
-
-            //             this.swordHitbox.body.enable = false;
-            //             this.currentScene.physics.world.remove(this.swordHitbox.body)
-
-            //         })
-            //     }
-            // })
 
 
             // Slide
             if (key.JustDown(this.controls.SHIFT) &&
                 (this.controls.RIGHT.isDown || this.controls.LEFT.isDown || this.controls.A.isDown || this.controls.D.isDown) &&
-                this.body.blocked.down && this.actions.slide.state) {
+                this.body.blocked.down && this.actions.slide.state && !this.crouch) {
 
+                this.crouch = true
                 this.blockMove('slide'); // bloquear otros inputs de usuario por x milisegundos
                 this.cooldown('slide'); // impide que se vuelva a ejecutar otro slide durante x ms
                 this.cooldown('invulnerable')
@@ -355,6 +351,26 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
                 if (this.flipX) this.setVelocityX(-this.vSlide);
                 else this.setVelocityX(this.vSlide);
+
+                //reset crouch
+                const timedEvent = this.currentScene.time.delayedCall(this.actions.slide.duration, () => {
+                    this.crouch = false;
+
+                }, [], this)
+            }
+
+
+            if (this.crouch == true) {
+                // console.log('agachado');
+                this.body.setSize(20, 30, true);
+                this.body.setOffset(this.body.offset.x, this.body.height + 18);
+
+            }
+            else {
+                // console.log('levantado');
+                this.body.setSize(20, 38)
+                this.body.setOffset(this.body.offset.x, this.height * 0.5);
+
             }
 
         }
@@ -562,12 +578,20 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             key: 'downSwing_noMove',
             frames: this.currentScene.anims.generateFrameNumbers('downAttack_noMove', { start: 0, end: 3 }),
             frameRate: 20,
-            yoyo: true
-
         });
         this.anims.create({
             key: 'swing_noMove',
             frames: this.currentScene.anims.generateFrameNumbers('swing_noMove', { start: 0, end: 5 }),
+            frameRate: 20,
+        });
+        this.anims.create({
+            key: 'downSwing',
+            frames: this.currentScene.anims.generateFrameNumbers('downAttack', { start: 0, end: 3 }),
+            frameRate: 20,
+        });
+        this.anims.create({
+            key: 'swing',
+            frames: this.currentScene.anims.generateFrameNumbers('swing', { start: 0, end: 5 }),
             frameRate: 20,
         });
         this.anims.create({
