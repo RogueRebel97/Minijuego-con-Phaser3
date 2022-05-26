@@ -9,12 +9,12 @@ export default class SettingsMenu {
   // Propiedades
   private activeScene!: Phaser.Scene;
   private container!: Phaser.GameObjects.Container;
-  private checkmark!: Phaser.GameObjects.Image;
   private panel: any
-  // private cross: Phaser.GameObjects.Image;
-  private pauseBackground!: Phaser.GameObjects.Rectangle
+
+  // private pauseBackground!: Phaser.GameObjects.Rectangle
 
 
+  // Panel de Opciones
   private pauseText: Phaser.GameObjects.Text
   private resumeButton: Phaser.GameObjects.Image
   private resumeText: Phaser.GameObjects.Text;
@@ -26,6 +26,17 @@ export default class SettingsMenu {
   private resetText: Phaser.GameObjects.Text;
   private open = false;
 
+  // Panel de Configuracion
+  private elementsArray: any = []
+  private optionPanel!: any
+  private optionTxT!: Phaser.GameObjects.Text
+  private debugTXT!: Phaser.GameObjects.Text;
+  private checkmark1!: Phaser.GameObjects.Image;
+  private toggleButton1!: Phaser.GameObjects.Image;
+
+
+  private cross!: Phaser.GameObjects.Image;
+
   private width: number;
   private height: number;
 
@@ -36,8 +47,9 @@ export default class SettingsMenu {
 
   constructor(scene: Phaser.Scene) {
 
-
     this.activeScene = scene;
+
+
 
     const screenCenterX = this.activeScene.cameras.main.worldView.x + this.activeScene.cameras.main.width / 2;
     const screenCenterY = this.activeScene.cameras.main.worldView.y + this.activeScene.cameras.main.height / 2;
@@ -47,7 +59,7 @@ export default class SettingsMenu {
     this.height = this.activeScene.cameras.main.height;
 
 
-    this.pauseBackground = this.activeScene.add.rectangle(screenCenterX, screenCenterY, this.width, this.height, 0xff0000, 0)
+    // this.pauseBackground = this.activeScene.add.rectangle(screenCenterX, screenCenterY, this.width, this.height, 0xff0000, 0)
     this.container = scene.add.container(width + 300, screenCenterY - 250); // Comienza escondido en la Derecha (width+300)
     this.panel = scene.add.nineslice(0, 0, 340, 340, 'setting_panelv2', 24).setOrigin(0.5, 0); // origen en el medio
 
@@ -55,10 +67,6 @@ export default class SettingsMenu {
     this.pauseText = scene.add.text
       ((this.panel.x - (this.panel.width / 2)) + 10, this.panel.y + 10, 'PAUSA',
         { color: 'black', fontFamily: 'pixel', fontSize: '24px' });
-
-    // this.cross = scene.add.image((this.panel.x - (this.panel.width / 2)) + 317, this.panel.y + 20, 'cross')
-
-
 
 
     this.resumeButton = scene.add.image
@@ -78,8 +86,6 @@ export default class SettingsMenu {
         color: 'black', fontFamily: 'pixel', fontSize: '18px'
       }).setOrigin(0.5, 0);
 
-
-
     this.backToMenuButton = scene.add.image
       (this.panel.x / 2, this.optionButton.y + 69, 'menuButton-1')
 
@@ -95,32 +101,8 @@ export default class SettingsMenu {
     }).setOrigin(0.5, 0);
 
 
-    // const toggleButton = scene.add
-    //   .image(-panel.width + 10, 250, 'small_button')
-    //   .setOrigin(0, 0);
-
-    // this.checkmark = scene.add.image(
-    //   toggleButton.x + toggleButton.width * 0.5,
-    //   toggleButton.y + toggleButton.height * 0.5,
-    //   'checkmark'
-    // );
-
-    // const soundText = scene.add.text(
-    //   toggleButton.x + toggleButton.width + 10,
-    //   toggleButton.y + 14,
-    //   'Sonido',
-    //   {
-    //     color: 'black',
-    //     fontFamily: 'pixel',
-    //     fontSize: '14px',
-    //   }
-    // );
-
-
-    // this.container.add(this.pauseBackground);
     this.container.add(this.panel);
     this.container.add(this.pauseText);
-    // this.container.add(this.cross);
     this.container.add(this.resetButton)
     this.container.add(this.resumeButton)
     this.container.add(this.resumeText)
@@ -130,48 +112,10 @@ export default class SettingsMenu {
     this.container.add(this.backText)
     this.container.add(this.resetButton)
     this.container.add(this.resetText)
-
-    // this.container.add(toggleButton);
-    // this.container.add(this.checkmark);
-    // this.container.add(soundText);
-    // this.container.add(restartButton);
-
-    // toggleButton
-    //   .setInteractive()
-    //   .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
-    //     toggleButton.setTint(0xe0e0e0);
-    //   })
-    //   .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, () => {
-    //     toggleButton.setTint(0xffffff);
-    //   })
-    //   .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
-    //     toggleButton.setTint(0xffffff);
-
-    //     this.toggleSound();
-    //   });
-
-
-
     this.actionButton(this.resumeButton, 1)
     this.actionButton(this.optionButton, 2)
     this.actionButton(this.backToMenuButton, 3)
     this.actionButton(this.resetButton, 4)
-
-    // this.cross.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
-    //   this.resume()
-    // })
-    // this.resetButton.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-
-    //   for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) {
-
-    //     if (this.activeScene.scene.manager.scenes[i].scene.key == 'ui-scene') {
-
-    //     } else if (this.activeScene.scene.manager.scenes[i].scene.isPaused()) {
-    //       this.activeScene.scene.stop(this.activeScene.scene.manager.scenes[i].scene.key);
-    //       this.activeScene.scene.start(this.activeScene.scene.manager.scenes[i].scene.key);
-    //     }
-    //   }
-    // })
 
   }
 
@@ -182,7 +126,7 @@ export default class SettingsMenu {
     if (this.open) {
       return;
     }
-    this.pauseBackground.strokeAlpha = 0.5 //Rectangle 
+    // this.pauseBackground.strokeAlpha = 0.5 //Rectangle 
 
 
     //Animacion de desplazamiento para mostrar
@@ -203,7 +147,7 @@ export default class SettingsMenu {
       return;
     }
     const { width, height } = this.activeScene.scale;
-    this.pauseBackground.strokeAlpha = 0 //rectangle
+    // this.pauseBackground.strokeAlpha = 0 //rectangle
 
     //Animacion de desplazamiento para ocultar
     this.activeScene.tweens.add({
@@ -213,22 +157,51 @@ export default class SettingsMenu {
       ease: Phaser.Math.Easing.Sine.InOut,
     });
 
-    console.log(this.pauseBackground.alpha);
+    if (this.elementsArray.length > 0) {
+      this.destroyOptionMenu()
+    }
+
+
+    // console.log(this.pauseBackground.alpha);
     this.open = false;
 
   }
-  // Fin Mostrar y ocultar Menu
 
   // Funcion para Sonido
   private toggleSound() {
-    let isMute = this.checkmark.visible;
+    let isMute = this.checkmark1.visible;
 
     isMute = !isMute;
 
     this.activeScene.sound.mute = isMute;
 
-    this.checkmark.visible = isMute;
+    this.checkmark1.visible = isMute;
   }
+
+  private toggleDebug() {
+    let isDebugging = this.checkmark1.visible;
+    console.log(this.activeScene.physics.world.drawDebug);
+
+    if (isDebugging) {
+      this.activeScene.physics.world.drawDebug = false;
+      this.activeScene.physics.world.debugGraphic.clear();
+      console.log(this.activeScene.physics.world.drawDebug);
+    } else {
+      this.activeScene.physics.world.drawDebug = true;
+      console.log(this.activeScene.physics.world.drawDebug);
+    }
+
+
+    // isDebugging = !isDebugging;
+    // console.log(this.activeScene.physics.world.drawDebug);
+
+
+    // this.activeScene.physics.world.drawDebug = isDebugging;
+    // this.activeScene.physics.world.debugGraphic.clear();
+
+    this.checkmark1.setVisible(isDebugging);
+  }
+
 
   resume() {
     if (this.isOpen) {
@@ -244,21 +217,11 @@ export default class SettingsMenu {
     }
   }
 
-  // funcion para pausar
-  // pause(key: string) {
-  //   this.show();
-  // }
-
-  // resume(key: string) {
-  //   this.hide();
-  // }
-
-
   showBackground() {
-    this.pauseBackground.setAlpha(1)
+    // this.pauseBackground.setAlpha(1)
   }
   hideBackground() {
-    this.pauseBackground.setAlpha(0.1)
+    // this.pauseBackground.setAlpha(0.1)
   }
 
   actionButton(button: Phaser.GameObjects.Image, id?: number) {
@@ -285,6 +248,7 @@ export default class SettingsMenu {
             break;
           case 2:
             console.log(id)
+            this.createOptionMenu()
             break;
           case 3:
             console.log(id)
@@ -320,8 +284,6 @@ export default class SettingsMenu {
 
   }
 
-
-
   reset() {
     for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) {
 
@@ -340,6 +302,64 @@ export default class SettingsMenu {
 
       }
     }
+  }
+
+  createOptionMenu() {
+
+    // Panel
+    this.optionPanel = this.activeScene.add.nineslice(this.container.x, this.container.y, 340, 340, 'setting_panel', 24).
+      setOrigin(0.5, 0);
+
+    this.optionTxT = this.activeScene.add.text
+      ((this.container.x - (this.panel.width / 2)) + 10, this.container.y + 10, 'OPCIONES',
+        { color: 'black', fontFamily: 'pixel', fontSize: '24px' });
+
+    this.cross = this.activeScene.add.image((this.container.x - (this.panel.width / 2)) + 317, this.container.y + 20, 'cross').
+      setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+        this.destroyOptionMenu()
+      })
+
+    // Debug Option
+    this.debugTXT = this.activeScene.add.text
+      ((this.container.x - (this.panel.width / 2)) + 10, this.container.y + 80, 'DEBUG MODE',
+        { color: 'black', fontFamily: 'pixel', fontSize: '18px' });
+
+    this.toggleButton1 = this.activeScene.add.image
+      ((this.debugTXT.x + this.debugTXT.width) + 50, this.debugTXT.y, 'small_button').setInteractive()
+      .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
+        this.toggleButton1.setTint(0xe0e0e0);
+      })
+      .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, () => {
+        this.toggleButton1.setTint(0xffffff);
+      })
+      .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+        this.toggleButton1.setTint(0xffffff);
+
+        this.toggleDebug();
+      });
+
+    this.checkmark1 = this.activeScene.add.image
+      (this.toggleButton1.x,
+        this.toggleButton1.y,
+        'checkmark')
+    this.checkmark1.visible = false
+
+
+
+
+
+
+
+    this.elementsArray.push(this.optionPanel, this.optionTxT, this.debugTXT, this.toggleButton1, this.checkmark1, this.cross)
+  }
+
+  destroyOptionMenu() {
+    for (let i = 0; i < this.elementsArray.length; i++) {
+      console.log(this.elementsArray[i]);
+      this.elementsArray[i].destroy()
+
+    }
+    this.elementsArray = [];
   }
 
 }

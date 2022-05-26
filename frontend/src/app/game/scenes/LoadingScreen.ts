@@ -98,6 +98,10 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/graphics/uiAssets/PNG/metalPanel_blueCornerV1.png'
     );
     this.load.image(
+      'setting_panel',
+      'assets/graphics/uiAssets/PNG/metalPanel_blue.png'
+    );
+    this.load.image(
       'small_button',
       'assets/graphics/uiAssets2/PNG/grey_button07.png'
     );

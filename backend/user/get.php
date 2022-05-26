@@ -1,5 +1,10 @@
 <?php
-header('Access-Control-Allow-Origin: http://localhost:4200');
+session_start();
+// $header = $_GET['header'];
+
+// header($_SESSION['header']);
+header("Access-Control-Allow-Origin: http://localhost:4200");
+// header($header);
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: *");
 
