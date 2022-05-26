@@ -238,6 +238,16 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/SpritesSheets/FreeKnight/FinalColorOutline/_Attack2NoMovement.png',
       { frameWidth: 120, frameHeight: 80 }
     );
+    this.load.spritesheet(
+      'downAttack',
+      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_Attack.png',
+      { frameWidth: 120, frameHeight: 80 }
+    );
+    this.load.spritesheet(
+      'swing',
+      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_Attack2.png',
+      { frameWidth: 120, frameHeight: 80 }
+    );
 
     this.load.spritesheet(
       'slide',
@@ -387,13 +397,9 @@ export class LoadingScreen extends Phaser.Scene {
     this.cameras.main.once(
       Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
       (cam: any, effect: any) => {
-        // this.scene.launch('ui-scene');
-        // this.scene.bringToTop('ui-scene');
-        // this.scene.start('Scene1');
+        this.scene.start('Scene1');
         // this.scene.start('ScoreBoard')
-        // this.scene.launch('hud');
-        // this.scene.bringToTop('hud')
-        this.scene.start('MainMenu');
+        // this.scene.start('MainMenu');
       }
     );
   }

@@ -290,15 +290,10 @@ export class Scene1 extends Phaser.Scene {
 
     })
 
-
-
-
-
-
   }
 
   override update() {
-    console.log('Nivel 1 update  corriendo');
+    // console.log('Nivel 1 update  corriendo');
 
     let key = Phaser.Input.Keyboard;
     //Call Angular Service

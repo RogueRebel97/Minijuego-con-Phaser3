@@ -11,7 +11,14 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     private maxHealth: number = 999;
     private health: number = this.maxHealth;
     private damage: number = 10;
+
+    // Atk Attributes
     private attackCounter: number = 0;
+    private firstAttack!: any
+    private secondAttack!: any
+    private attackDelay!: number
+    private maxDelay: number = 800
+
 
 
 
@@ -249,8 +256,8 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
             if ((key.JustDown(this.controls.J) || key.JustDown(this.controls.Z)) && this.body.blocked.down && this.actions.attack.state) {
 
-                //Attack counter
-                if (this.attackCounter > 1) {
+                //Attack counter max 2(valor fijo)
+                if (this.attackCounter == 2) {
                     this.attackCounter = 0
                     this.attackCounter++
                 }
@@ -260,20 +267,48 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
                 console.log("attacks: " + this.attackCounter);
 
+                // Catch time of every attack and check Delay
+                if (this.attackCounter == 1) {
+                    this.firstAttack = new Date
+                } else {
+                    this.secondAttack = new Date
+                    this.attackDelay = this.secondAttack - this.firstAttack
+                    console.log("Time between Attacks: " + this.attackDelay);
+
+                    if (this.attackDelay > this.maxDelay) {
+                        console.log("TO LATE");
+                        this.attackCounter = 0
+                    }
+
+                }
+
+
+
+
                 this.blockMove('attack') // bloquear otros inputs de usuario por x milisegundos
                 // this.cooldown('attack');    // impide que se vuelva a ejecutar otro ataque durante x ms
-                this.anims.stop(); // detener animaciones en curso
+                // this.anims.stop(); // detener animaciones en curso
+
+                // // if (this.attackCounter == 2 && this.secondAttack - this.firstAttack > this.maxDelay) {
+                //     console.log(this.secondAttack - this.firstAttack);
+
+                //     this.attackCounter = 1
+
+                // }
+
+
 
                 // Ataque parado 
                 if (this.body.velocity.x == 0) {
-
                     // Hit 1
                     if (this.attackCounter < 2) {
+
                         console.log("downSwing");
                         this.anims.play('downSwing_noMove');
                         // Hit 2
                     } else {
                         console.log("lateralSwing");
+
                         this.anims.play('swing_noMove');
                     }
                     // Ataque en movimiento

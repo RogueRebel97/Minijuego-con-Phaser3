@@ -67,9 +67,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
         this.displayWidth = this.width / 20
         this.displayHeight = this.height / 20
 
-
-
-        // Initialize Sword HitBox
+        // Initialize Hammer HitBox
         this.hammerHitBox = this.currentScene.add.rectangle(this.x, this.y, 15, 35, 0xFF0000, 0) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody
         this.currentScene.physics.add.existing(this.hammerHitBox)
         this.hammerHitBox.body.setAllowGravity(false)
@@ -410,11 +408,11 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
         }
         this.on(Phaser.Animations.Events.ANIMATION_UPDATE, startHit) // cuando la animacion avance llama a startHit para saber cuando comenzar
 
-        // desactivar la hitbox al acabar la animacion
-        this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'goblinAttack', () => {
+        //Desactivar hitbox
+        const timedEvent = this.currentScene.time.delayedCall(this.actions.attack.duration, () => {
             this.hammerHitBox.body.enable = false;
             this.currentScene.physics.world.remove(this.hammerHitBox.body)
-        })
+        }, [], this)
 
 
     }
