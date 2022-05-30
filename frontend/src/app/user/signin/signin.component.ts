@@ -21,7 +21,7 @@ export class SigninComponent implements OnInit {
   ngOnInit(): void { }
 
   public submit() {
-    // console.log(
+    //console.log(
     //   `usuario: ${this.user} contraseña: ${this.password} rep.contr: ${this.repassword}`
     // );
     var userInput: any = document.getElementById('user');
@@ -33,7 +33,7 @@ export class SigninComponent implements OnInit {
           userInput.focus();
         } else {
           this.signinService.signin(this.user, this.password).subscribe(data => {
-            console.log(data);
+            //console.log(data);
             alert('Usuario creado correctamente');
             this.userService.userLogin(this.user, this.password).subscribe(data => {
               if (data.nombre) {
@@ -60,12 +60,12 @@ export class SigninComponent implements OnInit {
     var passError: any = document.getElementById('passError');
     var repassError: any = document.getElementById('rePassError');
 
-    console.log(this.user.length);
+    //console.log(this.user.length);
 
     var target = event.target as HTMLTextAreaElement;
-    console.log(target.id);
-    // console.log(target);
-    // console.log(event);
+    //console.log(target.id);
+    //console.log(target);
+    //console.log(event);
 
     if (target.id == "user") {
       if (target.value.length < 3) {
@@ -108,9 +108,9 @@ export class SigninComponent implements OnInit {
     const registrarte: any = document.getElementById('submit');
 
     if (check.checked) {
-      console.log('checked');
+      //console.log('checked');
     } else {
-      console.log('unchecked');
+      //console.log('unchecked');
     }
   }
 

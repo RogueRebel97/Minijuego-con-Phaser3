@@ -83,8 +83,8 @@ export class GameComponent implements OnInit, OnDestroy {
     this.gameService.getScoreboard().subscribe((data) => {
       this.arrayRecord = data // asignar datos recibidos a Variable
 
-      console.log('array de BD:');
-      console.log(this.arrayRecord);
+      //console.log('array de BD:');
+      //console.log(this.arrayRecord);
 
 
     })
@@ -92,7 +92,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   getID() {
 
-    // console.log(`ID del Usuario en el Componente:
+    //console.log(`ID del Usuario en el Componente:
     // ${this.id}`);
     let id = this.gameService.getId()
     return id

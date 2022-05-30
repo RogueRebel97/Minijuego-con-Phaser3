@@ -31,16 +31,16 @@ export class MainMenu extends Phaser.Scene {
 
   init() {
 
-    console.log('mainMenu Corriendo');
+    //console.log('mainMenu Corriendo');
 
     this.buttons = []
 
   }
 
   create() {
-    console.log('mainMenu Create Corriendo');
+    //console.log('mainMenu Create Corriendo');
 
-    console.log("indice boton seleccionado: " + this.selectedButtonIndex);
+    //console.log("indice boton seleccionado: " + this.selectedButtonIndex);
 
 
     ///Controls
@@ -85,7 +85,7 @@ export class MainMenu extends Phaser.Scene {
   }
 
   override update() {
-    // console.log('MainMenu Corriendo');
+    //console.log('MainMenu Corriendo');
 
     let key = Phaser.Input.Keyboard;
 
@@ -161,21 +161,21 @@ export class MainMenu extends Phaser.Scene {
     this.buttons.push(scoreButton);
     this.buttons.push(creditsButton);
 
-    console.log(this.buttons);
+    //console.log(this.buttons);
 
     //Event Listeners
     playButton.on('selected', () => {
-      console.log('jugar');
+      //console.log('jugar');
       this.scene.start('Scene1')
     })
 
     scoreButton.on('selected', () => {
-      console.log('scoreboard')
+      //console.log('scoreboard')
       this.scene.start('ScoreBoard')
     })
 
     creditsButton.on('selected', () => {
-      console.log('credits')
+      //console.log('credits')
     })
 
     //Limpiar Eventos
@@ -190,7 +190,7 @@ export class MainMenu extends Phaser.Scene {
   }
 
   selectButton(index: number) {
-    console.log(`selectedButton: ${index}`);
+    //console.log(`selectedButton: ${index}`);
 
     // Boton seleccionado, por defecto es indice 0
     const currentButton = this.buttons[this.selectedButtonIndex]
@@ -255,18 +255,18 @@ export class MainMenu extends Phaser.Scene {
 
         switch (id) {
           case 1:
-            console.log(id);
+            //console.log(id);
 
             break;
           case 2:
-            console.log(id)
+            //console.log(id)
             break;
           case 3:
-            console.log(id)
+            //console.log(id)
 
             break;
           case 4:
-            console.log(id)
+            //console.log(id)
 
             break;
           default:

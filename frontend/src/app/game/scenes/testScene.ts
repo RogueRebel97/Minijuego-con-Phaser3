@@ -35,7 +35,7 @@ export class TestScene extends Phaser.Scene {
   }
 
   init() {
-    // console.log('Scene1 Corriendo');
+    //console.log('Scene1 Corriendo');
 
     // this.scene.launch('hud');
     // this.scene.bringToTop('hud')
@@ -114,7 +114,7 @@ export class TestScene extends Phaser.Scene {
     this.enemies = this.physics.add.group(this.slime);
 
     this.registry.set(Constants.GROUPS.ENEMIES, this.enemies)
-    // console.log("enemy GRoup from Scene:" + this.registry.get(Constants.GROUPS.ENEMIES));
+    //console.log("enemy GRoup from Scene:" + this.registry.get(Constants.GROUPS.ENEMIES));
 
     this.slime.create()
     this.player.create();
@@ -138,14 +138,14 @@ export class TestScene extends Phaser.Scene {
     this.registry.set(Constants.REGISTRY.COLLIDERS.ENEMY, this.enemyCollider)
 
 
-    // console.log(this.enemies.getLength());
+    //console.log(this.enemies.getLength());
 
 
 
   }
 
   override update() {
-    // console.log('Nivel 1 corriendo');
+    //console.log('Nivel 1 corriendo');
     let key = Phaser.Input.Keyboard;
 
     if (key.JustDown(this.controls.E)) {

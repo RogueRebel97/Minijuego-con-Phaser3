@@ -19,7 +19,7 @@ export default class UIScene extends Phaser.Scene {
   }
 
   create() {
-    console.log('UI');
+    //console.log('UI');
     this.SettingMenu = new Settings(this);
     this.ESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 

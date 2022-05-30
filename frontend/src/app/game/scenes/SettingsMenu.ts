@@ -162,7 +162,7 @@ export default class SettingsMenu {
     }
 
 
-    // console.log(this.pauseBackground.alpha);
+    //console.log(this.pauseBackground.alpha);
     this.open = false;
 
   }
@@ -180,20 +180,20 @@ export default class SettingsMenu {
 
   private toggleDebug() {
     let isDebugging = this.checkmark1.visible;
-    console.log(this.activeScene.physics.world.drawDebug);
+    //console.log(this.activeScene.physics.world.drawDebug);
 
     if (isDebugging) {
       this.activeScene.physics.world.drawDebug = false;
       this.activeScene.physics.world.debugGraphic.clear();
-      console.log(this.activeScene.physics.world.drawDebug);
+      //console.log(this.activeScene.physics.world.drawDebug);
     } else {
       this.activeScene.physics.world.drawDebug = true;
-      console.log(this.activeScene.physics.world.drawDebug);
+      //console.log(this.activeScene.physics.world.drawDebug);
     }
 
 
     // isDebugging = !isDebugging;
-    // console.log(this.activeScene.physics.world.drawDebug);
+    //console.log(this.activeScene.physics.world.drawDebug);
 
 
     // this.activeScene.physics.world.drawDebug = isDebugging;
@@ -243,19 +243,19 @@ export default class SettingsMenu {
 
         switch (id) {
           case 1:
-            console.log(id);
+            //console.log(id);
             this.resume()
             break;
           case 2:
-            console.log(id)
+            //console.log(id)
             this.createOptionMenu()
             break;
           case 3:
-            console.log(id)
+            //console.log(id)
             this.backToMenu()
             break;
           case 4:
-            console.log(id)
+            //console.log(id)
             this.reset()
             break;
           default:
@@ -269,7 +269,7 @@ export default class SettingsMenu {
 
     for (let i = 0; i <= this.activeScene.scene.manager.scenes.length - 1; i++) {
       if (this.activeScene.scene.manager.scenes[i].scene.isPaused()) {
-        // console.log(this.activeScene.scene.manager.scenes[i].scene.key);
+        //console.log(this.activeScene.scene.manager.scenes[i].scene.key);
         this.activeScene.scene.stop(this.activeScene.scene.manager.scenes[i].scene.key);
         this.activeScene.scene.start('MainMenu')
       }
@@ -289,8 +289,8 @@ export default class SettingsMenu {
 
       if (this.activeScene.scene.manager.scenes[i].scene.isPaused()) {
 
-        console.log(this.activeScene.scene.manager.scenes[i].scene);
-        console.log("reseteando");
+        //console.log(this.activeScene.scene.manager.scenes[i].scene);
+        //console.log("reseteando");
 
         this.activeScene.cameras.main.fadeOut(600, 0, 0, 0)
         this.activeScene.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
@@ -355,7 +355,7 @@ export default class SettingsMenu {
 
   destroyOptionMenu() {
     for (let i = 0; i < this.elementsArray.length; i++) {
-      console.log(this.elementsArray[i]);
+      //console.log(this.elementsArray[i]);
       this.elementsArray[i].destroy()
 
     }

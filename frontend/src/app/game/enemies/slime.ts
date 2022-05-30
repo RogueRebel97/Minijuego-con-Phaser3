@@ -34,7 +34,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
     private currentScene!: Phaser.Scene
 
     constructor(config: any) {
-        console.log('slime creado');
+        //console.log('slime creado');
 
         super(config.currentScene, config.x, config.y, config.texture);
 
@@ -59,13 +59,13 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
     }
 
     create() {
-        // console.log(`hp de Slime: ${this.health}`);
+        //console.log(`hp de Slime: ${this.health}`);
         this.createAnimations();
         this.currentScene.physics.add.overlap
             (this.aggro, this.currentScene.registry.get(Constants.GROUPS.PLAYER), this.chase, this.checkIsChasing, this)
 
         this.aggro.on('overlapEnd', () => {
-            console.log("Saliste de Agro");
+            //console.log("Saliste de Agro");
 
             this.isChasing = false
             this.isPatrolling = true
@@ -73,7 +73,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         this.aggro.on('overlapStart', () => {
             this.isChasing = true
             this.isPatrolling = false
-            console.log("Entraste en Aggro");
+            //console.log("Entraste en Aggro");
 
         })
     }
@@ -96,7 +96,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
 
         //Patrolling
         if (this.allowMove && !this.isChasing && !this.actions.damage.state && !this.isDead && this.isPatrolling) {
-            // console.log('SLIME: entro en patrol');
+            //console.log('SLIME: entro en patrol');
 
             if (this.actions.left.state) {
                 this.moveLeft(1)
@@ -111,14 +111,14 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         this.aggro.x = this.x
         this.aggro.y = this.y
 
-        if (key.JustDown(this.controls.O)) {
-            console.log(
-                `
-          SLIME isChasing:    ${this.isChasing}
-          SLIME isPatrolling: ${this.isPatrolling}
-          SLIME AllowMove:    ${this.allowMove}`);
+        // if (key.JustDown(this.controls.O)) {
+        //     //console.log(
+        //     `
+        //   SLIME isChasing:    ${this.isChasing}
+        //   SLIME isPatrolling: ${this.isPatrolling}
+        //   SLIME AllowMove:    ${this.allowMove}`);
 
-        }
+        // }
     }
 
     createAnimations() {
@@ -142,7 +142,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         var health = this.health
 
         if (health <= 0 && !this.isDead && this.allowMove) {
-            console.log("Slime muerto");
+            //console.log("Slime muerto");
 
 
 
@@ -158,9 +158,9 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
             this.body.enable = false;
             this.aggro.body.enable = false;
 
-            // console.log(`body en Muerte:`);
-            // console.log(this.body);
-            // console.log("boolean the body en muerte: " + this.body.enable);
+            //console.log(`body en Muerte:`);
+            //console.log(this.body);
+            //console.log("boolean the body en muerte: " + this.body.enable);
 
             this.aggro.destroy();
             this.destroy()
@@ -172,22 +172,22 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
     getDamage(damage: number, playerX: number) {
         // var health = this.health
 
-        console.log('dañado');
+        //console.log('dañado');
 
 
         if (this.health > 0 && !this.isDead && !this.actions.damage.state) {
-            console.log(`States: 
-                Muerto:${this.isDead}
-                RecibioDaño:${this.actions.damage.state} 
-               `);
-            console.log("hp INICIAL Slime: " + this.health);
-            console.log("HIT");
-            console.log('derecha: ' + this.actions.right.state);
-            console.log('izquierda: ' + this.actions.left.state);
+            //console.log(`States: 
+            //             Muerto:${ this.isDead }
+            //             RecibioDaño:${ this.actions.damage.state }
+            //             `);
+            // //console.log("hp INICIAL Slime: " + this.health);
+            // //console.log("HIT");
+            // //console.log('derecha: ' + this.actions.right.state);
+            // //console.log('izquierda: ' + this.actions.left.state);
 
-            console.log(`body en Dañado:`);
-            console.log(this.body);
-            console.log("boolean the body en Dañado: " + this.body.enable);
+            // //console.log(`body en Dañado: `);
+            // //console.log(this.body);
+            // //console.log("boolean the body en Dañado: " + this.body.enable);
 
 
 
@@ -199,7 +199,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
 
             this.health = this.health - damage;
 
-            console.log(`hp FINAL de Slime: ${this.health}`);
+            //console.log(`hp FINAL de Slime: ${ this.health } `);
         }
 
 
@@ -240,7 +240,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(-20)
 
         // if (this.body.blocked.left) {
-        //     console.log('Choque por la izquierda');
+        //console.log('Choque por la izquierda');
         //     this.moveTime = 500
 
         // }
@@ -261,7 +261,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(20)
 
         // if (this.body.blocked.right) {
-        //     console.log('Choque por la derecha');
+        //console.log('Choque por la derecha');
         //     this.moveTime = 500
 
         // }
@@ -280,7 +280,7 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
 
         if (this.isChasing && this.allowMove && !this.isDead && !this.isPatrolling) {
             // this.isPatrolling = false
-            // console.log("SLIME: chasing");
+            //console.log("SLIME: chasing");
             if (distance > 0) {
                 this.flipX = true
                 this.setVelocityX(40)

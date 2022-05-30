@@ -18,11 +18,6 @@ $sql="SELECT id,nombre, record FROM users ORDER BY record DESC";
 $result = mysqli_query($db,$sql);
 
 
-
-
-
-
-
 if($result -> num_rows ==0){
     $resultArray= array("fallo"=>"Error al mostrar puntuaciones");
     }

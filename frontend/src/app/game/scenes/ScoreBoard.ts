@@ -36,7 +36,7 @@ export class ScoreBoard extends Phaser.Scene {
     constructor() {
         super({ key: 'ScoreBoard' });
 
-        console.log("ScoreBoard iniciada");
+        //console.log("ScoreBoard iniciada");
 
     }
 
@@ -47,10 +47,10 @@ export class ScoreBoard extends Phaser.Scene {
 
         this.arrayUsuarios = contexto.arrayRecord
         this.arrayUsuarios2 = this.arrayUsuarios
-        console.log('Array1:');
-        console.log(this.arrayUsuarios);
-        console.log('Array2:');
-        console.log(this.arrayUsuarios2);
+        //console.log('Array1:');
+        //console.log(this.arrayUsuarios);
+        //console.log('Array2:');
+        //console.log(this.arrayUsuarios2);
 
 
 
@@ -92,8 +92,8 @@ export class ScoreBoard extends Phaser.Scene {
         //Id usuario
         this.idUsuario = contexto.getID()
 
-        console.log(`ID del Usuario en el juego:
-        ${this.idUsuario}`);;
+        // //console.log(`ID del Usuario en el juego:
+        //         ${ this.idUsuario } `);;
 
         this.drawLeaderboard()
 
@@ -109,28 +109,28 @@ export class ScoreBoard extends Phaser.Scene {
 
     override update() {
         let key = Phaser.Input.Keyboard;
-        // console.log("scoreBoard corriendo");
+        //console.log("scoreBoard corriendo");
 
         this.img2.tilePositionX += 0.2
         this.img3.tilePositionX += 0.5
 
         if (key.JustDown(this.controls.R)) {
 
-            console.log('Antiguo Array:'); // Valor inical
-            console.log(contexto.arrayRecord);
+            //console.log('Antiguo Array:'); // Valor inical
+            //console.log(contexto.arrayRecord);
 
             contexto.getScoreboard() // reasignar variable que guarda los Records
 
-            console.log('Antiguo nuevo:'); // Nuevo Valor
-            console.log(contexto.arrayRecord);
+            //console.log('Antiguo nuevo:'); // Nuevo Valor
+            //console.log(contexto.arrayRecord);
             this.arrayUsuarios = contexto.arrayRecord
 
             if (this.arrayUsuarios != this.arrayUsuarios2) { //Volver  dibujar la scoreBoard
-                console.log("actualizcion encontrada");
-                console.log('Array1:');
-                console.log(this.arrayUsuarios);
-                console.log('Array2:');
-                console.log(this.arrayUsuarios2);
+                //console.log("actualizcion encontrada");
+                //console.log('Array1:');
+                //console.log(this.arrayUsuarios);
+                //console.log('Array2:');
+                //console.log(this.arrayUsuarios2);
 
                 this.arrayUsuarios = this.arrayUsuarios2
 
@@ -138,7 +138,7 @@ export class ScoreBoard extends Phaser.Scene {
 
             }
             else {
-                console.log('sin cambios');
+                //console.log('sin cambios');
 
 
             }
@@ -263,8 +263,8 @@ export class ScoreBoard extends Phaser.Scene {
 }
 export const ScoreBoardScene = (ctx: any) => {
 
-    console.log("contexto:");
-    console.log(ctx);
+    //console.log("contexto:");
+    //console.log(ctx);
 
     contexto = ctx;
     return ScoreBoard;

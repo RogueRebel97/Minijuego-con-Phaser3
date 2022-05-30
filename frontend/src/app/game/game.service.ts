@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { UserModel } from '../user/user-model';
 import { map } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,17 +17,17 @@ export class GameService {
 
 
   sendScore(score: number) {
-    console.log(`Score enviado desde Phaser: ${score}`);
+    //console.log(`Score enviado desde Phaser: ${score}`);
 
-    console.log(`score: ${score}
-    id: ${this.id}`);
+    //console.log(`score: ${score}
+    // id: ${this.id}`);
 
-    return this.http.post("http://localhost/backend/user/postScore.php", { score: score, id: this.id });
+    return this.http.post(environment.baseUrl + "/backend/user/postScore.php", { score: score, id: this.id });
 
   }
 
   getScoreboard() {
-    return this.http.get<UserModel>("http://localhost/backend/web/getRecords.php");
+    return this.http.get<UserModel>(environment.baseUrl + "/backend/web/getRecords.php");
   }
 
   getId() {

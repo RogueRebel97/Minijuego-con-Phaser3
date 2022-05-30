@@ -33,13 +33,11 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
     //HAMMER Hitbox
     private hammerHitBox: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
 
-
-
     //Current Game Scene
     private currentScene!: Phaser.Scene
 
     constructor(config: any) {
-        console.log("goblin Creado");
+        //console.log("goblin Creado");
         super(config.currentScene, config.x, config.y, config.texture)
 
         this.currentScene = config.currentScene
@@ -89,11 +87,11 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
         this.aggro.on('overlapstart', () => {
             this.isChasing = true
             this.isPatrolling = false
-            console.log("Entraste en Aggro");
+            //console.log("Entraste en Aggro");
 
         })
         this.aggro.on('overlapend', () => {
-            console.log("Saliste de Agro");
+            //console.log("Saliste de Agro");
 
             this.isChasing = false
             this.isPatrolling = true
@@ -132,7 +130,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
 
         //Patrolling
         if (this.allowMove && !this.actions.damage.state && !this.isChasing && this.isPatrolling) {
-            // console.log('entro en patrol');
+            //console.log('entro en patrol');
 
             if (this.actions.left.state) {
 
@@ -146,14 +144,14 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
         this.aggro.x = this.x
         this.aggro.y = this.y
 
-        if (key.JustDown(this.controls.P)) {
-            console.log(
-                `
-          GOBLIN isChasing:    ${this.isChasing}
-          GOBLIN isPatrolling: ${this.isPatrolling}
-          GOBLIN AllowMove:    ${this.allowMove}`);
+        // if (key.JustDown(this.controls.P)) {
+        //console.log(
+        //         `
+        //   GOBLIN isChasing:    ${this.isChasing}
+        //   GOBLIN isPatrolling: ${this.isPatrolling}
+        //   GOBLIN AllowMove:    ${this.allowMove}`);
 
-        }
+        // }
     }
 
 
@@ -164,21 +162,21 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
     getDamage(dmg: number, playerX: number) {
         let distance = this.x - playerX
 
-        console.log(distance);
+        //console.log(distance);
 
         if (this.health > 0 && !this.isDead && !this.actions.damage.state) {
-            console.log(`States: 
-                Muerto:${this.isDead}
-                RecibioDaño:${this.actions.damage.state} 
-               `);
-            console.log("hp INICIAL Goblin: " + this.health);
-            console.log("HIT");
-            console.log('derecha: ' + this.actions.right.state);
-            console.log('izquierda: ' + this.actions.left.state);
+            //console.log(`States: 
+            //     Muerto:${this.isDead}
+            //     RecibioDaño:${this.actions.damage.state} 
+            //    `);
+            //console.log("hp INICIAL Goblin: " + this.health);
+            //console.log("HIT");
+            //console.log('derecha: ' + this.actions.right.state);
+            //console.log('izquierda: ' + this.actions.left.state);
 
-            console.log(`body en Dañado:`);
-            console.log(this.body);
-            console.log("boolean the body en Dañado: " + this.body.enable);
+            //console.log(`body en Dañado:`);
+            //console.log(this.body);
+            //console.log("boolean the body en Dañado: " + this.body.enable);
 
             this.blockMove('damage');
             this.cooldown('damage')
@@ -200,7 +198,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
 
             this.health = this.health - dmg
 
-            // console.log(`hp FINAL de goblin: ${this.health}`);
+            //console.log(`hp FINAL de goblin: ${this.health}`);
         }
     }
 
@@ -208,7 +206,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
     checkIsDead() {
 
         if (this.health <= 0 && !this.isDead && this.allowMove) {
-            // console.log("goblin muerto");
+            //console.log("goblin muerto");
             this.isDead = true;
 
             this.setVelocityX(0);
@@ -352,7 +350,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
         var distance: number = player.x - enemy.x;
 
         if (this.isChasing && this.allowMove && !this.isDead && !this.isPatrolling) {
-            // console.log("chasing");
+            //console.log("chasing");
             if (distance > 0) {
                 this.flipX = false
                 this.setVelocityX(this.vRun)
@@ -403,7 +401,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
             // activa la hitbox 
             this.hammerHitBox.body.enable = true
             this.currentScene.physics.world.add(this.hammerHitBox.body)
-            console.log("golpe");
+            //console.log("golpe");
 
         }
         this.on(Phaser.Animations.Events.ANIMATION_UPDATE, startHit) // cuando la animacion avance llama a startHit para saber cuando comenzar

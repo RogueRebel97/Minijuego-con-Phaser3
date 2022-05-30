@@ -25,11 +25,11 @@ export class ScoreboardComponent implements OnInit {
     // Show scoreboard
     this.gameService.getScoreboard().subscribe((data) => {
       if (data) {
-        console.log(data);
+        //console.log(data);
         this.records = data
       }
       else {
-        console.log("no se han recibido records");
+        //console.log("no se han recibido records");
       }
     })
 

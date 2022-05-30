@@ -20,18 +20,16 @@ export default class GameOver extends Phaser.Scene {
 
     private container!: Phaser.GameObjects.Container;
 
+    private countdown!: Phaser.GameObjects.Text
+    private timer!: number
+    private timedEvent!: any
+
 
 
     constructor() {
         super({ key: 'gameOver' });
     }
 
-    init() {
-
-    }
-    preload() {
-
-    }
 
     create(data: { defeat: boolean }) {
 
@@ -55,14 +53,15 @@ export default class GameOver extends Phaser.Scene {
         this.container.add(this.glassBckgrnd)
         //Mensaje de GAME OVER
         if (data.defeat) {
+
+            this.timer = 10;
             //DERROTA
-            this.defeatText = this.add.text(0, 0, 'DERROTA', {
-                fontFamily: 'Germania One',
+            this.defeatText = this.add.text(10, 0, 'DERROTA', {
+                fontFamily: 'pixel',
                 fontSize: '48px',
                 color: '#A91A1A',
                 stroke: '#121212',
-                strokeThickness: 5,
-                shadow: { offsetX: 3, offsetY: 5, blur: 1, color: '#454444', fill: true }
+                strokeThickness: 5
             }).setOrigin(0.5, 0.5)
             this.container.add(this.defeatText)
 
@@ -86,17 +85,30 @@ export default class GameOver extends Phaser.Scene {
                     color: 'black', fontFamily: 'pixel', fontSize: '16px'
                 }).setOrigin(0.5, 0)
 
+            // Countdown
+            this.countdown = this.add.text(10, 185, '' + this.timer, {
+                fontFamily: 'pixel',
+                fontSize: '48px',
+                color: '#FFFFFF',
+                stroke: '#121212',
+                strokeThickness: 5,
+            }).setOrigin(0.5, 0.5)
+
+            this.container.add(this.countdown)
+            this.container.add(this.defeatText)
             this.container.add(this.retryButton)
             this.container.add(this.retryText)
 
             this.actionButton(this.mainMenuButton, 2)
             this.actionButton(this.retryButton, 1);
 
+            this.timedEvent = this.time.addEvent({ delay: 1000, callback: this.onEvent, callbackScope: this, loop: true });
+
         } else if (!data.defeat) {
 
             //VICTORIA
             this.defeatText = this.add.text(0, 0, 'VICTORIA', {
-                fontFamily: 'Germania One',
+                fontFamily: 'pixel',
                 fontSize: '48px',
                 color: '#FFD700',
                 stroke: '#121212',
@@ -118,7 +130,7 @@ export default class GameOver extends Phaser.Scene {
             this.actionButton(this.retryButton, 1);
         }
 
-        // Aniamacion de Derrota
+        // Animacion de Derrota
         this.tweens.add({
             targets: this.container,
             y: (this.cameras.main.height * 0.5),
@@ -126,13 +138,19 @@ export default class GameOver extends Phaser.Scene {
             ease: Phaser.Math.Easing.Sine.InOut,
         }).complete;
 
+
+
+
     }
 
 
 
     override update() {
+        //console.log("Gameover Corriendo");
 
-        console.log("Gameover Corriendo");
+
+
+
 
     }
 
@@ -159,11 +177,11 @@ export default class GameOver extends Phaser.Scene {
 
                 switch (id) {
                     case 1:
-                        console.log(id);
+                        //console.log(id);
                         this.reset()
                         break;
                     case 2:
-                        console.log(id)
+                        //console.log(id)
                         this.backToMenu()
                         break;
                     default:
@@ -203,6 +221,18 @@ export default class GameOver extends Phaser.Scene {
 
             }
         }
+    }
+
+    onEvent() {
+        if (this.timer > 0) {
+            this.timer -= 1;
+            this.countdown.setText(this.timer.toString());
+        } else {
+
+            this.time.addEvent({ delay: 1000, callback: this.backToMenu, callbackScope: this, loop: true });
+
+        }
+
     }
 }
 

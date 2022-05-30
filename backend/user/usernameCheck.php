@@ -4,11 +4,10 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: *");
 
 
-function connect()
-{
-    $db=new mysqli("localhost","admin","admin","admin");
-    return $db;
-}
+require_once('../connect.php');
+
+
+$db = connect();
 
 $dato=json_decode(file_get_contents("php://input")); 
 

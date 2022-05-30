@@ -18,7 +18,7 @@ export class LoadingScreen extends Phaser.Scene {
   preload() {
     var width = this.cameras.main.width;
     var height = this.cameras.main.height;
-    console.log('loadingScreen');
+    //console.log('loadingScreen');
 
     // Barra de Carga
     var progressBar = this.add.graphics();
@@ -254,6 +254,12 @@ export class LoadingScreen extends Phaser.Scene {
     );
 
     this.load.spritesheet(
+      'crouchAttack',
+      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_CrouchAttack.png',
+      { frameWidth: 120, frameHeight: 80 }
+    );
+
+    this.load.spritesheet(
       'slide',
       'assets/SpritesSheets/FreeKnight/FinalColorOutline/_SlideFull.png',
       { frameWidth: 120, frameHeight: 80 }
@@ -342,6 +348,12 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/SpritesSheets/Enemies/Goblin/goblinTank/goblinTank.json'
     )
 
+    // Archer Goblin SpriteSheet
+    this.load.spritesheet(
+      'goblinArcher',
+      'assets/SpritesSheets/Enemies/Goblin/GoblinArcher/ArcherIdle.png',
+      { frameWidth: 600, frameHeight: 500 }
+    );
 
 
     // fin de Assets
@@ -361,7 +373,7 @@ export class LoadingScreen extends Phaser.Scene {
 
     //Destruir textos y barras tras la carga completa.
     this.load.on('complete', function () {
-      console.log('complete');
+      //console.log('complete');
       progressBar.destroy();
       progressBox.destroy();
       loadingText.destroy();
@@ -409,7 +421,7 @@ export class LoadingScreen extends Phaser.Scene {
   }
 
   override update() {
-    console.log('loading...');
+    //console.log('loading...');
 
   }
 }

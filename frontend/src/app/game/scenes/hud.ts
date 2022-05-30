@@ -9,18 +9,17 @@ export default class HUD {
 
     private container!: Phaser.GameObjects.Container;
     private currentScene: Phaser.Scene;
-    private healthTxT!: Phaser.GameObjects.Text;
     private scoreTXT!: Phaser.GameObjects.Text;
-    private scoreNumber!: Phaser.GameObjects.Text;
     private score: number
-
+    private timeTXT!: Phaser.GameObjects.Text;
+    private time!: number;
     private width: number;
     private height: number;
     // private SettingMenu: Settings;
     private settingUI!: UIScene
 
     constructor(scene: Phaser.Scene) {
-        console.log('hud iniciado');
+        //console.log('hud iniciado');
 
         this.currentScene = scene;
         this.width = this.currentScene.cameras.main.width;
@@ -47,6 +46,7 @@ export default class HUD {
         //Event Player Damaged
         this.currentScene.events.on(Constants.EVENTS.SCORE, this.alterScore, this)
 
+        // Contador de puntos
         this.scoreTXT = this.currentScene.add.text(0, 0, 'SCORE:' + this.score, {
             fontSize: '16px', color: '#FFFFFF', fontFamily: 'pixel'
         }).setOrigin(0, 0.5).setScrollFactor(0)
@@ -54,6 +54,8 @@ export default class HUD {
         this.currentScene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
             this.currentScene.events.off(Constants.EVENTS.SCORE)
         })
+
+        // Contador de Tiempo
 
 
     }

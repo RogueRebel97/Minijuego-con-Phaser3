@@ -1,19 +1,12 @@
 <?php
-session_start();
-// $header = $_GET['header'];
-
-// header($_SESSION['header']);
-header("Access-Control-Allow-Origin: http://localhost:4200");
-// header($header);
+header('Access-Control-Allow-Origin: http://localhost:4200');
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: *");
 
-function connect()
-{
-    $db=new mysqli("localhost","admin","admin","admin");
-    return $db;
-}
- 
+require_once('../connect.php');
+
+$db = connect();
+
 $dato=json_decode(file_get_contents("php://input")); 
 
 if(!$dato)

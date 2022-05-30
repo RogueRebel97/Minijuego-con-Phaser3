@@ -3,6 +3,7 @@ import { delay, map } from 'rxjs';
 import Knight from '../character/knight';
 import Slime from '../enemies/slime';
 import Goblin from '../enemies/goblin';
+import GoblinArcher from '../enemies/goblinArcher';
 import Constants from '../Constants';
 import HUD from './hud';
 import GameOver from './GameOver';
@@ -25,9 +26,12 @@ export class Scene1 extends Phaser.Scene {
   private arraySlimes!: Slime[]
   private slimeLayer!: Phaser.Tilemaps.ObjectLayer
 
-  // private goblins!: Physics.Arcade.Group
+
   private arrayGoblins!: Goblin[]
   private goblinLayer!: Phaser.Tilemaps.ObjectLayer
+
+  private arrayGoblinArchers!: GoblinArcher[]
+  private goblinArcherLayer!: Phaser.Tilemaps.ObjectLayer
 
   private enemies!: Physics.Arcade.Group
 
@@ -77,13 +81,13 @@ export class Scene1 extends Phaser.Scene {
 
   constructor() {
     super({ key: 'Scene1' });
-    console.log('constructor iniciado');
+    //console.log('constructor iniciado');
 
 
   }
 
   init() {
-    console.log('Scene1 init Corriendo');
+    //console.log('Scene1 init Corriendo');
 
     //create hud
     this.scene.launch('hud');
@@ -105,10 +109,11 @@ export class Scene1 extends Phaser.Scene {
     this.enemies = this.physics.add.group()
     this.arraySlimes = []
     this.arrayGoblins = []
+    this.arrayGoblinArchers = []
   }
 
   create() {
-    console.log('create iniciado');
+    //console.log('create iniciado');
 
     //Efecto fadeIN
     this.cameras.main.fadeIn(1000, 0, 0, 0);
@@ -204,7 +209,7 @@ export class Scene1 extends Phaser.Scene {
     //Slime
     this.slimeLayer = this.tileMap.getObjectLayer('slimes')
     this.slimeLayer.objects.forEach(slimeObj => {
-      // console.log(slimeObj);
+      //console.log(slimeObj);
       const slime = new Slime({
         currentScene: this,
         x: slimeObj.x,
@@ -220,7 +225,7 @@ export class Scene1 extends Phaser.Scene {
 
     })
 
-
+    // Goblin hammer
     this.goblinLayer = this.tileMap.getObjectLayer('goblin')
     this.goblinLayer.objects.forEach(goblinObj => {
       const goblin = new Goblin({
@@ -235,6 +240,24 @@ export class Scene1 extends Phaser.Scene {
       this.physics.add.collider(goblin, this.wallsLayer);
       this.physics.add.collider(goblin, this.invisibleWallsEnemy);
     })
+
+    // Goblin Archer
+    this.goblinArcherLayer = this.tileMap.getObjectLayer('goblinArcher')
+    this.goblinArcherLayer.objects.forEach(goblinArcherObj => {
+      //console.log(goblinArcherObj);
+      const goblinArcher = new GoblinArcher({
+        currentScene: this,
+        x: goblinArcherObj.x,
+        y: goblinArcherObj.y,
+        texture: 'goblinArcher'
+      })
+      this.enemies.add(goblinArcher)
+      this.arrayGoblinArchers.push(goblinArcher)
+      this.physics.add.collider(goblinArcher, this.plataformsLayer)
+      this, this.physics.add.collider(goblinArcher, this.wallsLayer)
+      this.physics.add.collider(goblinArcher, this.invisibleWallsEnemy)
+    })
+
     this.registry.set(Constants.GROUPS.ENEMIES, this.enemies);
 
 
@@ -293,21 +316,27 @@ export class Scene1 extends Phaser.Scene {
   }
 
   override update() {
-    // console.log('Nivel 1 update  corriendo');
+    //console.log('Nivel 1 update  corriendo');
 
     let key = Phaser.Input.Keyboard;
     //Call Angular Service
     if (key.JustDown(this.controls.R)) {
       if (contexto) {
         // contexto.sendScore(this.registry.get(Constants.HUD.SCORE))
-        // console.log("Nueva Puntuacion Guardada!");
+        //console.log("Nueva Puntuacion Guardada!");
         this.uploadScore()
 
       } else {
-        console.log("contexto is undefined");
+        //console.log("contexto is undefined");
 
       }
+      for (let i = 0; i < this.arrayGoblinArchers.length; i++) {
+        if (this.arrayGoblinArchers[i].body) {
+          this.arrayGoblinArchers[i].update()
+          // this.arrayGoblinArchers[i].checkIsDead()
+        }
 
+      }
 
     }
 
@@ -317,7 +346,7 @@ export class Scene1 extends Phaser.Scene {
     this.goblinLogic()
     this.gameOverCheck()
 
-    // console.log(this.arraySlimes)
+    //console.log(this.arraySlimes)
 
 
   }
@@ -360,8 +389,13 @@ export class Scene1 extends Phaser.Scene {
       if (this.arrayGoblins[i].body && !this.arrayGoblins[i].deathCheck()) {
         this.arrayGoblins[i].update()
         this.arrayGoblins[i].checkIsDead()
+      }
 
-
+    }
+    for (let i = 0; i < this.arrayGoblinArchers.length; i++) {
+      if (this.arrayGoblinArchers[i].body && !this.arrayGoblinArchers[i].deathCheck()) {
+        this.arrayGoblinArchers[i].update()
+        this.arrayGoblinArchers[i].checkIsDead()
       }
 
     }
@@ -375,7 +409,7 @@ export class Scene1 extends Phaser.Scene {
         this.scene.launch('gameOver', { defeat: true })
         this.scene.bringToTop('gameOver')
 
-        console.log('muertoooo');
+        //console.log('muertoooo');
       }, [], this);
 
       this.uploadScore()
@@ -386,7 +420,7 @@ export class Scene1 extends Phaser.Scene {
         this.scene.stop('ui-scene')
         this.scene.launch('gameOver', { defeat: false })
         this.scene.bringToTop('gameOver')
-        console.log('victoria');
+        //console.log('victoria');
       }, [], this);
       this.uploadScore()
     }
@@ -397,10 +431,10 @@ export class Scene1 extends Phaser.Scene {
     if (contexto) {
       contexto.sendScore(this.registry.get(Constants.HUD.SCORE))
       contexto.getScoreboard()
-      console.log("Nueva Puntuacion Guardada!");
+      //console.log("Nueva Puntuacion Guardada!");
 
     } else {
-      console.log("contexto is undefined");
+      //console.log("contexto is undefined");
 
     }
   }
@@ -409,8 +443,8 @@ export class Scene1 extends Phaser.Scene {
 
 export const Level1 = (ctx: any) => {
 
-  console.log("contexto:");
-  console.log(ctx);
+  //console.log("contexto:");
+  //console.log(ctx);
 
   contexto = ctx;
   return Scene1;
