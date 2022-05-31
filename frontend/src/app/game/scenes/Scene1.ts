@@ -129,14 +129,29 @@ export class Scene1 extends Phaser.Scene {
 
     // MAP & Background
 
+    // Plains Bioma
     //background layer 1
-    this.createBackground(this, 'plainsSky', 1, 0)
+    this.createBackground(this, 'plainsSky', 1, 0, 0)
 
     // //background layer 2
-    this.createBackground(this, 'plainsBG1', 15, 0.5)
+    this.createBackground(this, 'plainsBG1', 2, 0.5, 0)
 
     // //background layer 3
-    this.createBackground(this, 'plainsBG2', 15, 1) //Todo: Reducir Tamañao
+    this.createBackground(this, 'plainsBG2', 4, 1, 0) //Todo: Reducir Tamaño
+
+    //Forest Bioma
+    // //background layer 1
+    // this.createBackground2(this, 'forestBckgr-1', 80, 1, 300)
+
+    // // // //background layer 3
+    // this.createBackground2(this, 'forestBckgr-2', 15, 1, 3200) //Todo: Reducir Tamaño
+
+    // // // //background layer 2
+    // this.createBackground2(this, 'NforestBckgr-3', 15, 1, 500)
+
+
+
+
 
     //load tile map
     this.tileMap = this.make.tilemap({ key: Constants.MAPS.LEVELS.LEVEL1.TILEMAPJSON, tileWidth: 16, tileHeight: 16 });
@@ -315,7 +330,14 @@ export class Scene1 extends Phaser.Scene {
 
   }
 
-  override update() {
+
+
+
+  override update(delta: number) {
+
+    //Delta Time
+    this.player.getDeltaTime((delta))
+
     //console.log('Nivel 1 update  corriendo');
 
     let key = Phaser.Input.Keyboard;
@@ -336,9 +358,12 @@ export class Scene1 extends Phaser.Scene {
           // this.arrayGoblinArchers[i].checkIsDead()
         }
 
+
+
       }
 
     }
+
 
 
     this.playerLogic()
@@ -352,16 +377,39 @@ export class Scene1 extends Phaser.Scene {
   }
 
 
-  createBackground(scene: Phaser.Scene, texture: string, count: number, scrollFactor: number) {
-    let x = 0;
+  createBackground(scene: Phaser.Scene, texture: string, count: number, scrollFactor: number, x: number) {
+
     for (let i = 0; i < count; i++) {
-      const img = scene.add.image(x, scene.scale.height, texture)
+      const img = scene.add.image(x, scene.scale.height + 50, texture)
         .setOrigin(0, 1).setScrollFactor(scrollFactor)
       img.displayWidth = this.sys.canvas.width;
       img.displayHeight = this.sys.canvas.height;
+
+
       x += img.displayWidth
+      console.log(x);
+
     }
   }
+
+
+  createBackground2(scene: Phaser.Scene, texture: string, count: number, scrollFactor: number, x: number) {
+
+    for (let i = 0; i < count; i++) {
+      const img = scene.add.image(x, scene.scale.height - 245, texture)
+        .setOrigin(0, 1).setScrollFactor(scrollFactor)
+      img.displayWidth = this.sys.canvas.width * 0.5;
+      img.displayHeight = this.sys.canvas.height * 0.5;
+
+
+      x += img.displayWidth
+
+
+    }
+  }
+
+
+
 
   playerLogic() {
     if (this.player.body) {

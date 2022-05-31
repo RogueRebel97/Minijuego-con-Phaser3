@@ -196,6 +196,21 @@ export class LoadingScreen extends Phaser.Scene {
       'forestBckgr-3',
       'assets/SpritesSheets/oak_woods_v1.0/background/background_layer_3.png'
     );
+    // Night Forest
+
+    this.load.image(
+      'NforestBckgr-1',
+      'assets/SpritesSheets/oak_woods_v1.0/background/NOCHE_background_layer_1.png'
+    );
+    this.load.image(
+      'NforestBckgr-2',
+      'assets/SpritesSheets/oak_woods_v1.0/background/NOCHE_background_layer_2.png'
+    );
+    this.load.image(
+      'NforestBckgr-3',
+      'assets/SpritesSheets/oak_woods_v1.0/background/NOCHE_background_layer_3logo.png'
+    );
+
 
 
     //plains
@@ -354,6 +369,37 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/SpritesSheets/Enemies/Goblin/GoblinArcher/ArcherIdle.png',
       { frameWidth: 600, frameHeight: 500 }
     );
+
+    // Barra de salud
+    this.load.image(
+      'left-cap',
+      'assets/graphics/uiAssets/PNG/barHorizontal_green_left.png'
+    );
+    this.load.image(
+      'middle',
+      'assets/graphics/uiAssets/PNG/barHorizontal_green_mid.png'
+    );
+    this.load.image(
+      'right-cap',
+      'assets/graphics/uiAssets/PNG/barHorizontal_green_right.png'
+    );
+
+    // Bar Shadow
+    this.load.image(
+      'left-cap-shadow',
+      'assets/graphics/uiAssets/PNG/barHorizontal_shadow_left.png'
+    );
+    this.load.image(
+      'middle-shadow',
+      'assets/graphics/uiAssets/PNG/barHorizontal_shadow_mid.png'
+    );
+    this.load.image(
+      'right-cap-shadow',
+      'assets/graphics/uiAssets/PNG/barHorizontal_shadow_right.png'
+    );
+
+
+
 
 
     // fin de Assets

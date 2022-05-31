@@ -21,7 +21,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
         left: { state: true },
         right: { state: false },
         attack: { state: true, duration: 1000, cooldown: 1500 },
-        damage: { state: false, duration: 500, cooldown: 550 },
+        damage: { state: false, duration: 650, cooldown: 650 },
     }
 
     private allowMove: boolean = true
@@ -183,14 +183,14 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
 
             if (distance < 0) {
                 this.anims.stop()
-                this.setVelocityX(-40)
+                this.setVelocityX(-125)
                 this.setVelocityY(-150)
                 this.anims.play('goblinHit')
 
             }
             else if (distance >= 0) {
                 this.anims.stop()
-                this.setVelocityX(40)
+                this.setVelocityX(125)
                 this.setVelocityY(-150)
                 this.anims.play('goblinHit')
 

@@ -43,7 +43,8 @@ export class GameComponent implements OnInit, OnDestroy {
         default: 'arcade',
         arcade: {
           gravity: { y: 600 },
-          debug: true
+          debug: false,
+
         },
       },
       plugins: {
