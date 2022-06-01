@@ -12,7 +12,6 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
     private dmg: number = 20
     private score: number = 30
 
-
     private moveTime: number = 0
     private controls!: any
 
@@ -66,7 +65,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
         this.displayHeight = this.height / 20
 
         // Initialize Hammer HitBox
-        this.hammerHitBox = this.currentScene.add.rectangle(this.x, this.y, 15, 35, 0xFF0000, 0) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody
+        this.hammerHitBox = this.currentScene.add.rectangle(this.x, this.y, 15, 25, 0xFF0000, 0) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody
         this.currentScene.physics.add.existing(this.hammerHitBox)
         this.hammerHitBox.body.setAllowGravity(false)
         this.hammerHitBox.body.enable = false;
@@ -396,7 +395,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
             this.hammerHitBox.x = this.flipX
                 ? this.x - 25
                 : this.x + 25
-            this.hammerHitBox.y = this.y + this.body.height * 0.5
+            this.hammerHitBox.y = this.y + this.body.height * 0.3
 
             // activa la hitbox 
             this.hammerHitBox.body.enable = true

@@ -4,10 +4,12 @@ import Knight from '../character/knight';
 import Slime from '../enemies/slime';
 import Goblin from '../enemies/goblin';
 import GoblinArcher from '../enemies/goblinArcher';
+import SawTrap from '../gameObjects/sawTrap';
 import Constants from '../Constants';
 import HUD from './hud';
 import GameOver from './GameOver';
 import { Injectable } from '@angular/core';
+
 
 let contexto: any
 
@@ -26,7 +28,6 @@ export class Scene1 extends Phaser.Scene {
   private arraySlimes!: Slime[]
   private slimeLayer!: Phaser.Tilemaps.ObjectLayer
 
-
   private arrayGoblins!: Goblin[]
   private goblinLayer!: Phaser.Tilemaps.ObjectLayer
 
@@ -35,8 +36,14 @@ export class Scene1 extends Phaser.Scene {
 
   private enemies!: Physics.Arcade.Group
 
+  // Trampas
+  private trapGroup!: Phaser.Physics.Arcade.Group
+  private sawTrapArray!: SawTrap[]
+  private sawTrapLayer!: Phaser.Tilemaps.ObjectLayer
+
   // Colliders para Registro
   private enemyCollider!: Phaser.Physics.Arcade.Collider;
+  private trapCollider!: Phaser.Physics.Arcade.Collider;
   private deathZoneCollider!: Phaser.Physics.Arcade.Collider;
   private platformsColliders!: Phaser.Physics.Arcade.Collider;
   private goalCollider!: Phaser.Physics.Arcade.Collider;
@@ -82,8 +89,6 @@ export class Scene1 extends Phaser.Scene {
   constructor() {
     super({ key: 'Scene1' });
     //console.log('constructor iniciado');
-
-
   }
 
   init() {
@@ -110,6 +115,7 @@ export class Scene1 extends Phaser.Scene {
     this.arraySlimes = []
     this.arrayGoblins = []
     this.arrayGoblinArchers = []
+    this.sawTrapArray = []
   }
 
   create() {
@@ -149,10 +155,6 @@ export class Scene1 extends Phaser.Scene {
     // // // //background layer 2
     // this.createBackground2(this, 'NforestBckgr-3', 15, 1, 500)
 
-
-
-
-
     //load tile map
     this.tileMap = this.make.tilemap({ key: Constants.MAPS.LEVELS.LEVEL1.TILEMAPJSON, tileWidth: 16, tileHeight: 16 });
     this.physics.world.bounds.setTo(0, 0, this.tileMap.widthInPixels, this.tileMap.heightInPixels);
@@ -164,13 +166,13 @@ export class Scene1 extends Phaser.Scene {
     this.plainsDecors = this.tileMap.addTilesetImage(Constants.MAPS.SCENERY.PLAINS.DECORATOR.PLAINSDECORS)
     this.tileSets = [this.plainsTileSet_1, this.plainsTileSet_2, this.plainsDecors, this.woodTileSet] //Add every tileset and decor to Tileset Group
 
+    this.backgroundsLayer2 = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.BACKGROUND.BG2, this.tileSets)
+    this.backgroundsLayer1 = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.BACKGROUND.BG1, this.tileSets)
+
     //Layers
     this.decorsLayer3 = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.DECORS.LAYER3, this.tileSets)
     this.decorsLayer2 = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.DECORS.LAYER2, this.tileSets)
     this.decorsLayer1 = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.DECORS.LAYER1, this.tileSets)
-
-    this.backgroundsLayer2 = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.BACKGROUND.BG2, this.tileSets)
-    this.backgroundsLayer1 = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.BACKGROUND.BG1, this.tileSets)
 
     this.wallsLayer = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.PLATAFORMS.WALLS, this.tileSets)
     this.plataformsLayer = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.PLATAFORMS.PLATAFORMS, this.tileSets)
@@ -269,11 +271,50 @@ export class Scene1 extends Phaser.Scene {
       this.enemies.add(goblinArcher)
       this.arrayGoblinArchers.push(goblinArcher)
       this.physics.add.collider(goblinArcher, this.plataformsLayer)
-      this, this.physics.add.collider(goblinArcher, this.wallsLayer)
+      this.physics.add.collider(goblinArcher, this.wallsLayer)
       this.physics.add.collider(goblinArcher, this.invisibleWallsEnemy)
     })
-
     this.registry.set(Constants.GROUPS.ENEMIES, this.enemies);
+
+    // SawTrap
+    this.sawTrapLayer = this.tileMap.getObjectLayer('sawTrap')
+    this.sawTrapLayer.objects.forEach(trapObj => {
+
+      let currentScene = this;
+      let x = trapObj.x
+      let y = trapObj.y
+      let texture = 'sawTrap'
+      let angle
+
+      switch (trapObj.id) {
+        case 54:
+          angle = 180
+          break;
+
+        default:
+          angle = 0
+          break;
+      }
+
+      let sawTrap = new SawTrap({
+        currentScene: this,
+        x: x,
+        y: y,
+        texure: texture,
+        angle: angle
+      })
+
+      this.sawTrapArray.push(sawTrap)
+      this.physics.add.collider(sawTrap, this.plataformsLayer)
+      this.physics.add.collider(sawTrap, this.wallsLayer)
+    })
+
+    this.physics.add.group(this.sawTrapArray)
+    this.trapGroup = this.physics.add.group()
+
+
+
+
 
 
     // create player  ?¿?¿
@@ -320,6 +361,10 @@ export class Scene1 extends Phaser.Scene {
     });
     this.registry.set(Constants.REGISTRY.COLLIDERS.ENEMY, this.enemyCollider)
 
+    this.trapCollider = this.physics.add.collider(this.sawTrapArray, this.player, (trap, player) => {
+      this.player.getDamage(45)
+    })
+
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.uploadScore()
@@ -330,13 +375,10 @@ export class Scene1 extends Phaser.Scene {
 
   }
 
-
-
-
   override update(delta: number) {
 
     //Delta Time
-    this.player.getDeltaTime((delta))
+
 
     //console.log('Nivel 1 update  corriendo');
 
@@ -365,7 +407,7 @@ export class Scene1 extends Phaser.Scene {
     }
 
 
-
+    this.sawTrapLogic()
     this.playerLogic()
     this.slimeLogic()
     this.goblinLogic()
@@ -387,7 +429,7 @@ export class Scene1 extends Phaser.Scene {
 
 
       x += img.displayWidth
-      console.log(x);
+      // console.log(x);
 
     }
   }
@@ -430,6 +472,17 @@ export class Scene1 extends Phaser.Scene {
       }
 
     }
+  }
+  sawTrapLogic() {
+    for (let i = 0; i < this.sawTrapArray.length; i++) {
+
+      this.sawTrapArray[i].update()
+
+
+
+
+    }
+
   }
 
   goblinLogic() {

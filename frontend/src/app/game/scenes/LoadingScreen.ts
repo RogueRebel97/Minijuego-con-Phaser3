@@ -370,6 +370,14 @@ export class LoadingScreen extends Phaser.Scene {
       { frameWidth: 600, frameHeight: 500 }
     );
 
+
+    //Trampas
+    this.load.spritesheet(
+      'sawTrap1',
+      'assets/SpritesSheets/traps/saw/SawTrap-Level1.png',
+      { frameWidth: 64, frameHeight: 64 }
+    );
+
     // Barra de salud
     this.load.image(
       'left-cap',
