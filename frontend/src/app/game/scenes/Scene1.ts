@@ -9,6 +9,7 @@ import Constants from '../Constants';
 import HUD from './hud';
 import GameOver from './GameOver';
 import { Injectable } from '@angular/core';
+import Melon from '../gameObjects/melon';
 
 
 let contexto: any
@@ -37,9 +38,15 @@ export class Scene1 extends Phaser.Scene {
   private enemies!: Physics.Arcade.Group
 
   // Trampas
-  private trapGroup!: Phaser.Physics.Arcade.Group
+  private trapGroup!: Phaser.Physics.Arcade.StaticGroup
   private sawTrapArray!: SawTrap[]
   private sawTrapLayer!: Phaser.Tilemaps.ObjectLayer
+
+  // Items
+  private melonGroup!: Phaser.Physics.Arcade.StaticGroup
+  private melonayer!: Phaser.Tilemaps.ObjectLayer
+  private melonArray!: Melon[]
+  private melonider!: Phaser.Physics.Arcade.Collider;
 
   // Colliders para Registro
   private enemyCollider!: Phaser.Physics.Arcade.Collider;
@@ -116,6 +123,7 @@ export class Scene1 extends Phaser.Scene {
     this.arrayGoblins = []
     this.arrayGoblinArchers = []
     this.sawTrapArray = []
+    this.melonArray = []
   }
 
   create() {
@@ -287,8 +295,24 @@ export class Scene1 extends Phaser.Scene {
       let angle
 
       switch (trapObj.id) {
-        case 54:
+        case 57:
+        case 63:
+        case 68:
+        case 69:
           angle = 180
+          break;
+        case 64:
+          angle = 135
+          break;
+        case 60:
+          angle = 90
+          break;
+        case 61:
+          angle = 360
+          break;
+
+        case 62:
+          angle = 270
           break;
 
         default:
@@ -305,19 +329,40 @@ export class Scene1 extends Phaser.Scene {
       })
 
       this.sawTrapArray.push(sawTrap)
+      // this.add.existing(sawTrap)
+
+      this.trapGroup = this.physics.add.staticGroup(sawTrap)
       this.physics.add.collider(sawTrap, this.plataformsLayer)
       this.physics.add.collider(sawTrap, this.wallsLayer)
+      sawTrap.create()
     })
 
-    this.physics.add.group(this.sawTrapArray)
-    this.trapGroup = this.physics.add.group()
+    this.melonayer = this.tileMap.getObjectLayer('melon')
+    this.melonayer.objects.forEach(itemObj => {
+      console.log(itemObj);
+
+      let melon = new Melon({
+        currentScene: this,
+        x: itemObj.x,
+        y: itemObj.y,
+        texure: 'melon'
+
+      })
+      this.physics.add.collider(melon, this.plataformsLayer)
+      this.physics.add.collider(melon, this.wallsLayer)
+      this.melonArray.push(melon)
+      this.melonGroup = this.physics.add.staticGroup(melon)
+      melon.create()
+    })
 
 
 
 
 
 
-    // create player  ?¿?¿
+
+
+    // create player  
     this.player.create();
 
     //create Hud Despues del resto de elementos para que el hud siempre este por encima
@@ -338,8 +383,6 @@ export class Scene1 extends Phaser.Scene {
 
       this.player.reachGoal()
       this.win = true;
-
-
     })
 
     this.registry.set(Constants.REGISTRY.COLLIDERS.GOAL, this.goalCollider)
@@ -347,24 +390,34 @@ export class Scene1 extends Phaser.Scene {
     //Player andDeath zone
     this.deathZoneCollider = this.physics.add.collider(this.player, this.deathZone, (deathzone, player) => {
       this.player.deathFall()
-
-
     })
 
     this.registry.set(Constants.REGISTRY.COLLIDERS.DEATHZONE, this.deathZoneCollider)
 
 
     //player touch Slime
-    this.enemyCollider = this.physics.add.overlap(this.arraySlimes, this.player, (slime, player) => {
-      this.player.getDamage(10);
+    this.enemyCollider = this.physics.add.overlap(this.arraySlimes, this.player, (enemie, player) => {
+      let slime = this.arraySlimes[0];
+      this.player.getDamage(slime.getDmg(), slime.getForce());
 
     });
     this.registry.set(Constants.REGISTRY.COLLIDERS.ENEMY, this.enemyCollider)
 
+    //Trap collider
     this.trapCollider = this.physics.add.collider(this.sawTrapArray, this.player, (trap, player) => {
-      this.player.getDamage(45)
-    })
+      let sawTrap = this.sawTrapArray[0];
 
+      this.player.getDamage(sawTrap.getDmg(), sawTrap.getForce())
+    })
+    this.registry.set(Constants.REGISTRY.COLLIDERS.TRAPS, this.trapCollider)
+
+    //Melon Collider
+    this.melonider = this.physics.add.overlap(this.player, this.melonArray, (player, fruit) => {
+      let melon = this.melonArray[0];
+
+      melon.eat();
+
+    })
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.uploadScore()
@@ -376,9 +429,6 @@ export class Scene1 extends Phaser.Scene {
   }
 
   override update(delta: number) {
-
-    //Delta Time
-
 
     //console.log('Nivel 1 update  corriendo');
 
@@ -412,6 +462,7 @@ export class Scene1 extends Phaser.Scene {
     this.slimeLogic()
     this.goblinLogic()
     this.gameOverCheck()
+    this.melongic()
 
     //console.log(this.arraySlimes)
 
@@ -460,6 +511,12 @@ export class Scene1 extends Phaser.Scene {
     }
     else {
       return
+    }
+  }
+
+  melongic() {
+    for (let i = 0; i < this.melonArray.length; i++) {
+      this.melonArray[i].update()
     }
   }
 
@@ -539,6 +596,9 @@ export class Scene1 extends Phaser.Scene {
 
     }
   }
+
+
+
 
 }
 

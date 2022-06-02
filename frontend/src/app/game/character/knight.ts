@@ -494,45 +494,51 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.currentScene.cameras.main.stopFollow()
         this.playerIsDead = true
 
+
         this.health = 0
         this.currentScene.registry.set(Constants.PLAYER.STATS.HEALTH, this.health)
         this.currentScene.events.emit(Constants.EVENTS.HEALTH)
 
         this.currentScene.events.emit(Constants.EVENTS.SCORE, - 50)
         this.currentScene.physics.world.removeCollider(this.currentScene.registry.get(Constants.REGISTRY.COLLIDERS.DEATHZONE))
+        this.currentScene.physics.world.removeCollider(this.currentScene.registry.get(Constants.REGISTRY.COLLIDERS.TRAPS))
+
         this.setCollideWorldBounds(false)
     }
 
-    getDamage(damage: number) {
+    getDamage(damage: number, force: number) {
         if (this.health > 0 && !this.playerIsDead && this.actions.damage.state && this.actions.invulnerable.state) {
+
+
+
 
             this.blockMove('damage');
             this.cooldown('damage')
             this.getInvulnerable(1500)
 
             if (this.body.blocked.left) {
-                this.setVelocityX(100)
-                this.setVelocityY(-150)
+                this.setVelocityX(force)
+                this.setVelocityY(-(force * 0.5))
                 this.anims.play('hit')
 
 
 
             } else if (this.body.blocked.right) {
 
-                this.setVelocityX(-25)
-                this.setVelocityY(-37)
+                this.setVelocityX(-force)
+                this.setVelocityY(-(force * 0.5))
                 this.anims.play('hit')
 
 
             } else if (this.body.touching.down) {
                 var random = Math.floor(Math.random() * 2) + 1;
                 this.anims.stop;
-                this.setVelocityY(-37)
+                this.setVelocityY(-(force * 0.5))
                 if (random == 1) {
-                    this.setVelocityX(25)
+                    this.setVelocityX(force)
                     this.anims.play('hit')
                 } else {
-                    this.setVelocityX(-25)
+                    this.setVelocityX(-force)
                     this.anims.play('hit')
                 }
             }

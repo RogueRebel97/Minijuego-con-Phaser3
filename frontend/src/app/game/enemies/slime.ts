@@ -8,6 +8,8 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
     private vRun: number = 150
     private maxHealth: number = 30
     private health: number = this.maxHealth
+    private damage: number = 10
+    private force: number = 169
 
     private moveTime: number = 0
     private controls!: any
@@ -303,6 +305,13 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
     }
 
 
+    getDmg() {
+        return this.damage
+    }
+
+    getForce() {
+        return this.force
+    }
 
     deathCheck(): boolean {
 

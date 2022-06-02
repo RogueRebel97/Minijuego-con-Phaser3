@@ -9,7 +9,9 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
     private vRun: number = 120
     private maxHealth: number = 50
     private health: number = this.maxHealth
-    private dmg: number = 20
+    private damage: number = 20
+    private force: number = 150
+
     private score: number = 30
 
     private moveTime: number = 0
@@ -101,7 +103,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
         this.currentScene.physics.add.overlap
             (this.hammerHitBox,
                 this.currentScene.registry.get(Constants.GROUPS.PLAYER),
-                this.attackCollide)
+                this.attackCollide, undefined, this)
     }
 
 
@@ -413,17 +415,29 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
 
 
     }
+    getDmg() {
+        return this.damage
+    }
 
+    getForce() {
+        return this.force
+    }
+
+    checkAttack() {
+
+    }
 
 
 
     attackCollide(obj1: any, obj2: any) {
         var player: Knight;
 
-
         player = obj2;
-        player.getDamage(20)
+
+
+        player.getDamage(this.damage, this.force)
     }
+
 
 
 

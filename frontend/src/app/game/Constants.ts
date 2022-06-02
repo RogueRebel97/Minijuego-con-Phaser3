@@ -143,7 +143,8 @@ const Constants = {
             ENEMY: 'enemyCollider',
             DEATHZONE: 'deathZone',
             PLATFORMS: 'platformsCollider',
-            GOAL: 'goalCollider'
+            GOAL: 'goalCollider',
+            TRAPS: 'trapCollider'
 
         }
     }

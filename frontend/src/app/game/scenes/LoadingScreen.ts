@@ -378,6 +378,21 @@ export class LoadingScreen extends Phaser.Scene {
       { frameWidth: 64, frameHeight: 64 }
     );
 
+    // Frutas
+    this.load.spritesheet(
+      'melon',
+      'assets/SpritesSheets/fruits/Melon.png',
+      { frameWidth: 32, frameHeight: 32 }
+    );
+
+    this.load.spritesheet(
+      'collected',
+      'assets/SpritesSheets/fruits/Collected.png',
+      { frameWidth: 32, frameHeight: 32 }
+    );
+
+
+
     // Barra de salud
     this.load.image(
       'left-cap',
