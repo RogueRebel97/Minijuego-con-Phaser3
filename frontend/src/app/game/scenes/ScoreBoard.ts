@@ -33,6 +33,8 @@ export class ScoreBoard extends Phaser.Scene {
     private img2!: Phaser.GameObjects.TileSprite
     private img3!: Phaser.GameObjects.TileSprite
 
+
+
     constructor() {
         super({ key: 'ScoreBoard' });
 

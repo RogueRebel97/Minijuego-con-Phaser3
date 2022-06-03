@@ -17,6 +17,8 @@ export class Credits extends Phaser.Scene {
     private img2!: Phaser.GameObjects.TileSprite
     private img3!: Phaser.GameObjects.TileSprite
 
+    private creditsTXT!: Phaser.GameObjects.Text
+
     constructor() {
         super({ key: 'Credits' });
     }
@@ -27,14 +29,19 @@ export class Credits extends Phaser.Scene {
 
 
     create() {
+        this.cameras.main.fadeIn(1000, 0, 0, 0);
         this.width = this.scale.width;
         this.height = this.scale.height;
 
 
 
-        this.img = this.add.tileSprite(this.width / 2, this.height / 2, this.width, this.height, 'castle-1')
-        this.img2 = this.add.tileSprite(this.width / 2, this.height / 2, this.width, this.height, 'castle-2')
-        this.img3 = this.add.tileSprite(this.width / 2, this.height / 2, this.width, this.height, 'castle-3')
+        // this.img = this.add.tileSprite(this.width / 2, this.height / 2, this.width, this.height, 'castle-1')
+        // this.img2 = this.add.tileSprite(this.width / 2, this.height / 2, this.width, this.height, 'castle-2')
+        // this.img3 = this.add.tileSprite(this.width / 2, this.height / 2, this.width, this.height, 'castle-3')
+
+        this.img = this.add.tileSprite(this.width / 2, this.height / 2, this.width, this.height, 'nightBckgr-1')
+        this.img2 = this.add.tileSprite(this.width / 2, this.height / 2, this.width, this.height, 'nightBckgr-2')
+        this.img3 = this.add.tileSprite(this.width / 2, this.height / 2, this.width, this.height, 'nightBckgr-3')
 
 
 
@@ -46,6 +53,62 @@ export class Credits extends Phaser.Scene {
 
         //animacion al pulsar
         this.animateButton(returnButton)
+
+
+
+
+        // Texts
+
+        // header
+        this.creditsTXT = this.add.text(this.width * 0.5, this.height - this.scale.height + 35, 'CREDITOS',
+            {
+                color: 'WHITE', fontFamily: 'pixel', fontSize: '32px'
+            }).setOrigin(0.5, 0.5)
+
+        // texts
+        const txt1 = this.add.text(this.width * 0.5, this.creditsTXT.y + 75, 'AN ORIGINAL IDEA OF',
+            {
+                color: 'WHITE', fontFamily: 'pixel', fontSize: '20PX'
+            }).setOrigin(0.5, 0.5)
+
+        const txt1_1 = this.add.text(this.width * 0.5, txt1.y + 45, 'Adrian Ruiz Diaz',
+            {
+                color: 'WHITE', fontFamily: 'pixel', fontSize: '18PX'
+            }).setOrigin(0.5, 0.5)
+
+
+
+        const txt2 = this.add.text(this.width * 0.5, txt1_1.y + 65, 'DESIGNED AND DEVELOPED BY ',
+            {
+                color: 'WHITE', fontFamily: 'pixel', fontSize: '20PX'
+            }).setOrigin(0.5, 0.5)
+
+        const txt2_1 = this.add.text(this.width * 0.5, txt2.y + 45, 'Adrian Ruiz Diaz',
+            {
+                color: 'WHITE', fontFamily: 'pixel', fontSize: '18PX'
+            }).setOrigin(0.5, 0.5)
+
+        const txt3 = this.add.text(this.width * 0.5, txt2_1.y + 65, 'PRODUCED BY ',
+            {
+                color: 'WHITE', fontFamily: 'pixel', fontSize: '20PX'
+            }).setOrigin(0.5, 0.5)
+
+        const txt3_1 = this.add.text(this.width * 0.5, txt3.y + 45, 'iMageCreative.es',
+            {
+                color: 'WHITE', fontFamily: 'pixel', fontSize: '18PX'
+            }).setOrigin(0.5, 0.5)
+
+        const txt4 = this.add.text(this.width * 0.5, txt3_1.y + 65, 'IN COLLABORATION WITH ',
+            {
+                color: 'WHITE', fontFamily: 'pixel', fontSize: '20PX'
+            }).setOrigin(0.5, 0.5)
+        const txt4_1 = this.add.text(this.width * 0.5, txt4.y + 45, 'UnMundoEnMiniatura.es ',
+            {
+                color: 'WHITE', fontFamily: 'pixel', fontSize: '18PX'
+            }).setOrigin(0.5, 0.5)
+
+
+
 
     }
 
