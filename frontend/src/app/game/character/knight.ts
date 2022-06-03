@@ -110,7 +110,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
         //Combos
         this.konami = this.currentScene.input.keyboard.createCombo([38, 38, 40, 40, 37, 39, 37, 39], { resetOnMatch: true });
-        this.combo = this.currentScene.input.keyboard.createCombo(this.controls.J)
+        // this.combo = this.currentScene.input.keyboard.createCombo([38, 38], { resetOnMatch: true })
 
         this.currentScene.input.keyboard.on('keycombomatch', (event: any) => {
             this.currentScene.events.emit(Constants.EVENTS.SCORE, +50)
@@ -118,9 +118,11 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
         });
 
-        this.currentScene.input.keyboard.on('keycombomatch', (event: any) => {
-            //console.log('Code entered!');
-        });
+        // this.currentScene.input.keyboard.on('keycombomatch', (event: any) => {
+        //     //console.log('Code entered!');
+
+        //     this.getDamage(20, 0)
+        // });
     }
 
     create() {
@@ -509,9 +511,6 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     getDamage(damage: number, force: number) {
         if (this.health > 0 && !this.playerIsDead && this.actions.damage.state && this.actions.invulnerable.state) {
 
-
-
-
             this.blockMove('damage');
             this.cooldown('damage')
             this.getInvulnerable(1500)
@@ -553,6 +552,9 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             this.currentScene.events.emit(Constants.EVENTS.SCORE, -5)
         }
     }
+
+
+
 
 
 

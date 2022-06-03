@@ -120,7 +120,7 @@ export class MainMenu extends Phaser.Scene {
     const playButton = this.add
       .image(width * 0.5, height * 0.5, 'red_button1')
 
-    this.actionButton(playButton)
+    this.actionButton(playButton, 1)
 
     //Play Text
     this.add
@@ -134,7 +134,7 @@ export class MainMenu extends Phaser.Scene {
         playButton.y + playButton.displayHeight + 10,
         'red_button1'
       )
-    this.actionButton(scoreButton)
+    this.actionButton(scoreButton, 2)
 
     // ScoreBoard Text
     this.add
@@ -150,7 +150,7 @@ export class MainMenu extends Phaser.Scene {
         scoreButton.y + scoreButton.displayHeight + 10,
         'red_button1'
       )
-    this.actionButton(creditsButton)
+    this.actionButton(creditsButton, 3)
 
     //Credits text
     this.add
@@ -176,6 +176,7 @@ export class MainMenu extends Phaser.Scene {
 
     creditsButton.on('selected', () => {
       //console.log('credits')
+      this.scene.start('Credits')
     })
 
     //Limpiar Eventos
@@ -239,13 +240,13 @@ export class MainMenu extends Phaser.Scene {
   actionButton(button: Phaser.GameObjects.Image, id?: number) {
 
     button.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
-      button.setTint(0xe0e0e0);
+      button.setTint(0x66ff7f);
     })
       .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, () => {
         button.setTint(0xffffff);
       })
       .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-        button.setTint(0xe0e0e0);
+        button.setTint(0x66ff7f);
         button.setTexture('red_button2')
 
 
@@ -256,14 +257,15 @@ export class MainMenu extends Phaser.Scene {
         switch (id) {
           case 1:
             //console.log(id);
-
+            this.scene.start('Scene1')
             break;
           case 2:
             //console.log(id)
+            this.scene.start('ScoreBoard')
             break;
           case 3:
             //console.log(id)
-
+            this.scene.start('Credits')
             break;
           case 4:
             //console.log(id)

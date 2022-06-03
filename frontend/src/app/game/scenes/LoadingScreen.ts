@@ -167,6 +167,9 @@ export class LoadingScreen extends Phaser.Scene {
     //Decorations
     this.load.image(Constants.MAPS.SCENERY.PLAINS.DECORATOR.PLAINSDECORS, 'assets/graphics/decorations/plainsDecors.png')
 
+    this.load.image("shop", 'assets/graphics/decorations/Forestdecorations/shop.png')
+
+
     // Backgrounds for Map
 
     //Night
@@ -181,6 +184,20 @@ export class LoadingScreen extends Phaser.Scene {
     this.load.image(
       'nightBckgr-3',
       'assets/graphics/background/background_2Full.png'
+    );
+
+    //castle
+    this.load.image(
+      'castle-1',
+      'assets/graphics/background/castle/layer_1.png'
+    );
+    this.load.image(
+      'castle-2',
+      'assets/graphics/background/castle/layer_2.png'
+    );
+    this.load.image(
+      'castle-3',
+      'assets/graphics/background/castle/layer_3.png'
     );
 
     //Forest
@@ -482,9 +499,10 @@ export class LoadingScreen extends Phaser.Scene {
     this.cameras.main.once(
       Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
       (cam: any, effect: any) => {
-        this.scene.start('Scene1');
+        // this.scene.start('Scene1');
         // this.scene.start('ScoreBoard')
         // this.scene.start('MainMenu');
+        this.scene.start("Credits")
       }
     );
   }

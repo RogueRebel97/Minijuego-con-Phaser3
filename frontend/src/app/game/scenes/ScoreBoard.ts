@@ -114,35 +114,35 @@ export class ScoreBoard extends Phaser.Scene {
         this.img2.tilePositionX += 0.2
         this.img3.tilePositionX += 0.5
 
-        if (key.JustDown(this.controls.R)) {
+        // if (key.JustDown(this.controls.R)) {
 
-            //console.log('Antiguo Array:'); // Valor inical
-            //console.log(contexto.arrayRecord);
+        //     //console.log('Antiguo Array:'); // Valor inical
+        //     //console.log(contexto.arrayRecord);
 
-            contexto.getScoreboard() // reasignar variable que guarda los Records
+        //     contexto.getScoreboard() // reasignar variable que guarda los Records
 
-            //console.log('Antiguo nuevo:'); // Nuevo Valor
-            //console.log(contexto.arrayRecord);
-            this.arrayUsuarios = contexto.arrayRecord
+        //     //console.log('Antiguo nuevo:'); // Nuevo Valor
+        //     //console.log(contexto.arrayRecord);
+        //     this.arrayUsuarios = contexto.arrayRecord
 
-            if (this.arrayUsuarios != this.arrayUsuarios2) { //Volver  dibujar la scoreBoard
-                //console.log("actualizcion encontrada");
-                //console.log('Array1:');
-                //console.log(this.arrayUsuarios);
-                //console.log('Array2:');
-                //console.log(this.arrayUsuarios2);
+        //     if (this.arrayUsuarios != this.arrayUsuarios2) { //Volver  dibujar la scoreBoard
+        //         //console.log("actualizcion encontrada");
+        //         //console.log('Array1:');
+        //         //console.log(this.arrayUsuarios);
+        //         //console.log('Array2:');
+        //         //console.log(this.arrayUsuarios2);
 
-                this.arrayUsuarios = this.arrayUsuarios2
-
-
-
-            }
-            else {
-                //console.log('sin cambios');
+        //         this.arrayUsuarios = this.arrayUsuarios2
 
 
-            }
-        }
+
+        //     }
+        //     else {
+        //         //console.log('sin cambios');
+
+
+        //     }
+        // }
 
 
 
@@ -153,17 +153,6 @@ export class ScoreBoard extends Phaser.Scene {
     }
 
 
-    createBackground(scene: Phaser.Scene, texture: string, count: number, scrollFactor: number) {
-        let x = 0;
-        for (let i = 0; i < count; i++) {
-            const img = scene.add.image(x, scene.scale.height, texture)
-                .setOrigin(0, 1).setScrollFactor(scrollFactor)
-            img.displayWidth = this.sys.canvas.width;
-            img.displayHeight = this.sys.canvas.height;
-            x += img.displayWidth
-
-        }
-    }
 
     animateButton(button: Phaser.GameObjects.Image) {
 

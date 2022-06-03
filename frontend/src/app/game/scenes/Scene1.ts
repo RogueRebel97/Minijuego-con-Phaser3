@@ -72,6 +72,8 @@ export class Scene1 extends Phaser.Scene {
   private plainsTileSet_2!: Phaser.Tilemaps.Tileset;
   private woodTileSet!: Phaser.Tilemaps.Tileset;
   private plainsDecors!: Phaser.Tilemaps.Tileset
+  private woodDecors!: Phaser.Tilemaps.Tileset
+  private shopDecor!: Phaser.Tilemaps.Tileset
 
   //TilemapLayers
   private plataformsLayer!: Phaser.Tilemaps.TilemapLayer;
@@ -172,7 +174,12 @@ export class Scene1 extends Phaser.Scene {
     this.plainsTileSet_2 = this.tileMap.addTilesetImage(Constants.MAPS.SCENERY.PLAINS.TILESET.PLAINS_2);
     this.woodTileSet = this.tileMap.addTilesetImage(Constants.MAPS.SCENERY.FOREST.TILESET.WOODSTERRAIN);
     this.plainsDecors = this.tileMap.addTilesetImage(Constants.MAPS.SCENERY.PLAINS.DECORATOR.PLAINSDECORS)
-    this.tileSets = [this.plainsTileSet_1, this.plainsTileSet_2, this.plainsDecors, this.woodTileSet] //Add every tileset and decor to Tileset Group
+    this.shopDecor = this.tileMap.addTilesetImage("shop")
+
+
+
+
+    this.tileSets = [this.plainsTileSet_1, this.plainsTileSet_2, this.plainsDecors, this.woodDecors, this.shopDecor, this.woodTileSet] //Add every tileset and decor to Tileset Group
 
     this.backgroundsLayer2 = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.BACKGROUND.BG2, this.tileSets)
     this.backgroundsLayer1 = this.tileMap.createLayer(Constants.MAPS.LEVELS.LEVEL1.LAYER.BACKGROUND.BG1, this.tileSets)
@@ -414,7 +421,7 @@ export class Scene1 extends Phaser.Scene {
     //Melon Collider
     this.melonider = this.physics.add.overlap(this.player, this.melonArray, (player, fruit) => {
       let melon = this.melonArray[0];
-
+      // this.player.heal()
       melon.eat();
 
     })

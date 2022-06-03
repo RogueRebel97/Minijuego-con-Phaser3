@@ -5,12 +5,14 @@ import Config from './config';
 import { GameService } from './game.service';
 
 import GameOver from './scenes/GameOver';
+import { Credits } from './scenes/Credits';
 import { LoadingScreen } from './scenes/LoadingScreen';
 import { MainMenu } from './scenes/MainMenu';
 import { Level1 } from './scenes/Scene1';
 import { ScoreBoardScene } from './scenes/ScoreBoard';
 import UIScene from './scenes/UIScene';
 import { Plugin as NineSlicePlugin } from 'phaser3-nineslice';
+
 
 
 @Component({
@@ -30,7 +32,7 @@ export class GameComponent implements OnInit, OnDestroy {
     this.config = {
       type: Phaser.AUTO,
       backgroundColor: '#ef9324',
-      scene: [LoadingScreen, UIScene, MainMenu, ScoreBoardScene(this), Level1(this), GameOver],
+      scene: [LoadingScreen, UIScene, MainMenu, ScoreBoardScene(this), Level1(this), GameOver, Credits],
 
       parent: 'gameScreen',
       scale: {
@@ -43,7 +45,7 @@ export class GameComponent implements OnInit, OnDestroy {
         default: 'arcade',
         arcade: {
           gravity: { y: 600 },
-          debug: true,
+          // debug: true,
 
         },
       },
