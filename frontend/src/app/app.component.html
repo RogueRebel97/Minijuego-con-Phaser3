@@ -1,15 +1,13 @@
-
-
+<div class="separadorTop"></div>
 <ul>
- 
-  <li><a routerLink="/landing">Landing</a></li>
-  <li><a routerLink="/minijuego">Yo Te Retro!</a></li>
-  <li *ngIf="logged()"><a routerLink="/scoreboard">Scoreboard</a></li>
-  <li *ngIf="!logged()" > <a routerLink="/signin" >Signin</a> </li>
-  <li><a  *ngIf="!logged()" routerLink="/login">Login</a></li>
-  <li *ngIf="logged()"><a (click)="logout()">Logout</a></li>
-  </ul>
+  <!-- <li><a routerLink="/landing">Landing</a></li> -->
+  <li class="menu-item"><a routerLink="/minijuego">Yo Te Retro!</a></li>
+  <li *ngIf="logged()" class="menu-item"><a routerLink="/scoreboard">LeaderBoard</a></li>
+  <li *ngIf="!logged()" class="menu-item"> <a routerLink="/signin">Signin</a> </li>
+  <li><a *ngIf="!logged()" routerLink="/login" class="menu-item">Login</a></li>
+  <li *ngIf="logged()" class="menu-item"><a (click)="logout()">LogOut</a></li>
+</ul>
+<div class="separadorBot"></div>
 
-  <router-outlet> 
+<router-outlet>
 </router-outlet>
- 

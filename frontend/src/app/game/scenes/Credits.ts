@@ -19,6 +19,9 @@ export class Credits extends Phaser.Scene {
 
     private creditsTXT!: Phaser.GameObjects.Text
 
+    private txt1!: Phaser.GameObjects.Text
+
+
     constructor() {
         super({ key: 'Credits' });
     }
@@ -60,53 +63,24 @@ export class Credits extends Phaser.Scene {
         // Texts
 
         // header
-        this.creditsTXT = this.add.text(this.width * 0.5, this.height - this.scale.height + 35, 'CREDITOS',
+        this.creditsTXT = this.add.text(this.width * 0.5, this.height - this.scale.height + 35, 'CREDITS',
             {
                 color: 'WHITE', fontFamily: 'pixel', fontSize: '32px'
             }).setOrigin(0.5, 0.5)
 
-        // texts
-        const txt1 = this.add.text(this.width * 0.5, this.creditsTXT.y + 75, 'AN ORIGINAL IDEA OF',
+        // Text
+        this.txt1 = this.add.text(this.width * 0.5, this.creditsTXT.y + 250, '', {
+            color: 'WHITE', fontFamily: 'pixel', fontSize: '20PX'
+        }).setOrigin(0.5, 0.5)
+        // this.typewriteText(this.txt1, 'AN ORIGINAL IDEA OF', 200)
+        this.typewriteTextWrapped(this.txt1,
+            '  AN ORIGINAL IDEA OF \n \n   Adrian Ruiz Diaz \n \n \n   DESIGNED AND DEVELOPED BY \n \n    Adrian Ruiz Diaz \n \n \n   PRODUCED BY \n \n   iMageCreative.es \n \n \n   IN COLLABORATION WITH \n \n    UnMundoEnMiniatura.es'
+            , 200)
+
+        const copyRigth = this.add.text(this.width * 0.63, this.height * 0.95, '2022.©iMageCreative ',
             {
-                color: 'WHITE', fontFamily: 'pixel', fontSize: '20PX'
-            }).setOrigin(0.5, 0.5)
-
-        const txt1_1 = this.add.text(this.width * 0.5, txt1.y + 45, 'Adrian Ruiz Diaz',
-            {
-                color: 'WHITE', fontFamily: 'pixel', fontSize: '18PX'
-            }).setOrigin(0.5, 0.5)
-
-
-
-        const txt2 = this.add.text(this.width * 0.5, txt1_1.y + 65, 'DESIGNED AND DEVELOPED BY ',
-            {
-                color: 'WHITE', fontFamily: 'pixel', fontSize: '20PX'
-            }).setOrigin(0.5, 0.5)
-
-        const txt2_1 = this.add.text(this.width * 0.5, txt2.y + 45, 'Adrian Ruiz Diaz',
-            {
-                color: 'WHITE', fontFamily: 'pixel', fontSize: '18PX'
-            }).setOrigin(0.5, 0.5)
-
-        const txt3 = this.add.text(this.width * 0.5, txt2_1.y + 65, 'PRODUCED BY ',
-            {
-                color: 'WHITE', fontFamily: 'pixel', fontSize: '20PX'
-            }).setOrigin(0.5, 0.5)
-
-        const txt3_1 = this.add.text(this.width * 0.5, txt3.y + 45, 'iMageCreative.es',
-            {
-                color: 'WHITE', fontFamily: 'pixel', fontSize: '18PX'
-            }).setOrigin(0.5, 0.5)
-
-        const txt4 = this.add.text(this.width * 0.5, txt3_1.y + 65, 'IN COLLABORATION WITH ',
-            {
-                color: 'WHITE', fontFamily: 'pixel', fontSize: '20PX'
-            }).setOrigin(0.5, 0.5)
-        const txt4_1 = this.add.text(this.width * 0.5, txt4.y + 45, 'UnMundoEnMiniatura.es ',
-            {
-                color: 'WHITE', fontFamily: 'pixel', fontSize: '18PX'
-            }).setOrigin(0.5, 0.5)
-
+                color: 'WHITE', fontFamily: 'pixel', fontSize: '15PX'
+            }).setOrigin(0, 0)
 
 
 
@@ -140,4 +114,28 @@ export class Credits extends Phaser.Scene {
                 this.scene.start('MainMenu')
             })
     }
+
+    typewriteText(label: Phaser.GameObjects.Text, text: string, delay: number) {
+        const length = text.length
+        let i = 0
+        this.time.addEvent({
+            callback: () => {
+                label.text += text[i]
+                ++i
+            },
+            repeat: length - 1,
+            delay: delay
+        })
+    }
+
+    typewriteTextWrapped(label: Phaser.GameObjects.Text, text: string, delay: number) {
+        const lines = label.getWrappedText(text)
+        const wrappedText = lines.join('\n')
+
+        this.typewriteText(label, wrappedText, delay)
+    }
+
+
+
+
 }

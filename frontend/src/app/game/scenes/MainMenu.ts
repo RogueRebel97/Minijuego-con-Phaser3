@@ -240,7 +240,8 @@ export class MainMenu extends Phaser.Scene {
   actionButton(button: Phaser.GameObjects.Image, id?: number) {
 
     button.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
-      button.setTint(0x66ff7f);
+      // button.setTint(0x66ff7f);
+
     })
       .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, () => {
         button.setTint(0xffffff);
