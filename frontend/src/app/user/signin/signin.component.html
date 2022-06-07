@@ -1,29 +1,55 @@
-<div>
-    <form (ngSubmit)="submit()" > 
+<!DOCTYPE html>
+<html lang="en">
 
-        <input type="text" name="user" id="user" placeholder="Nombre de Usuario" [(ngModel)]="user"(keyup)="validate($event)" >
-        <span id="userError" style="color: red;"> </span>
-        
-        <!-- (keyup)="validate($event)" -->
-       <br>
-       <input type="text" name="password" id="password" placeholder="Contraseña"  [(ngModel)]="password" (keyup)="validate($event)" >
-       <span id="passError" style="color: red;"></span>
-       <br>
-       <input type="text" name="reRassword" id="rePassword" placeholder="Repite la contraseña" [(ngModel)]="repassword" (keyup)="validate($event)" >
-       <span id="rePassError" style="color: red;"></span>
-       <br>
-       <!-- <input type="text" name="email" id="email" placeholder="Correo electronico">
-        <br>
-        <label><input type="checkbox"  id="check"value="Confirmar" (change)="onChange()"> Confirmo</label>
-        <span id="checkError" style="color: red;"></span>
-        <br>
-        <label><input type="checkbox" name="" id=""value="Aceptar" > Acepto</label>--->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signin</title>
+</head>
 
-        <br>
-        <button type="submit" id="registrarte"  >
-         
-            Registrarte
-        </button>
-        
+<body>
+    <div id="signin">
+        <form (ngSubmit)="submit()">
+
+            <label for="user">USUARIO
+                <br>
+                <input type=" text" name="user" id="user" [(ngModel)]="user" (keyup)="validate($event)">
+            </label>
+            <br>
+            <span class="error" id="userError" style="color: red;"> </span>
+
+            <!-- (keyup)="validate($event)" -->
+            <br>
+
+            <label for="password">CONTRASEÑA
+                <br>
+                <input type="password" name="password" id="password" [(ngModel)]="password" (keyup)="validate($event)">
+            </label>
+            <br>
+
+            <span id="passError" style="color: red;"></span>
+            <br>
+            <label for="rePassword">REPITE LA CONTRASEÑA
+                <br>
+                <input type="password" name="rePassword" id="rePassword" [(ngModel)]="repassword"
+                    (keyup)="validate($event)">
+            </label>
+            <br>
+
+            <span id="rePassError" style="color: red;"></span>
+            <br>
+
+
+            <br>
+            <button type="submit" id="registrarte">
+
+                Registrarte
+            </button>
+
         </form>
-</div>
+    </div>
+
+</body>
+
+</html>

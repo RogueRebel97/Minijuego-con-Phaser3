@@ -1,13 +1,30 @@
-<div class="separadorTop"></div>
-<ul>
-  <!-- <li><a routerLink="/landing">Landing</a></li> -->
-  <li class="menu-item"><a routerLink="/minijuego">Yo Te Retro!</a></li>
-  <li *ngIf="logged()" class="menu-item"><a routerLink="/scoreboard">LeaderBoard</a></li>
-  <li *ngIf="!logged()" class="menu-item"> <a routerLink="/signin">Signin</a> </li>
-  <li><a *ngIf="!logged()" routerLink="/login" class="menu-item">Login</a></li>
-  <li *ngIf="logged()" class="menu-item"><a (click)="logout()">LogOut</a></li>
-</ul>
-<div class="separadorBot"></div>
+<!DOCTYPE html>
+<html lang="en">
 
-<router-outlet>
-</router-outlet>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barra de Navegacion</title>
+</head>
+
+<body>
+
+
+  <div class="separadorTop"></div>
+  <ul>
+    <!-- <li><a routerLink="/landing">Landing</a></li> -->
+    <li class="menu-item"><a routerLink="/minijuego">Yo Te Retro!</a></li>
+    <li *ngIf="logged()" class="menu-item"><a routerLink="/scoreboard">LeaderBoard</a></li>
+    <li *ngIf="!logged()" class="menu-item"> <a routerLink="/signin">Signin</a> </li>
+    <li><a *ngIf="!logged()" routerLink="/login" class="menu-item">Login</a></li>
+    <li *ngIf="logged()" class="menu-item"><a (click)="logout()">LogOut</a></li>
+  </ul>
+  <div class="separadorBot"></div>
+
+  <router-outlet>
+  </router-outlet>
+
+</body>
+
+</html>

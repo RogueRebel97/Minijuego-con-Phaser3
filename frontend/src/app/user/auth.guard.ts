@@ -6,17 +6,16 @@ import { UserService } from './user.service';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private userService:UserService, private router:Router){}
+  constructor(private userService: UserService, private router: Router) { }
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
-     if (this.userService.isLogged())
-     {
-       return true;
-     }
-     window.alert("Necesitas Iniciar Sesión Primero")
-     this.router.navigate(["/login"])
-     return false;
+    if (this.userService.isLogged()) {
+      return true;
+    }
+    window.alert("Necesitas Iniciar Sesión Primero")
+    this.router.navigate(["/login"])
+    return false;
   }
-  
+
 }

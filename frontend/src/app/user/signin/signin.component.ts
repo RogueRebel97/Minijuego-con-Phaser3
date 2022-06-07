@@ -24,6 +24,7 @@ export class SigninComponent implements OnInit {
     //console.log(
     //   `usuario: ${this.user} contraseña: ${this.password} rep.contr: ${this.repassword}`
     // );
+
     var userInput: any = document.getElementById('user');
 
     if (this.validar()) {
@@ -32,7 +33,7 @@ export class SigninComponent implements OnInit {
           alert('Usuario no disponible');
           userInput.focus();
         } else {
-          this.signinService.signin(this.user, this.password).subscribe(data => {
+          this.signinService.signin(this.user.toUpperCase(), this.password).subscribe(data => {
             //console.log(data);
             alert('Usuario creado correctamente');
             this.userService.userLogin(this.user, this.password).subscribe(data => {
@@ -68,9 +69,9 @@ export class SigninComponent implements OnInit {
     //console.log(event);
 
     if (target.id == "user") {
-      if (target.value.length < 3) {
+      if (target.value.length != 3) {
 
-        userError.textContent = "El Usuario debe contener al menos 3 caracteres";
+        userError.textContent = "El Usuario debe contener 3 caracteres unicamente";
 
       }
       else {
@@ -81,7 +82,7 @@ export class SigninComponent implements OnInit {
     if (target.id == "password") {
       if (target.value.length < 3) {
 
-        passError.textContent = "La contraseña debe tener al menos 3 caracteres.";
+        passError.textContent = "La contraseña debe tener al menos 3 caracteres";
       }
       else {
         passError.textContent = "";

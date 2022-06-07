@@ -1,19 +1,57 @@
-
-form{
-    border: 5px orange solid;
-    width:fit-content;
-    padding: 10px;
-    width: 600px;
-    height: 200px;
-
-    
-   
-}
-
-input{
-  margin: 5px;
-  
+body {
+  background-color: black;
+  color: white;
 }
 
 
 
+form {
+  border: 3px white solid;
+  font-family: 'Press Start 2P', cursive;
+  width: fit-content;
+  padding: 25px;
+
+  margin-left: auto;
+  margin-right: auto;
+}
+
+label {
+  font-size: 32px;
+  display: inline-block;
+  // width: 50%;
+  text-align: left;
+  margin: 0 auto;
+
+}
+
+button {
+  margin-left: 200px;
+  margin-right: 200px;
+  margin-top: 30px;
+  font-size: 30px;
+
+}
+
+input {
+  border: none;
+  outline: none;
+  text-transform: uppercase;
+}
+
+input#username {
+  text-transform: uppercase;
+}
+
+input[type='password'] {
+  font-family: Verdana;
+  letter-spacing: 0.125em;
+}
+
+
+.error {
+  font-size: small;
+}
+
+#signin {
+  margin-top: 5%;
+}
