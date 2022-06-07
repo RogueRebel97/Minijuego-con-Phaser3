@@ -15,10 +15,10 @@
   <ul>
     <!-- <li><a routerLink="/landing">Landing</a></li> -->
     <li class="menu-item"><a routerLink="/minijuego">Yo Te Retro!</a></li>
-    <li *ngIf="logged()" class="menu-item"><a routerLink="/scoreboard">LeaderBoard</a></li>
-    <li *ngIf="!logged()" class="menu-item"> <a routerLink="/signin">Signin</a> </li>
-    <li><a *ngIf="!logged()" routerLink="/login" class="menu-item">Login</a></li>
-    <li *ngIf="logged()" class="menu-item"><a (click)="logout()">LogOut</a></li>
+    <li *ngIf="logged()" class="menu-item"><a routerLink="/scoreboard">Puntuaciones</a></li>
+    <li *ngIf="!logged()" class="menu-item"> <a routerLink="/signin">Registro</a> </li>
+    <li><a *ngIf="!logged()" routerLink="/login" class="menu-item">Iniciar Sesión</a></li>
+    <li *ngIf="logged()" class="menu-item"><a (click)="logout()">Cerrar Sesión</a></li>
   </ul>
   <div class="separadorBot"></div>
 

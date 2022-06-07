@@ -151,7 +151,7 @@ export class LoadingScreen extends Phaser.Scene {
     );
 
 
-
+    // Image creative
     this.load.image('logo', 'assets/graphics/Logo.jpg');
 
     //Maps
@@ -228,12 +228,22 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/SpritesSheets/oak_woods_v1.0/background/NOCHE_background_layer_3logo.png'
     );
 
+    this.load.image(
+      'iMageCretive',
+      'assets/imagecretive_CREDITOS.png'
+    );
+
+
 
 
     //plains
     this.load.image('plainsSky', 'assets/SpritesSheets/plains/BG1.png')
     this.load.image('plainsBG1', 'assets/SpritesSheets/plains/BG2.png')
     this.load.image('plainsBG2', 'assets/SpritesSheets/plains/BG3.png')
+
+
+    //Character Portrait
+    this.load.image('portrait', 'assets/Token/token3-reducido.png')
 
     // SpriteSheets del caballero
     this.load.spritesheet(
@@ -499,9 +509,9 @@ export class LoadingScreen extends Phaser.Scene {
     this.cameras.main.once(
       Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
       (cam: any, effect: any) => {
-        // this.scene.start('Scene1');
+        this.scene.start('Scene1');
         // this.scene.start('ScoreBoard')
-        this.scene.start('MainMenu');
+        // this.scene.start('MainMenu');
         // this.scene.start("Credits")
       }
     );

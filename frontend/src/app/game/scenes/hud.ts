@@ -26,6 +26,8 @@ export default class HUD {
     private midBar!: Phaser.GameObjects.Image;
     private rightEnd!: Phaser.GameObjects.Image;
 
+    private portrait!: Phaser.GameObjects.Image;
+
     constructor(scene: Phaser.Scene) {
         //console.log('hud iniciado');
 
@@ -56,6 +58,8 @@ export default class HUD {
         this.container.add(this.leftEnd)
         this.container.add(this.midBar)
         this.container.add(this.rightEnd)
+
+        this.container.add(this.portrait)
     }
 
 
@@ -64,22 +68,31 @@ export default class HUD {
         this.currentScene.events.on(Constants.EVENTS.SCORE, this.alterScore, this)
         this.currentScene.events.on(Constants.EVENTS.HEALTH, this.alterHealthBar, this)
 
-        // Contador de puntos
-        this.scoreTXT = this.currentScene.add.text(10, 18, '000', {
-            fontSize: '12px', color: '#FFFFFF', fontFamily: 'pixel'
-        }).setOrigin(0, 0.5).setScrollFactor(0)
 
         this.currentScene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
             this.currentScene.events.off(Constants.EVENTS.SCORE)
             this.currentScene.events.off(Constants.EVENTS.HEALTH)
         })
 
-        // Contador de Tiempo
+
+
+
+
 
         // Bar Position
-        const x = 5
+        const x = 40
         const y = -5
 
+        // Contador de Tiempo
+
+        // Character Portrait
+        this.portrait = this.currentScene.add.image(x - 10, y, 'portrait').setOrigin(0, 0.5).setScrollFactor(0).setDisplaySize(64, 64)
+
+
+        // Contador de puntos
+        this.scoreTXT = this.currentScene.add.text(x + 10, 18, '000', {
+            fontSize: '12px', color: '#FFFFFF', fontFamily: 'pixel'
+        }).setOrigin(0, 0.5).setScrollFactor(0)
 
         // Background shadowBar
         this.leftShadow = scene.add.image(x, y, 'left-cap-shadow')

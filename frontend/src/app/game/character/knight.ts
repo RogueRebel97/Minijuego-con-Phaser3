@@ -85,6 +85,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             'J': Phaser.Input.Keyboard.KeyCodes.J,
             'K': Phaser.Input.Keyboard.KeyCodes.K,
             'L': Phaser.Input.Keyboard.KeyCodes.L,
+
             'I': Phaser.Input.Keyboard.KeyCodes.I,
 
             'SHIFT': Phaser.Input.Keyboard.KeyCodes.SHIFT,
@@ -312,7 +313,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 }
 
                 // Slide
-                if (key.JustDown(this.controls.SHIFT) &&
+                if (key.JustDown(this.controls.X) || key.JustDown(this.controls.K) &&
                     (this.controls.RIGHT.isDown || this.controls.LEFT.isDown || this.controls.A.isDown || this.controls.D.isDown) &&
                     this.body.blocked.down && this.actions.slide.state) {
                     this.crouch = true
