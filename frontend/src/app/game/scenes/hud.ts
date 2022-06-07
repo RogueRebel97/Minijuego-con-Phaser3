@@ -164,7 +164,7 @@ export default class HUD {
 
     alterHealthBar(percent = 1, duration = 1000) {
         let health = this.currentScene.registry.get(Constants.PLAYER.STATS.HEALTH)
-        console.log("health HUD: " + health);
+        // console.log("health HUD: " + health);
 
         percent = health / 100;
 

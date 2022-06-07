@@ -346,7 +346,7 @@ export class Scene1 extends Phaser.Scene {
 
     this.melonayer = this.tileMap.getObjectLayer('melon')
     this.melonayer.objects.forEach(itemObj => {
-      console.log(itemObj);
+      // console.log(itemObj);
 
       let melon = new Melon({
         currentScene: this,

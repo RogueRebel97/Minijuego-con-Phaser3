@@ -41,7 +41,7 @@ export default class Melon extends Phaser.Physics.Arcade.Sprite {
 
 
     override update() {
-        console.log("Ha sido recogida: " + this.eaten);
+        // console.log("Ha sido recogida: " + this.eaten);
 
         if (!this.eaten) {
             this.anims.play('melon', true)
@@ -59,7 +59,7 @@ export default class Melon extends Phaser.Physics.Arcade.Sprite {
             this.heal()
 
             this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'collected', () => {
-                console.log("recogido");
+                // console.log("recogido");
                 this.currentScene.physics.world.remove(this.body)
                 this.disableBody(true, true)
             })
@@ -72,15 +72,15 @@ export default class Melon extends Phaser.Physics.Arcade.Sprite {
     heal() {
 
         let health = this.currentScene.registry.get(Constants.PLAYER.STATS.HEALTH);
-        console.log("vida antes de curar: " + health);
+        // console.log("vida antes de curar: " + health);
 
         health += 45
         if (health > 100) {
-            console.log("limite superado");
+            // console.log("limite superado");
 
             health = 100
         }
-        console.log("Vida despues de curar: " + health);
+        // console.log("Vida despues de curar: " + health);
 
         this.currentScene.registry.set(Constants.PLAYER.STATS.HEALTH, health)
         this.currentScene.events.emit(Constants.EVENTS.HEALTH)

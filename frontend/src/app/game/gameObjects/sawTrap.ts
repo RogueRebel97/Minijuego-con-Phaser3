@@ -60,12 +60,12 @@ export default class SawTrap extends Phaser.Physics.Arcade.Sprite {
             // console.log(this.angle);
             this.setOffset(this.body.offset.x - 10, this.height * 0.5 - 13)
         } else if (this.angle == 135 || this.angle == -135) {
-            console.log("aaaa");
 
-            console.log(this.angle);
+
+            // console.log(this.angle);
             this.setOffset(this.body.offset.x + 13, this.height * 0.5 - 5)
         } else {
-            console.log(this.angle);
+            // console.log(this.angle);
         }
 
 

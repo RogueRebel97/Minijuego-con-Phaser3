@@ -23,7 +23,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
     // Actions & states
     private actions: any = {
-        attack: { state: true, duration: 350, cooldown: 450 },
+        attack: { state: true, duration: 350, cooldown: 500 },
         slide: { state: true, duration: 300, cooldown: 800 },
         damage: { state: true, duration: 500, cooldown: 1500 },
         invulnerable: { state: true, cooldown: 325 }
@@ -32,13 +32,15 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
     private crouch: boolean = false
     private playerIsDead: boolean = false;
 
+    private konami: boolean = false
+
 
     // Key controls
     private controls!: any;
 
     //Key Combo
     private combo!: Phaser.Input.Keyboard.KeyCombo;
-    private konami!: Phaser.Input.Keyboard.KeyCombo;
+    private konamiCode!: Phaser.Input.Keyboard.KeyCombo;
 
     // Current Game Scene
     private currentScene!: Phaser.Scene;
@@ -109,11 +111,15 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
 
 
         //Combos
-        this.konami = this.currentScene.input.keyboard.createCombo([38, 38, 40, 40, 37, 39, 37, 39], { resetOnMatch: true });
+        this.konamiCode = this.currentScene.input.keyboard.createCombo([38, 38, 40, 40, 37, 39, 37, 39], { resetOnMatch: true });
         // this.combo = this.currentScene.input.keyboard.createCombo([38, 38], { resetOnMatch: true })
 
         this.currentScene.input.keyboard.on('keycombomatch', (event: any) => {
-            this.currentScene.events.emit(Constants.EVENTS.SCORE, +50)
+            if (!this.konami) {
+                this.konami = true
+                this.currentScene.events.emit(Constants.EVENTS.SCORE, +69)
+            }
+
             // console.log('Codigo Konami!');
 
         });
@@ -238,7 +244,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                     }
 
                     this.blockMove('attack') // bloquear otros inputs de usuario por x milisegundos
-                    // this.cooldown('attack');    // impide que se vuelva a ejecutar otro ataque durante x ms
+
                     // this.anims.stop(); // detener animaciones en curso
 
 
@@ -254,6 +260,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                             //console.log("lateralSwing");
 
                             this.anims.play('swing_noMove');
+                            this.cooldown('attack');    // impide que se vuelva a ejecutar otro ataque durante x ms
                         }
                         // Ataque en movimiento
                     } else {
@@ -269,6 +276,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                         } else {
                             //console.log("lateralSwing");
                             this.anims.play('swing');
+                            this.cooldown('attack');    // impide que se vuelva a ejecutar otro ataque durante x ms
                         }
 
                     }
