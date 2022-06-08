@@ -9,7 +9,7 @@ import Constants from '../Constants';
 import HUD from './hud';
 import GameOver from './GameOver';
 import { Injectable } from '@angular/core';
-import Melon from '../gameObjects/melon';
+import Nut from '../gameObjects/nut';
 
 
 let contexto: any
@@ -43,10 +43,10 @@ export class Scene1 extends Phaser.Scene {
   private sawTrapLayer!: Phaser.Tilemaps.ObjectLayer
 
   // Items
-  private melonGroup!: Phaser.Physics.Arcade.StaticGroup
-  private melonayer!: Phaser.Tilemaps.ObjectLayer
-  private melonArray!: Melon[]
-  private melonider!: Phaser.Physics.Arcade.Collider;
+  private nutGroup!: Phaser.Physics.Arcade.StaticGroup
+  private nutLayer!: Phaser.Tilemaps.ObjectLayer
+  private nutArray!: Nut[]
+  private nutCollider!: Phaser.Physics.Arcade.Collider;
 
   // Colliders para Registro
   private enemyCollider!: Phaser.Physics.Arcade.Collider;
@@ -125,7 +125,7 @@ export class Scene1 extends Phaser.Scene {
     this.arrayGoblins = []
     this.arrayGoblinArchers = []
     this.sawTrapArray = []
-    this.melonArray = []
+    this.nutArray = []
   }
 
   create() {
@@ -344,22 +344,22 @@ export class Scene1 extends Phaser.Scene {
       sawTrap.create()
     })
 
-    this.melonayer = this.tileMap.getObjectLayer('melon')
-    this.melonayer.objects.forEach(itemObj => {
+    this.nutLayer = this.tileMap.getObjectLayer('nut')
+    this.nutLayer.objects.forEach(itemObj => {
       // console.log(itemObj);
 
-      let melon = new Melon({
+      let nut = new Nut({
         currentScene: this,
         x: itemObj.x,
         y: itemObj.y,
-        texure: 'melon'
+        texure: 'nut'
 
       })
-      this.physics.add.collider(melon, this.plataformsLayer)
-      this.physics.add.collider(melon, this.wallsLayer)
-      this.melonArray.push(melon)
-      this.melonGroup = this.physics.add.staticGroup(melon)
-      melon.create()
+      this.physics.add.collider(nut, this.plataformsLayer)
+      this.physics.add.collider(nut, this.wallsLayer)
+      this.nutArray.push(nut)
+      this.nutGroup = this.physics.add.staticGroup(nut)
+      nut.create()
     })
 
 
@@ -419,10 +419,10 @@ export class Scene1 extends Phaser.Scene {
     this.registry.set(Constants.REGISTRY.COLLIDERS.TRAPS, this.trapCollider)
 
     //Melon Collider
-    this.melonider = this.physics.add.overlap(this.player, this.melonArray, (player, fruit) => {
-      let melon = this.melonArray[0];
+    this.nutCollider = this.physics.add.overlap(this.player, this.nutArray, (player, fruit) => {
+      let nut = this.nutArray[0];
       // this.player.heal()
-      melon.eat();
+      nut.eat();
 
     })
 
@@ -469,7 +469,7 @@ export class Scene1 extends Phaser.Scene {
     this.slimeLogic()
     this.goblinLogic()
     this.gameOverCheck()
-    this.melongic()
+    this.nutgic()
 
     //console.log(this.arraySlimes)
 
@@ -521,9 +521,9 @@ export class Scene1 extends Phaser.Scene {
     }
   }
 
-  melongic() {
-    for (let i = 0; i < this.melonArray.length; i++) {
-      this.melonArray[i].update()
+  nutgic() {
+    for (let i = 0; i < this.nutArray.length; i++) {
+      this.nutArray[i].update()
     }
   }
 

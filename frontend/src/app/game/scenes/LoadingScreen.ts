@@ -436,6 +436,13 @@ export class LoadingScreen extends Phaser.Scene {
     );
 
     this.load.spritesheet(
+      'nut',
+      'assets/SpritesSheets/fruits/imagecreative.png',
+      { frameWidth: 32, frameHeight: 32 }
+    );
+
+
+    this.load.spritesheet(
       'collected',
       'assets/SpritesSheets/fruits/Collected.png',
       { frameWidth: 32, frameHeight: 32 }

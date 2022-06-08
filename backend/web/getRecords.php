@@ -5,13 +5,17 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: *");
 
 
-function connect()
-{
-    $db=new mysqli("localhost","admin","admin","admin");
-    return $db;
-}
 
-$db=connect();
+require_once('../connect.php');
+
+$db = connect();
+
+// function connect()
+// {
+//     $db=new mysqli("localhost","admin","admin","admin");
+//     return $db;
+// }
+
 
 $sql="SELECT id,nombre, record FROM users ORDER BY record DESC";
 

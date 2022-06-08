@@ -14,6 +14,8 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
 
     private score: number = 30
 
+    private hits: number = 0
+
     private moveTime: number = 0
     private controls!: any
 
@@ -165,7 +167,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
         let distance = this.x - playerX
 
         //console.log(distance);
-        console.log("dañado!");
+        // console.log("dañado!");
 
         if (this.health > 0 && !this.isDead && !this.actions.damage.state && this.actions.invulnerable.state) {
             //console.log(`States: 
@@ -180,6 +182,18 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
             //console.log(`body en Dañado:`);
             //console.log(this.body);
             //console.log("boolean the body en Dañado: " + this.body.enable);
+
+
+            if (this.hits < 1) {
+                // console.log(this.hits);
+
+                this.hits++
+            }
+            else {
+                this.hits = 0
+                console.log(this.hits);
+                this.getInvulnerable(650)
+            }
 
             this.blockMove('damage');
             this.cooldown('damage')
@@ -203,6 +217,17 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
             this.health = this.health - dmg
 
             //console.log(`hp FINAL de goblin: ${this.health}`);
+
+            if (this.hits == 1) {
+                this.currentScene.time.delayedCall(1000, () => {
+                    // console.log("reset");
+
+                    this.hits = 0
+                }, [], this)
+            }
+
+
+
         }
     }
 

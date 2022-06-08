@@ -4,7 +4,7 @@ import Knight from "../character/knight";
 
 
 
-export default class Melon extends Phaser.Physics.Arcade.Sprite {
+export default class Nut extends Phaser.Physics.Arcade.Sprite {
 
 
     private currentScene!: Phaser.Scene
@@ -26,8 +26,8 @@ export default class Melon extends Phaser.Physics.Arcade.Sprite {
 
     create() {
         this.anims.create({
-            key: 'melon',
-            frames: this.currentScene.anims.generateFrameNumbers('melon', { start: 0, end: 16 }),
+            key: 'nut',
+            frames: this.currentScene.anims.generateFrameNumbers('nut', { start: 0, end: 16 }),
             frameRate: 20,
             repeat: -1,
         });
@@ -44,7 +44,7 @@ export default class Melon extends Phaser.Physics.Arcade.Sprite {
         // console.log("Ha sido recogida: " + this.eaten);
 
         if (!this.eaten) {
-            this.anims.play('melon', true)
+            this.anims.play('nut', true)
         }
 
     }

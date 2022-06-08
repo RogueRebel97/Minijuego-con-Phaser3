@@ -90,7 +90,7 @@ export default class HUD {
 
 
         // Contador de puntos
-        this.scoreTXT = this.currentScene.add.text(x + 65, y - 10, '000', {
+        this.scoreTXT = this.currentScene.add.text(x + 65, y - 13, '000', {
             fontSize: '12px', color: '#FFFFFF', fontFamily: 'pixel'
         }).setOrigin(0, 0.5).setScrollFactor(0)
 
