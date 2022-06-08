@@ -81,16 +81,16 @@ export default class HUD {
 
         // Bar Position
         const x = 40
-        const y = -5
+        const y = -3
 
         // Contador de Tiempo
 
         // Character Portrait
-        this.portrait = this.currentScene.add.image(x - 10, y, 'portrait').setOrigin(0, 0.5).setScrollFactor(0).setDisplaySize(64, 64)
+        this.portrait = this.currentScene.add.image(x - 45, y + 3, 'portrait').setOrigin(0, 0.5).setScrollFactor(0).setDisplaySize(40, 40)
 
 
         // Contador de puntos
-        this.scoreTXT = this.currentScene.add.text(x + 10, 18, '000', {
+        this.scoreTXT = this.currentScene.add.text(x + 65, y - 10, '000', {
             fontSize: '12px', color: '#FFFFFF', fontFamily: 'pixel'
         }).setOrigin(0, 0.5).setScrollFactor(0)
 

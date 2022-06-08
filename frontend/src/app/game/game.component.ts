@@ -24,11 +24,22 @@ import { Plugin as NineSlicePlugin } from 'phaser3-nineslice';
 export class GameComponent implements OnInit, OnDestroy {
   phaserGame!: Phaser.Game;
   config: Phaser.Types.Core.GameConfig;
+  sceneConfig: any
   arrayRecord!: any
   id!: any
 
 
   constructor(private gameService: GameService) {
+
+    this.sceneConfig = {
+      pack: {
+        files: [
+          { type: 'image', key: 'background', url: 'assets/Intro/800x600/INTRO-9.png' }
+        ]
+      }
+    };
+
+
     this.config = {
       type: Phaser.AUTO,
       backgroundColor: '#ef9324',
@@ -100,4 +111,5 @@ export class GameComponent implements OnInit, OnDestroy {
     let id = this.gameService.getId()
     return id
   }
+
 }

@@ -23,6 +23,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
         right: { state: false },
         attack: { state: true, duration: 1000, cooldown: 1500 },
         damage: { state: false, duration: 650, cooldown: 650 },
+        invulnerable: { state: true, cooldown: 1000 }
     }
 
     private allowMove: boolean = true
@@ -164,8 +165,9 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
         let distance = this.x - playerX
 
         //console.log(distance);
+        console.log("dañado!");
 
-        if (this.health > 0 && !this.isDead && !this.actions.damage.state) {
+        if (this.health > 0 && !this.isDead && !this.actions.damage.state && this.actions.invulnerable.state) {
             //console.log(`States: 
             //     Muerto:${this.isDead}
             //     RecibioDaño:${this.actions.damage.state} 
@@ -181,18 +183,19 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
 
             this.blockMove('damage');
             this.cooldown('damage')
+            // this.getInvulnerable(650)
 
             if (distance < 0) {
-                this.anims.stop()
-                this.setVelocityX(-125)
-                this.setVelocityY(-150)
+                // this.anims.stop()
+                this.setVelocityX(-10)
+
                 this.anims.play('goblinHit')
 
             }
             else if (distance >= 0) {
-                this.anims.stop()
-                this.setVelocityX(125)
-                this.setVelocityY(-150)
+                // this.anims.stop()
+                this.setVelocityX(10)
+
                 this.anims.play('goblinHit')
 
             }
@@ -438,7 +441,20 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
         player.getDamage(this.damage, this.force)
     }
 
+    getInvulnerable(time: number) {
+        this.currentScene.tweens.add({
+            targets: this,
+            alpha: { from: 1, to: 0 },
+            ease: 'Sine.InOut',
+            duration: 55,
+            repeat: 10,
+            yoyo: true
+        });
+        this.currentScene.time.delayedCall(time, () => {
+            this.cooldown('invulnerable')
+        }, [], this)
 
+    }
 
 
 

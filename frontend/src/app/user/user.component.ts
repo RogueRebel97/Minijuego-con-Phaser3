@@ -26,7 +26,7 @@ export class UserComponent implements OnInit {
       //console.log(data);
       if (data.nombre) {
 
-        this.router.navigate(["/landing"]);
+        this.router.navigate(["/minijuego"]);
       }
       else {
         //console.log("Usuario o Contraseña incorrectas");  

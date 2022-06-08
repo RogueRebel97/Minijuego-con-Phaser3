@@ -39,7 +39,7 @@ export class SigninComponent implements OnInit {
             this.userService.userLogin(this.user, this.password).subscribe(data => {
               if (data.nombre) {
 
-                this.router.navigate(["/landing"]);
+                this.router.navigate(["/minijuego"]);
               }
 
             });

@@ -118,7 +118,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         this.currentScene.input.keyboard.on('keycombomatch', (event: any) => {
             if (!this.konami) {
                 this.konami = true
-                this.currentScene.events.emit(Constants.EVENTS.SCORE, +69)
+                this.currentScene.events.emit(Constants.EVENTS.SCORE, +1000)
             }
 
             // console.log('Codigo Konami!');
@@ -577,19 +577,11 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             yoyo: true
         });
         this.currentScene.time.delayedCall(time, () => {
+
         }, [], this)
 
     }
 
-    temporalHitBoxAdjust(time: number, x: number, y: number) {
-        const offSetx = this.body.offset.x
-        const offSety = this.body.offset.y
-        this.body.setOffset(x, y)
-        this.currentScene.time.delayedCall(time, () => {
-            this.body.setOffset(offSetx, offSety)
-        }, [], this)
-
-    }
     attackCollide(obj1: any, obj2: any) {
         var enemy: Slime;
 

@@ -9,27 +9,53 @@ import Constants from '../Constants';
 
 
 export class LoadingScreen extends Phaser.Scene {
+
+
   constructor() {
-    super({ key: 'LoadingScreen' });
+    super({
+      key: 'LoadingScreen', pack: {
+        files: [
+          { type: 'image', key: 'intro-1', url: 'assets/Intro/800x600/INTRO-1.png' },
+          { type: 'image', key: 'intro-2', url: 'assets/Intro/800x600/INTRO-2.png' },
+          { type: 'image', key: 'intro-3', url: 'assets/Intro/800x600/INTRO-3.png' },
+          { type: 'image', key: 'intro-4', url: 'assets/Intro/800x600/INTRO-4.png' },
+          { type: 'image', key: 'intro-5', url: 'assets/Intro/800x600/INTRO-5.png' },
+          { type: 'image', key: 'intro-6', url: 'assets/Intro/800x600/INTRO-6.png' },
+          { type: 'image', key: 'intro-7', url: 'assets/Intro/800x600/INTRO-7.png' },
+          { type: 'image', key: 'intro-8', url: 'assets/Intro/800x600/INTRO-8.png' },
+          { type: 'image', key: 'intro-9', url: 'assets/Intro/800x600/INTRO-9.png' },
+          { type: 'image', key: 'intro-10', url: 'assets/Intro/800x600/INTRO-10.png' },
+          { type: 'image', key: 'intro-11', url: 'assets/Intro/800x600/INTRO-11.png' },
+        ]
+      }
+    });
   }
 
-  init() { }
+  init() {
+
+  }
+
 
   preload() {
+
+    var background = this.add.image(400, 300, 'intro-1')
+
     var width = this.cameras.main.width;
     var height = this.cameras.main.height;
     //console.log('loadingScreen');
+
+
 
     // Barra de Carga
     var progressBar = this.add.graphics();
     var progressBox = this.add.graphics();
     progressBox.fillStyle(0x222222, 0.8);
-    progressBox.fillRect(240, 270, 320, 50);
+    progressBox.fillRect(240, 370, 320, 50);
 
     //Texto barra de carga
     var loadingText = this.make.text({
       x: width / 2,
-      y: height / 2 - 50,
+      y: 345,
       text: 'Cargando...',
       style: {
         fontFamily: 'pixel',
@@ -42,7 +68,7 @@ export class LoadingScreen extends Phaser.Scene {
     //Porcentaje barra de carga
     var percentText = this.make.text({
       x: width / 2,
-      y: height / 2 - 5,
+      y: 395,
       text: '0%',
       style: {
         fontFamily: 'pixel',
@@ -53,17 +79,17 @@ export class LoadingScreen extends Phaser.Scene {
     percentText.setOrigin(0.5, 0.5);
 
     //Info de archivo cargado
-    var assetText = this.make.text({
-      x: width / 2,
-      y: height / 2 + 50,
-      text: '',
-      style: {
-        fontFamily: 'pixel',
-        fontSize: '18px',
-        color: '#FF0000',
-      },
-    });
-    assetText.setOrigin(0.5, 0.5);
+    // var assetText = this.make.text({
+    //   x: width / 2,
+    //   y: height / 2 + 50,
+    //   text: '',
+    //   style: {
+    //     fontFamily: 'pixel',
+    //     fontSize: '18px',
+    //     color: '#FF0000',
+    //   },
+    // });
+    // assetText.setOrigin(0.5, 0.5);
 
     //Assets a cargar
     this.load.image('sky', 'assets/graphics/sky.png');
@@ -232,9 +258,6 @@ export class LoadingScreen extends Phaser.Scene {
       'iMageCretive',
       'assets/imagecretive_CREDITOS.png'
     );
-
-
-
 
     //plains
     this.load.image('plainsSky', 'assets/SpritesSheets/plains/BG1.png')
@@ -448,24 +471,59 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/graphics/uiAssets/PNG/barHorizontal_shadow_right.png'
     );
 
-
-
-
-
     // fin de Assets
+
+
 
     // Rellenar la barra de carga
     this.load.on('progress', function (value: any) {
+      var percent = value * 100
+
+      if (percent < 10) {
+
+        background.setTexture('intro-1')
+      } else if (percent < 20) {
+
+        background.setTexture('intro-2')
+      } else if (percent < 30) {
+
+        background.setTexture('intro-3')
+      }
+      else if (percent < 35) {
+
+        background.setTexture('intro-4')
+      }
+      else if (percent < 40) {
+
+        background.setTexture('intro-5')
+      }
+      else if (percent <= 50) {
+
+        background.setTexture('intro-6')
+      }
+      else if (percent <= 60) {
+        background.setTexture('intro-7')
+      }
+      else if (percent <= 70) {
+        background.setTexture('intro-8')
+      }
+      else if (percent <= 80) {
+        background.setTexture('intro-9')
+      }
+      else if (percent <= 90) {
+        background.setTexture('intro-10')
+      }
+      else if (percent <= 100) {
+        background.setTexture('intro-11')
+      }
+
       percentText.setText(Math.round(value * 100) + '%');
       progressBar.clear();
       progressBar.fillStyle(0x00ff00, 1);
-      progressBar.fillRect(250, 280, 300 * value, 30);
+      progressBar.fillRect(250, 380, 300 * value, 30);
     });
 
-    // leer los archivos cargados
-    this.load.on('fileprogress', function (file: any) {
-      assetText.setText('Cargando assets: ' + file.key);
-    });
+
 
     //Destruir textos y barras tras la carga completa.
     this.load.on('complete', function () {
@@ -474,7 +532,7 @@ export class LoadingScreen extends Phaser.Scene {
       progressBox.destroy();
       loadingText.destroy();
       percentText.destroy();
-      assetText.destroy();
+      // assetText.destroy();
     });
   }
 
@@ -482,14 +540,15 @@ export class LoadingScreen extends Phaser.Scene {
     // contexto.closeScenes('MainMenu');
     this.scene.stop('MainMenu');
 
+
     var width = this.cameras.main.width;
     var height = this.cameras.main.height;
 
-    var logo = this.add.image(400, 300, 'logo');
+
 
     var startTxT = this.make.text({
       x: width / 2,
-      y: height / 2 + 50,
+      y: 380,
       text: '',
       style: {
         fontFamily: 'pixel',
@@ -498,10 +557,10 @@ export class LoadingScreen extends Phaser.Scene {
       },
     });
     startTxT.setOrigin(0.5, -1.5);
-    startTxT.setText('Pulsa la tecla espacio para comenzar');
+    startTxT.setText('Presiona cualquier Tecla para comenzar');
 
     // fade to black
-    this.input.keyboard.once('keydown-SPACE', () => {
+    this.input.keyboard.once('keydown', () => {
 
       this.cameras.main.fadeOut(1500, 0, 0, 0);
     });
@@ -509,9 +568,9 @@ export class LoadingScreen extends Phaser.Scene {
     this.cameras.main.once(
       Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
       (cam: any, effect: any) => {
-        this.scene.start('Scene1');
+        // this.scene.start('Scene1');
         // this.scene.start('ScoreBoard')
-        // this.scene.start('MainMenu');
+        this.scene.start('MainMenu');
         // this.scene.start("Credits")
       }
     );
