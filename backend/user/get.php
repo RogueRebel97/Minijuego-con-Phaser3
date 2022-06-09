@@ -17,15 +17,15 @@ if(!$dato)
 $nombre=$dato -> nombre;
 $password=$dato -> password;
 
-$db=connect();
 
-$sql="SELECT * FROM users WHERE nombre = '$nombre' AND contraseña = '$password'";
+$sql="SELECT * FROM users WHERE nombre = '$nombre' AND contrasena = '$password'";
 
 $result = mysqli_query($db,$sql);
 
 if($result -> num_rows ==0){
 $resultArray= array("fallo"=>"Usuario o Contraseña Incorrecta");
 }
+
 else{
     $resultArray = $result -> fetch_array();
 }

@@ -14,7 +14,7 @@ export class SigninComponent implements OnInit {
   private _password: string = '';
   private _repassword: string = '';
   private _userError: string = '';
-  private _check: boolean = false;
+
 
   constructor(private router: Router, private signinService: SigninService, private userService: UserService) { }
 
@@ -32,7 +32,9 @@ export class SigninComponent implements OnInit {
         if (data == '0') {
           alert('Usuario no disponible');
           userInput.focus();
-        } else {
+
+        }
+        else {
           this.signinService.signin(this.user.toUpperCase(), this.password).subscribe(data => {
             //console.log(data);
             alert('Usuario creado correctamente');

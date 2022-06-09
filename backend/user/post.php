@@ -19,9 +19,9 @@ if(!$dato)
 $nombre=$dato -> nombre;
 $password=$dato -> password;
 
-$db=connect();
 
-$sql="INSERT INTO `users` (`nombre`, `contraseña`) VALUES ('$nombre', '$password');";
+
+$sql="INSERT INTO `users` (`nombre`, `contrasena`) VALUES ('$nombre', '$password');";
 
 $result = mysqli_query($db,$sql);
 

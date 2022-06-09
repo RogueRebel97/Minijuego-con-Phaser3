@@ -13,11 +13,18 @@ const routes: Routes = [
   { path: "landing", component: LandingComponent, canActivate: [AuthGuard] },
   { path: "scoreboard", component: ScoreboardComponent, canActivate: [AuthGuard] },
   { path: "minijuego", component: GameComponent, canActivate: [AuthGuard] },
+  { path: "", component: UserComponent, }
 ];
 
 // canActivate:[AuthGuard] añadir a todas las rutas salvo login y signin. Comprueba si estas logedo antes de acceder a la ruta
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    useHash: true
+
+  })],
   exports: [RouterModule]
 })
+
+
+
 export class AppRoutingModule { }

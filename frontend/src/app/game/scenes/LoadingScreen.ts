@@ -92,7 +92,6 @@ export class LoadingScreen extends Phaser.Scene {
     // assetText.setOrigin(0.5, 0.5);
 
     //Assets a cargar
-    this.load.image('sky', 'assets/graphics/sky.png');
 
     // Assets for Menu
     this.load.image(
@@ -176,12 +175,7 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/graphics/gameIcons/PNG/White/1x/return.png'
     );
 
-
-    // Image creative
-    this.load.image('logo', 'assets/graphics/Logo.jpg');
-
     //Maps
-    this.load.tilemapTiledJSON(Constants.MAPS.LEVELS.TESTLEVEL.TILEMAPJSON, 'assets/tileMaps/testMap.json');
     this.load.tilemapTiledJSON(Constants.MAPS.LEVELS.LEVEL1.TILEMAPJSON, 'assets/tileMaps/Level-1.json')
 
     //Tilesets
@@ -210,20 +204,6 @@ export class LoadingScreen extends Phaser.Scene {
     this.load.image(
       'nightBckgr-3',
       'assets/graphics/background/background_2Full.png'
-    );
-
-    //castle
-    this.load.image(
-      'castle-1',
-      'assets/graphics/background/castle/layer_1.png'
-    );
-    this.load.image(
-      'castle-2',
-      'assets/graphics/background/castle/layer_2.png'
-    );
-    this.load.image(
-      'castle-3',
-      'assets/graphics/background/castle/layer_3.png'
     );
 
     //Forest
@@ -291,11 +271,11 @@ export class LoadingScreen extends Phaser.Scene {
       { frameWidth: 120, frameHeight: 80 }
     );
 
-    this.load.spritesheet(
-      'dash',
-      'assets/SpritesSheets/FreeKnight/FinalColorOutline/_Dash.png',
-      { frameWidth: 120, frameHeight: 80 }
-    );
+    // this.load.spritesheet(
+    //   'dash',
+    //   'assets/SpritesSheets/FreeKnight/FinalColorOutline/_Dash.png',
+    //   { frameWidth: 120, frameHeight: 80 }
+    // );
 
     this.load.spritesheet(
       'downAttack_noMove',
@@ -357,21 +337,21 @@ export class LoadingScreen extends Phaser.Scene {
 
     // Enemies
     // Green Slime
-    this.load.spritesheet(
-      Constants.ENEMIES.SLIME.GREEN.ANIMATIONS.IDLE_RUN,
-      'assets/SpritesSheets/Enemies/Slime/Idle-Run.png',
-      { frameWidth: 44, frameHeight: 30 }
-    );
-    this.load.spritesheet(
-      Constants.ENEMIES.SLIME.GREEN.ANIMATIONS.HIT,
-      'assets/SpritesSheets/Enemies/Slime/Hit(44x30).png',
-      { frameWidth: 44, frameHeight: 30 }
-    );
-    this.load.spritesheet(
-      'gSlimeParticles',
-      'assets/SpritesSheets/Enemies/Slime/Particles(62x16).png',
-      { frameWidth: 62, frameHeight: 16 }
-    );
+    // this.load.spritesheet(
+    //   Constants.ENEMIES.SLIME.GREEN.ANIMATIONS.IDLE_RUN,
+    //   'assets/SpritesSheets/Enemies/Slime/Idle-Run.png',
+    //   { frameWidth: 44, frameHeight: 30 }
+    // );
+    // this.load.spritesheet(
+    //   Constants.ENEMIES.SLIME.GREEN.ANIMATIONS.HIT,
+    //   'assets/SpritesSheets/Enemies/Slime/Hit(44x30).png',
+    //   { frameWidth: 44, frameHeight: 30 }
+    // );
+    // this.load.spritesheet(
+    //   'gSlimeParticles',
+    //   'assets/SpritesSheets/Enemies/Slime/Particles(62x16).png',
+    //   { frameWidth: 62, frameHeight: 16 }
+    // );
 
     // Blue Slime
     this.load.spritesheet(
@@ -384,28 +364,28 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/SpritesSheets/Enemies/Slime/2Hit(44x30).png',
       { frameWidth: 44, frameHeight: 30 }
     );
-    this.load.spritesheet(
-      'bSlimeParticles',
-      'assets/SpritesSheets/Enemies/Slime/2Particles(62x16).png',
-      { frameWidth: 62, frameHeight: 16 }
-    );
+    // this.load.spritesheet(
+    //   'bSlimeParticles',
+    //   'assets/SpritesSheets/Enemies/Slime/2Particles(62x16).png',
+    //   { frameWidth: 62, frameHeight: 16 }
+    // );
 
     // Purple Slime
-    this.load.spritesheet(
-      Constants.ENEMIES.SLIME.PURPLE.ANIMATIONS.IDLE_RUN,
-      'assets/SpritesSheets/Enemies/Slime/2Idle-Run.png',
-      { frameWidth: 44, frameHeight: 30 }
-    );
-    this.load.spritesheet(
-      Constants.ENEMIES.SLIME.PURPLE.ANIMATIONS.HIT,
-      'assets/SpritesSheets/Enemies/Slime/2Hit(44x30).png',
-      { frameWidth: 44, frameHeight: 30 }
-    );
-    this.load.spritesheet(
-      'pSlimeParticles',
-      'assets/SpritesSheets/Enemies/Slime/2Particles(62x16).png',
-      { frameWidth: 62, frameHeight: 16 }
-    );
+    // this.load.spritesheet(
+    //   Constants.ENEMIES.SLIME.PURPLE.ANIMATIONS.IDLE_RUN,
+    //   'assets/SpritesSheets/Enemies/Slime/2Idle-Run.png',
+    //   { frameWidth: 44, frameHeight: 30 }
+    // );
+    // this.load.spritesheet(
+    //   Constants.ENEMIES.SLIME.PURPLE.ANIMATIONS.HIT,
+    //   'assets/SpritesSheets/Enemies/Slime/2Hit(44x30).png',
+    //   { frameWidth: 44, frameHeight: 30 }
+    // );
+    // this.load.spritesheet(
+    //   'pSlimeParticles',
+    //   'assets/SpritesSheets/Enemies/Slime/2Particles(62x16).png',
+    //   { frameWidth: 62, frameHeight: 16 }
+    // );
 
     //Goblin atlas
     this.load.atlas('goblinAtlas',
@@ -429,11 +409,11 @@ export class LoadingScreen extends Phaser.Scene {
     );
 
     // Frutas
-    this.load.spritesheet(
-      'melon',
-      'assets/SpritesSheets/fruits/Melon.png',
-      { frameWidth: 32, frameHeight: 32 }
-    );
+    // this.load.spritesheet(
+    //   'melon',
+    //   'assets/SpritesSheets/fruits/Melon.png',
+    //   { frameWidth: 32, frameHeight: 32 }
+    // );
 
     this.load.spritesheet(
       'nut',

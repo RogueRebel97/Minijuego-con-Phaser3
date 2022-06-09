@@ -18,9 +18,9 @@ if(!$dato)
 
 $username= $dato     -> nombre;
 
-$db=connect();
 
-$sql='SELECT * FROM users WHERE nombre = "'.strtolower($username).'"';
+
+$sql="SELECT * FROM users WHERE nombre = '$username'";
 
 $result = mysqli_query($db,$sql);
 

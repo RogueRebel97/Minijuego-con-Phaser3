@@ -18,7 +18,7 @@ if(!$dato)
 $score=$dato -> score;
 $id=$dato ->id;
 
-$db=connect();
+
 
 $sql1="UPDATE users SET score = '$score' WHERE id = '$id';";
 $result1 = mysqli_query($db,$sql1);
