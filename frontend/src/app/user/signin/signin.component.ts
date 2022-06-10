@@ -38,6 +38,7 @@ export class SigninComponent implements OnInit {
           this.signinService.signin(this.user.toUpperCase(), this.password).subscribe(data => {
             //console.log(data);
             alert('Usuario creado correctamente');
+
             this.userService.userLogin(this.user, this.password).subscribe(data => {
               if (data.nombre) {
 
@@ -70,28 +71,28 @@ export class SigninComponent implements OnInit {
     //console.log(target);
     //console.log(event);
 
-    if (target.id == "user") {
-      if (target.value.length != 3) {
-
-        userError.textContent = "El Usuario debe contener 3 caracteres unicamente";
-
+    //Validacion de Usuario, comprobar longitud
+    if (target.id === "user") {
+      if (target.value.length < 3 || target.value.length > 5) {
+        userError.textContent = "El Usuario debe contener entre 3 y 5 caracteres";
       }
       else {
         userError.textContent = "";
-
       }
     }
-    if (target.id == "password") {
+    //Validacion de Password, comprobar longitud
+    if (target.id === "password") {
       if (target.value.length < 3) {
 
         passError.textContent = "La contraseña debe tener al menos 3 caracteres";
       }
       else {
         passError.textContent = "";
-
       }
 
     }
+
+    //Validacion de RepeatPassword, comprobar coincidenciaa
     if (target.id == "rePassword") {
       if (this.repassword != this.password) {
 
@@ -105,20 +106,11 @@ export class SigninComponent implements OnInit {
 
   }
 
-  public onChange() {
-    const check: any = document.getElementById('check');
-    const checkError: any = document.getElementById('checkError');
-    const registrarte: any = document.getElementById('submit');
-
-    if (check.checked) {
-      //console.log('checked');
-    } else {
-      //console.log('unchecked');
-    }
-  }
 
   public validar() {
-    if (this.user.length < 3) {
+    if (this.user.length < 3 || this.user.length > 5) {
+
+
       return false;
     } else {
       if (this.password.length < 3) {
