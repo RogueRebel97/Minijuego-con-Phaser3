@@ -112,4 +112,26 @@ export class GameComponent implements OnInit, OnDestroy {
     return id
   }
 
+
+  hideControls() {
+
+
+    let controls: any = document.getElementById("controlTxT")
+    let arrow: any = document.getElementById("arrow")
+    // console.log(controls);
+
+    if (controls.style.display === "none") {
+
+      arrow.textContent = "˄";
+      controls.style.display = "block"
+    }
+    else {
+
+      arrow.textContent = "˅";
+      controls.style.display = "none";
+    }
+  }
+
+
+
 }

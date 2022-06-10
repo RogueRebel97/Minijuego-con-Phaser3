@@ -183,11 +183,11 @@ export default class SettingsMenu {
     //console.log(this.activeScene.physics.world.drawDebug);
 
     if (isDebugging) {
-      this.activeScene.physics.world.drawDebug = false;
-      this.activeScene.physics.world.debugGraphic.clear();
+      // this.activeScene.physics.world.drawDebug = false;
+      // this.activeScene.physics.world.debugGraphic.clear();
       //console.log(this.activeScene.physics.world.drawDebug);
     } else {
-      this.activeScene.physics.world.drawDebug = true;
+      // this.activeScene.physics.world.drawDebug = true;
       //console.log(this.activeScene.physics.world.drawDebug);
     }
 

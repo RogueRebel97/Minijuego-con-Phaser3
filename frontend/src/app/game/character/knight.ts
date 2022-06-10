@@ -313,9 +313,9 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 }
 
                 // Slide
-                if (key.JustDown(this.controls.X) || key.JustDown(this.controls.K) &&
+                if ((key.JustDown(this.controls.X) || key.JustDown(this.controls.K)) &&
                     (this.controls.RIGHT.isDown || this.controls.LEFT.isDown || this.controls.A.isDown || this.controls.D.isDown) &&
-                    this.body.blocked.down && this.actions.slide.state) {
+                    (this.body.blocked.down && this.actions.slide.state)) {
                     this.crouch = true
                     this.blockMove('slide'); // bloquear otros inputs de usuario por x milisegundos
                     this.cooldown('slide'); // impide que se vuelva a ejecutar otro slide durante x ms

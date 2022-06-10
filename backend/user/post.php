@@ -20,9 +20,20 @@ $nombre=$dato -> nombre;
 $password=$dato -> password;
 
 
+$arrayResponse = array();
+
 
 $sql="INSERT INTO `users` (`nombre`, `contrasena`) VALUES ('$nombre', '$password');";
 
 $result = mysqli_query($db,$sql);
 
+if($result == true){
+    $arrayResponse["status"]= "ok";
+    $arrayResponse["msg"]= "Usuario Creado Correctamente";
+}else{
+    $arrayResponse["status"]= "error";
+    $arrayResponse["msg"]= $result->$php_errormsg;
+}
 
+
+echo(json_encode($arrayResponse));
