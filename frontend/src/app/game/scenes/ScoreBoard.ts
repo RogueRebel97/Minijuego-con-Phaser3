@@ -53,10 +53,6 @@ export class ScoreBoard extends Phaser.Scene {
         //console.log(this.arrayUsuarios);
         //console.log('Array2:');
         //console.log(this.arrayUsuarios2);
-
-
-
-
     }
 
 

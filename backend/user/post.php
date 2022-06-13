@@ -23,17 +23,26 @@ $password=$dato -> password;
 $arrayResponse = array();
 
 
-$sql="INSERT INTO `users` (`nombre`, `contrasena`) VALUES ('$nombre', '$password');";
+$stmt = $db -> prepare("INSERT INTO `users` (`nombre`, `contrasena`) VALUES (?,?);");
+$stmt->bind_param("ss", $nombre, $password);
 
-$result = mysqli_query($db,$sql);
+$stmt -> execute();
+
+// $result = mysqli_query($db,$sql);
+
+$result= $stmt -> get_result();
 
 if($result == true){
-    $arrayResponse["status"]= "ok";
-    $arrayResponse["msg"]= "Usuario Creado Correctamente";
+    // $arrayResponse["status"]= "ok";
+    // $arrayResponse["msg"]= "Usuario Creado Correctamente";
 }else{
-    $arrayResponse["status"]= "error";
-    $arrayResponse["msg"]= $result->$php_errormsg;
+    // $arrayResponse["status"]= "error";
+    // $arrayResponse["msg"]= $result->$php_errormsg;
 }
 
 
 echo(json_encode($arrayResponse));
+
+$db -> close();
+$stmt -> close();
+

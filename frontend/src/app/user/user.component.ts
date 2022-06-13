@@ -13,6 +13,9 @@ export class UserComponent implements OnInit {
   private _user: string = "";
   private _password: string = "";
 
+  msg: string = "";
+  show: boolean = false;
+
   constructor(private router: Router, private userService: UserService) {
 
 
@@ -34,6 +37,11 @@ export class UserComponent implements OnInit {
 
     })
 
+  }
+
+  showChip() {
+    this.msg = "Debes Iniciar Sesion Primero"
+    this.show = true
   }
 
   get user(): string {

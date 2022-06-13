@@ -15,6 +15,12 @@ export class SigninComponent implements OnInit {
   private _repassword: string = '';
   private _userError: string = '';
 
+  private userRegex = new RegExp(/^[a-zA-Z]{3,4}$/);
+  private passRegex = new RegExp(/^[A-Za-z0-9]{3,5}/);
+
+  msg: string = '';
+  show: boolean = false;
+
 
   constructor(private router: Router, private signinService: SigninService, private userService: UserService) { }
 
@@ -25,23 +31,37 @@ export class SigninComponent implements OnInit {
     //   `usuario: ${this.user} contraseña: ${this.password} rep.contr: ${this.repassword}`
     // );
 
+    // Coger usuario
     var userInput: any = document.getElementById('user');
+
 
     if (this.validar()) {
       if (this.signinService.userAvailible(this.user).subscribe((data) => {
         if (data == '0') {
-          alert('Usuario no disponible');
+          // alert('Usuario no disponible');
+          this.msg = "Usuario no disponible"
+          this.show = true
+
+          setTimeout(() => {
+            this.show = false
+          }, 3500);
+
           userInput.focus();
 
         }
         else {
           this.signinService.signin(this.user.toUpperCase(), this.password).subscribe(data => {
             //console.log(data);
-            alert('Usuario creado correctamente');
+            // alert('Usuario creado correctamente');
+            this.msg = "Usuario creado correctamente"
+            this.show = true
+
+            setTimeout(() => {
+              this.show = false
+            }, 3500);
 
             this.userService.userLogin(this.user, this.password).subscribe(data => {
               if (data.nombre) {
-
                 this.router.navigate(["/minijuego"]);
               }
 
@@ -54,10 +74,11 @@ export class SigninComponent implements OnInit {
       })) {
       }
     } else {
-      alert('Rellena correctamente todos los campos');
+      // alert('Rellena correctamente todos los campos');
     }
   }
 
+  //Funcion que se ejecuta cada vez que el usuario escribe un caracter y muestra los mensajes de error
   public validate(event: Event) {
 
     var userError: any = document.getElementById('userError');
@@ -73,8 +94,8 @@ export class SigninComponent implements OnInit {
 
     //Validacion de Usuario, comprobar longitud
     if (target.id === "user") {
-      if (target.value.length < 3 || target.value.length > 5) {
-        userError.textContent = "El Usuario debe contener entre 3 y 5 caracteres";
+      if (this.userRegex.test(this.user) == false) {
+        userError.textContent = "El Usuario debe contener entre 3 y 4 letras";
       }
       else {
         userError.textContent = "";
@@ -82,9 +103,9 @@ export class SigninComponent implements OnInit {
     }
     //Validacion de Password, comprobar longitud
     if (target.id === "password") {
-      if (target.value.length < 3) {
+      if (this.passRegex.test(this.password) == false) {
 
-        passError.textContent = "La contraseña debe tener al menos 3 caracteres";
+        passError.textContent = "La contraseña debe tener entre 3 y 5 caracteres";
       }
       else {
         passError.textContent = "";
@@ -106,14 +127,14 @@ export class SigninComponent implements OnInit {
 
   }
 
-
+  // Valida que la informacion enviada por el usuario sea correcta
   public validar() {
-    if (this.user.length < 3 || this.user.length > 5) {
 
-
+    if (this.userRegex.test(this.user) == false) {
       return false;
     } else {
-      if (this.password.length < 3) {
+
+      if (this.passRegex.test(this.password) == false) {
         return false;
       } else {
         if (this.repassword != this.password) {

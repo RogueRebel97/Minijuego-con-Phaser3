@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 
 export class SigninService {
 
-  constructor(private http: HttpClient, private cookieService: CookieService) { }
+  constructor(private http: HttpClient, private cookieService: CookieService,) { }
 
 
 

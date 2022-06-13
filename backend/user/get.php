@@ -14,13 +14,20 @@ if(!$dato)
     exit("No se Encontraron Datos");
 }
 
-$nombre=$dato -> nombre;
-$password=$dato -> password;
+$nombre= $dato -> nombre;
+$password= $dato -> password;
 
 
-$sql="SELECT * FROM users WHERE nombre = '$nombre' AND contrasena = '$password'";
+$stmt = $db -> prepare("SELECT * FROM users WHERE nombre = ? AND contrasena = ?");
 
-$result = mysqli_query($db,$sql);
+$stmt->bind_param("ss", $nombre, $password);
+
+$stmt -> execute();
+
+$result= $stmt -> get_result();
+
+
+// $result = mysqli_query($db,$sql);
 
 if($result -> num_rows ==0){
 
@@ -34,5 +41,6 @@ else{
 
 echo(json_encode($resultArray));
 
-
+$db -> close();
+$stmt -> close();
 

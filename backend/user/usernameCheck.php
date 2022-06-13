@@ -16,13 +16,18 @@ if(!$dato)
     exit("No se han enviado datos");
 }
 
-$username= $dato     -> nombre;
+$username= $dato -> nombre;
 
 
 
-$sql="SELECT * FROM users WHERE nombre = '$username'";
+$stmt = $db -> prepare("SELECT * FROM users WHERE nombre = ?");
+$stmt->bind_param("s", $username);
 
-$result = mysqli_query($db,$sql);
+$stmt -> execute();
+
+$result= $stmt -> get_result();
+
+// $result = mysqli_query($db,$sql);
 
 if($result -> num_rows >0){
     $available= 0;
@@ -34,4 +39,6 @@ if($result -> num_rows >0){
 
     echo($available);
   
-  
+    $db -> close();
+    $stmt -> close();
+    

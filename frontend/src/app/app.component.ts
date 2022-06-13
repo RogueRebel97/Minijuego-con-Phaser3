@@ -10,7 +10,10 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class AppComponent {
   title = 'front-end';
-  @Input() duration!: any
+  msg = ''
+
+  show: boolean = false
+
 
   private logOut: boolean = false;
 
@@ -42,9 +45,11 @@ export class AppComponent {
 
   public logout() {
     this.cookieService.delete("id");
-    // this.logOut = true
+
     this.router.navigate(["/login"])
 
+
+    this.msg = 'sesion cerrada'
     let chip: any = document.getElementById("infoChip")
 
     chip.style.display = 'inline-block'

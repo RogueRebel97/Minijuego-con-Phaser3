@@ -1,0 +1,33 @@
+.chip {
+    position: fixed;
+    display: inline-block;
+
+    top: 0%;
+    left: 25%;
+
+
+
+    // margin-right: auto;
+    // margin-left: 40%;
+    padding: 0 25px;
+    padding-top: 5px;
+    // margin-top: 8%;
+    height: 100px;
+    width: 1000px;
+
+    line-height: 75px;
+    background-color: #ffa600df;
+
+    border-radius: 25px;
+    box-shadow: -3px 0px 5px 0px rgba(0, 0, 0, 0.6);
+
+    // border-left: 10px solid transparent;
+    // border-right: 10px solid #ffa600df;
+    // border-top: 10px solid #ffa600df;
+    // border-bottom: 10px solid transparent;
+
+    text-align: center;
+    font-family: 'Calibri';
+    font-size: 32px;
+
+}
