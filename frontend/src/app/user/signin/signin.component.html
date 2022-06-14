@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signin</title>
+</head>
+
+<body>
+    <div id="signin">
+
+        <app-chip *ngIf="show" msg={{msg}}>
+        </app-chip>
+
+        <form (ngSubmit)="submit()">
+
+            <label for="user">NOMBRE
+                <br>
+                <input type=" text" name="user" id="user" [(ngModel)]="user" (keyup)="validate($event)">
+            </label>
+            <br>
+            <span class="error" id="userError" style="color: red;"> </span>
+
+            <!-- (keyup)="validate($event)" -->
+            <br>
+
+            <label for="password">CONTRASEÑA
+                <br>
+                <input type="password" name="password" id="password" [(ngModel)]="password" (keyup)="validate($event)">
+            </label>
+            <br>
+
+            <span id="passError" style="color: red;"></span>
+            <br>
+            <label for="rePassword">REPITE LA CONTRASEÑA
+                <br>
+                <input type="password" name="rePassword" id="rePassword" [(ngModel)]="repassword"
+                    (keyup)="validate($event)">
+            </label>
+            <br>
+
+            <span id="rePassError" style="color: red;"></span>
+            <br>
+
+
+            <br>
+            <button type="submit" id="registrarte">
+
+                Registrarte
+            </button>
+
+        </form>
+    </div>
+
+</body>
+
+</html>

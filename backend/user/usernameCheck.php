@@ -4,11 +4,10 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: *");
 
 
-function connect()
-{
-    $db=new mysqli("localhost","admin","admin","admin");
-    return $db;
-}
+require_once('../connect.php');
+
+
+$db = connect();
 
 $dato=json_decode(file_get_contents("php://input")); 
 
@@ -17,16 +16,18 @@ if(!$dato)
     exit("No se han enviado datos");
 }
 
-$username= $dato     -> nombre;
+$username= $dato -> nombre;
 
-// $username="adrian";
-// $username="dadfa";
 
-$db=connect();
 
-$sql='SELECT * FROM users WHERE nombre = "'.strtolower($username).'"';
+$stmt = $db -> prepare("SELECT * FROM users WHERE nombre = ?");
+$stmt->bind_param("s", $username);
 
-$result = mysqli_query($db,$sql);
+$stmt -> execute();
+
+$result= $stmt -> get_result();
+
+// $result = mysqli_query($db,$sql);
 
 if($result -> num_rows >0){
     $available= 0;
@@ -38,5 +39,6 @@ if($result -> num_rows >0){
 
     echo($available);
   
-  
-  // $available= array("availability"=>true);
+    $db -> close();
+    $stmt -> close();
+    

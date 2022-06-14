@@ -1,0 +1,64 @@
+h2,
+p {
+    font-family: 'Press Start 2P', cursive;
+    color: white
+}
+
+#controles {
+    text-align: center;
+}
+
+
+.closebtn {
+    font-family: 'Press Start 2P', cursive;
+    font-weight: bold;
+    margin-left: 10px;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+
+
+
+.flex-container {
+    display: flex;
+    // flex-wrap: nowrap;
+    align-items: center;
+}
+
+
+
+#gameScreen {
+    width: 810px;
+
+    min-width: 810px;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#adImage1 {
+    margin-right: 5%;
+    margin-left: 10px;
+}
+
+#adImage img {
+    margin: 5%;
+    max-width: 100%;
+
+
+}
+
+
+#controlTxT {
+    text-align: center;
+}
+
+#ASD {
+    padding-left: 15px;
+}
+
+.Key {
+    font-size: larger;
+    color: lightblue;
+}

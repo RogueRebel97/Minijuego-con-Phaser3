@@ -3,11 +3,11 @@ header('Access-Control-Allow-Origin: http://localhost:4200');
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: *");
 
-function connect()
-{
-    $db=new mysqli("localhost","admin","admin","admin");
-    return $db;
-}
+
+require_once('../connect.php');
+
+$db = connect();
+
  
 $dato=json_decode(file_get_contents("php://input")); 
 
@@ -19,10 +19,30 @@ if(!$dato)
 $nombre=$dato -> nombre;
 $password=$dato -> password;
 
-$db=connect();
 
-$sql="INSERT INTO `users` (`nombre`, `contraseña`) VALUES ('$nombre', '$password');";
+$arrayResponse = array();
 
-$result = mysqli_query($db,$sql);
 
+$stmt = $db -> prepare("INSERT INTO `users` (`nombre`, `contrasena`) VALUES (?,?);");
+$stmt->bind_param("ss", $nombre, $password);
+
+$stmt -> execute();
+
+// $result = mysqli_query($db,$sql);
+
+$result= $stmt -> get_result();
+
+if($result == true){
+    // $arrayResponse["status"]= "ok";
+    // $arrayResponse["msg"]= "Usuario Creado Correctamente";
+}else{
+    // $arrayResponse["status"]= "error";
+    // $arrayResponse["msg"]= $result->$php_errormsg;
+}
+
+
+echo(json_encode($arrayResponse));
+
+$db -> close();
+$stmt -> close();
 

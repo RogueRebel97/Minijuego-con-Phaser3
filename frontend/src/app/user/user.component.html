@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+
+<body>
+
+    <div id="login">
+        <app-chip *ngIf="show" msg={{msg}}></app-chip>
+
+        <form (ngSubmit)="submit()">
+            <label for="username">NOMBRE
+                <br>
+                <input type="text" name="username" id="username" [(ngModel)]="user">
+            </label>
+            <br>
+            <br>
+            <label for="password">CONTRASEÑA
+                <br>
+                <input type="password" name="password" id="password" [(ngModel)]="password">
+            </label>
+            <br>
+            <br>
+            <button type="submit">
+                Iniciar Sesión
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>
