@@ -26,6 +26,8 @@ export default class GameOver extends Phaser.Scene {
 
 
 
+
+
     constructor() {
         super({ key: 'gameOver' });
     }
@@ -54,7 +56,7 @@ export default class GameOver extends Phaser.Scene {
         //Mensaje de GAME OVER
         if (data.defeat) {
 
-            this.timer = 10;
+            this.timer = 5;
             //DERROTA
             this.defeatText = this.add.text(10, 0, 'DERROTA', {
                 fontFamily: 'pixel',
@@ -66,22 +68,22 @@ export default class GameOver extends Phaser.Scene {
             this.container.add(this.defeatText)
 
             //Menu Button
-            this.mainMenuButton = this.add.image(- 80, 80, 'menuButton-1')
-            this.mainMenuButton.setScale(0.8)
+            // this.mainMenuButton = this.add.image(- 80, 80, 'menuButton-1')
+            // this.mainMenuButton.setScale(0.8)
 
-            this.mainMenuText = this.add.text
-                (this.mainMenuButton.x, this.mainMenuButton.y - 10, 'MENU', {
-                    color: 'black', fontFamily: 'pixel', fontSize: '16px'
-                }).setOrigin(0.5, 0)
-            this.container.add(this.mainMenuButton)
-            this.container.add(this.mainMenuText)
+            // this.mainMenuText = this.add.text
+            //     (this.mainMenuButton.x, this.mainMenuButton.y - 10, 'MENU', {
+            //         color: 'black', fontFamily: 'pixel', fontSize: '16px'
+            //     }).setOrigin(0.5, 0)
+            // this.container.add(this.mainMenuButton)
+            // this.container.add(this.mainMenuText)
 
             // Continue Button
-            this.retryButton = this.add.image(120, 80, 'menuButton-1')
+            this.retryButton = this.add.image(0, 80, 'menuButton-1')
             this.retryButton.setScale(0.8)
 
             this.retryText = this.add.text
-                (this.retryButton.x, this.retryButton.y - 10, 'CONTINUAR', {
+                (this.retryButton.x, this.retryButton.y - 10, 'Reiniciar', {
                     color: 'black', fontFamily: 'pixel', fontSize: '16px'
                 }).setOrigin(0.5, 0)
 
@@ -99,7 +101,7 @@ export default class GameOver extends Phaser.Scene {
             this.container.add(this.retryButton)
             this.container.add(this.retryText)
 
-            this.actionButton(this.mainMenuButton, 2)
+            // this.actionButton(this.mainMenuButton, 2)
             this.actionButton(this.retryButton, 1);
 
             this.timedEvent = this.time.addEvent({ delay: 1000, callback: this.onEvent, callbackScope: this, loop: true });
@@ -138,7 +140,11 @@ export default class GameOver extends Phaser.Scene {
             ease: Phaser.Math.Easing.Sine.InOut,
         }).complete;
 
+        this.input.keyboard.once('keydown', () => {
+            this.reset()
 
+
+        });
 
 
     }
@@ -147,7 +153,6 @@ export default class GameOver extends Phaser.Scene {
 
     override update() {
         //console.log("Gameover Corriendo");
-
 
 
 

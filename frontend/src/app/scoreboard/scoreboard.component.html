@@ -27,9 +27,9 @@
 
         <!-- Personal Score -->
         <div class="grid-item1">
-            <p class="scoreHeader">TU MEJOR PUNTUACIÓN</p>
+            <p class="scoreHeader">TU PUNTUACIÓN</p>
             <table id="personalScore">
-                <tr *ngFor="let record of records;let i = index">
+                <tr class="fila" *ngFor="let record of records;let i = index">
                     <ng-container *ngIf="record.id == cookie">
                         <td class="number"> {{i+1}}.</td>
                         <td class="userName">{{record.nombre}}</td>

@@ -44,7 +44,7 @@ export class SigninComponent implements OnInit {
 
           setTimeout(() => {
             this.show = false
-          }, 3500);
+          }, 2000);
 
           userInput.focus();
 
@@ -58,7 +58,7 @@ export class SigninComponent implements OnInit {
 
             setTimeout(() => {
               this.show = false
-            }, 3500);
+            }, 2000);
 
             this.userService.userLogin(this.user, this.password).subscribe(data => {
               if (data.nombre) {
@@ -75,6 +75,12 @@ export class SigninComponent implements OnInit {
       }
     } else {
       // alert('Rellena correctamente todos los campos');
+      this.msg = "Rellena correctamente todos los campos"
+      this.show = true
+      setTimeout(() => {
+        this.show = false
+      }, 2000);
+
     }
   }
 

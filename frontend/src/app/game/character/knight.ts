@@ -155,7 +155,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
         // Actions set
         if (this.allowMove) {
             //crouch
-            if ((this.controls.DOWN.isDown || this.controls.S.isDown) && this.body.blocked.down) {
+            if ((this.controls.DOWN.isDown) && this.body.blocked.down) {
                 this.setVelocityX(0)
 
                 this.crouch = true
@@ -167,7 +167,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             // Run
             if (!this.crouch) {
 
-                if ((this.controls.LEFT.isDown || this.controls.A.isDown)) { // Left <==
+                if (this.controls.LEFT.isDown) { // Left <==
 
                     // Left Speed
                     this.setVelocityX(-this.vRun);
@@ -183,7 +183,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                     // hitbox adjust
                     this.body.setOffset(this.width * 0.5 - 5, this.height * 0.5);
 
-                } else if ((this.controls.RIGHT.isDown || this.controls.D.isDown)) { // Right ==>
+                } else if (this.controls.RIGHT.isDown) { // Right ==>
 
                     // Right speed
 
@@ -207,15 +207,15 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                     this.setVelocityX(0)
                 }
 
-                // Jump
-                if ((key.JustDown(this.controls.UP) || key.JustDown(this.controls.W)) && this.body.blocked.down) {
+                // Jumps
+                if ((key.JustDown(this.controls.UP) || key.JustDown(this.controls.S)) && this.body.blocked.down) {
                     this.anims.stop();
                     this.setVelocityY(-this.vJump);
                     this.anims.play('jump');
                 }
 
                 // Attack
-                if ((key.JustDown(this.controls.J) || key.JustDown(this.controls.Z))
+                if (key.JustDown(this.controls.A)
                     && this.body.blocked.down && this.actions.attack.state) {
 
                     //Attack counter max 2(valor fijo)
@@ -313,8 +313,8 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 }
 
                 // Slide
-                if ((key.JustDown(this.controls.X) || key.JustDown(this.controls.K)) &&
-                    (this.controls.RIGHT.isDown || this.controls.LEFT.isDown || this.controls.A.isDown || this.controls.D.isDown) &&
+                if ((key.JustDown(this.controls.D)) &&
+                    (this.controls.RIGHT.isDown || this.controls.LEFT.isDown) &&
                     (this.body.blocked.down && this.actions.slide.state)) {
                     this.crouch = true
                     this.blockMove('slide'); // bloquear otros inputs de usuario por x milisegundos
@@ -339,7 +339,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
             else // Crouch Movement  crouch == true
             {
                 // Crouch walk left
-                if ((this.controls.LEFT.isDown || this.controls.A.isDown)) {
+                if (this.controls.LEFT.isDown) {
 
                     // Left Speed
                     this.setVelocityX((-this.vRun * 0.6));
@@ -352,7 +352,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                         this.flipX = true;
                     }
 
-                } else if ((this.controls.RIGHT.isDown || this.controls.D.isDown)) {
+                } else if (this.controls.RIGHT.isDown) {
                     // Right speed
                     this.setVelocityX((this.vRun * 0.6));
 
@@ -371,7 +371,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                 } else {
                     this.setVelocityX(0);
                 }
-                if ((key.JustDown(this.controls.UP) || key.JustDown(this.controls.W)) && this.body.blocked.down) {
+                if ((key.JustDown(this.controls.UP)) && this.body.blocked.down) {
 
                     this.platformCollider.active = false
                     this.currentScene.time.delayedCall(400, () => {
@@ -379,7 +379,7 @@ export default class Knight extends Phaser.Physics.Arcade.Sprite {
                     }, [], this);
                 }
 
-                if ((key.JustDown(this.controls.J) || key.JustDown(this.controls.Z))
+                if ((key.JustDown(this.controls.A))
                     && this.actions.attack.state) {
                     //CrouchAttack
                     //console.log("ataque agachado");

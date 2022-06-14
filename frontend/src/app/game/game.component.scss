@@ -17,11 +17,7 @@ p {
     cursor: pointer;
 }
 
-#controlTxT {
-    display: none;
 
-
-}
 
 
 .flex-container {
@@ -33,11 +29,12 @@ p {
 
 
 #gameScreen {
-    max-width: 500px;
+    width: 810px;
+
+    min-width: 810px;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 10px;
-    padding-right: 10px;
+
 }
 
 #adImage1 {
@@ -45,8 +42,23 @@ p {
     margin-left: 10px;
 }
 
-#adImage2 {
-    margin-left: 5%;
+#adImage img {
+    margin: 5%;
+    max-width: 100%;
 
 
+}
+
+
+#controlTxT {
+    text-align: center;
+}
+
+#ASD {
+    padding-left: 15px;
+}
+
+.Key {
+    font-size: larger;
+    color: lightblue;
 }

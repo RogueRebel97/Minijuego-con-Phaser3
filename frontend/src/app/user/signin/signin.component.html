@@ -11,12 +11,12 @@
 <body>
     <div id="signin">
 
-        <!-- <app-chip *ngIf="show" msg={{msg}}>
-        </app-chip> -->
+        <app-chip *ngIf="show" msg={{msg}}>
+        </app-chip>
 
         <form (ngSubmit)="submit()">
 
-            <label for="user">USUARIO
+            <label for="user">NOMBRE
                 <br>
                 <input type=" text" name="user" id="user" [(ngModel)]="user" (keyup)="validate($event)">
             </label>
