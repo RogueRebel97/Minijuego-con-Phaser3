@@ -19,4 +19,34 @@ p {
 
 #controlTxT {
     display: none;
+
+
+}
+
+
+.flex-container {
+    display: flex;
+    // flex-wrap: nowrap;
+    align-items: center;
+}
+
+
+
+#gameScreen {
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#adImage1 {
+    margin-right: 5%;
+    margin-left: 10px;
+}
+
+#adImage2 {
+    margin-left: 5%;
+
+
 }
