@@ -40,6 +40,13 @@ export class ScoreBoard extends Phaser.Scene {
 
         //console.log("ScoreBoard iniciada");
 
+
+        //Id usuario
+        this.idUsuario = contexto.getID()
+
+        // console.log(this.idUsuario);
+
+
     }
 
 
@@ -87,8 +94,6 @@ export class ScoreBoard extends Phaser.Scene {
         this.animateButton(returnButton)
 
 
-        //Id usuario
-        this.idUsuario = contexto.getID()
 
         // //console.log(`ID del Usuario en el juego:
         //         ${ this.idUsuario } `);;

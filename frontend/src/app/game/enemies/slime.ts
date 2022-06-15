@@ -52,6 +52,12 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
         this.currentScene.physics.world.enable(this)
         this.currentScene.add.existing(this)
 
+        this.body.setSize(this.width * 0.8, this.height * 0.8);
+        // this.body.offset.y = this.height * 0.8
+
+
+
+
         //Field of View
         this.aggro = this.currentScene.add.rectangle(this.x, this.y, 200, 150, 0xFF0000, 0) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody
         this.currentScene.physics.add.existing(this.aggro)
@@ -138,6 +144,12 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
             frameRate: 10,
 
         });
+        this.anims.create({
+            key: 'collected',
+            frames: this.currentScene.anims.generateFrameNumbers('collected', { start: 0, end: 5 }),
+            frameRate: 15,
+
+        });
     }
 
     checkIsDead() {
@@ -153,19 +165,28 @@ export default class Slime extends Phaser.Physics.Arcade.Sprite {
             this.isDead = true;
             this.anims.stop();
             this.setVelocityX(0);
+            this.anims.play('collected');
 
-            // remove body and aggro box
-            this.currentScene.physics.world.remove(this.body)
-            this.currentScene.physics.world.remove(this.aggro.body)
-            this.body.enable = false;
-            this.aggro.body.enable = false;
+            this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'collected', () => {
+                // remove body and aggro box
+                this.currentScene.physics.world.remove(this.body)
+                this.currentScene.physics.world.remove(this.aggro.body)
+                this.body.enable = false;
+                this.aggro.body.enable = false;
 
-            //console.log(`body en Muerte:`);
-            //console.log(this.body);
-            //console.log("boolean the body en muerte: " + this.body.enable);
+                //console.log(`body en Muerte:`);
+                //console.log(this.body);
+                //console.log("boolean the body en muerte: " + this.body.enable);
 
-            this.aggro.destroy();
-            this.destroy()
+                this.aggro.destroy();
+                this.destroy()
+            })
+
+
+
+
+
+
 
 
         }

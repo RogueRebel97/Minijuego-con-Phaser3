@@ -246,7 +246,8 @@ export class LoadingScreen extends Phaser.Scene {
 
 
     //Character Portrait
-    this.load.image('portrait', 'assets/Token/token3-reducido.png')
+    this.load.image('portrait', 'assets/Token/tokenNormal.png')
+    this.load.image('portraitWound', 'assets/Token/TokenHerido.png')
 
     // SpriteSheets del caballero
     this.load.spritesheet(
@@ -421,6 +422,14 @@ export class LoadingScreen extends Phaser.Scene {
       { frameWidth: 32, frameHeight: 32 }
     );
 
+    this.load.image(
+      'redOrb',
+      'assets/SpritesSheets/items/redOrb.png'
+    );
+    this.load.image(
+      'emerald',
+      'assets/SpritesSheets/items/emerald.png'
+    );
 
     this.load.spritesheet(
       'collected',

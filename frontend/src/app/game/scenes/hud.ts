@@ -89,13 +89,14 @@ export default class HUD {
         this.portrait = this.currentScene.add.image(x - 45, y + 3, 'portrait').setOrigin(0, 0.5).setScrollFactor(0).setDisplaySize(40, 40)
 
 
+
         // Contador de puntos
         this.scoreTXT = this.currentScene.add.text(x + 65, y - 13, '000', {
             fontSize: '12px', color: '#FFFFFF', fontFamily: 'pixel'
         }).setOrigin(0, 0.5).setScrollFactor(0)
 
         // Background shadowBar
-        this.leftShadow = scene.add.image(x, y, 'left-cap-shadow')
+        this.leftShadow = scene.add.image(x - 5, y, 'left-cap-shadow')
             .setOrigin(0, 0.5).setScrollFactor(0)
 
         this.midShadow = scene.add.image(this.leftShadow.x + this.leftShadow.width, y, 'middle-shadow')
@@ -111,7 +112,7 @@ export default class HUD {
         this.rightShadow.displayHeight = (this.rightShadow.displayHeight) * 0.5
 
         // Health Bar
-        this.leftEnd = scene.add.image(x, y, 'left-cap')
+        this.leftEnd = scene.add.image(x - 5, y, 'left-cap')
             .setOrigin(0, 0.5).setScrollFactor(0)
 
         this.midBar = scene.add.image(this.leftEnd.x + this.leftEnd.width, y, 'middle')
@@ -183,6 +184,8 @@ export default class HUD {
 
         const width = this.barMaxWidth * percent
 
+        this.portrait.setTexture("portraitWound")
+
         this.currentScene.tweens.add({
             targets: this.midBar,
             displayWidth: width,
@@ -196,6 +199,14 @@ export default class HUD {
                 this.rightEnd.visible = this.midBar.displayWidth > 0
             }
         })
+
+        this.currentScene.time.delayedCall(duration, () => {
+
+            this.portrait.setTexture("portrait")
+
+
+        }, [], this);
+
     }
 
 }

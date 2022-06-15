@@ -10,6 +10,7 @@ import HUD from './hud';
 import GameOver from './GameOver';
 import { Injectable } from '@angular/core';
 import Nut from '../gameObjects/nut';
+import Jewel from '../gameObjects/jewel';
 
 
 let contexto: any
@@ -47,6 +48,11 @@ export class Scene1 extends Phaser.Scene {
   private nutLayer!: Phaser.Tilemaps.ObjectLayer
   private nutArray!: Nut[]
   private nutCollider!: Phaser.Physics.Arcade.Collider;
+
+  private jewelGroup!: Phaser.Physics.Arcade.StaticGroup
+  private jewelLayer!: Phaser.Tilemaps.ObjectLayer
+  private jewelArray!: Jewel[]
+  private jewelCollider!: Phaser.Physics.Arcade.Collider;
 
   // Colliders para Registro
   private enemyCollider!: Phaser.Physics.Arcade.Collider;

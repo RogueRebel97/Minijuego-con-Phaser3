@@ -124,7 +124,9 @@ export class MainMenu extends Phaser.Scene {
 
     //Play Text
     this.add
-      .text(playButton.x, playButton.y, 'JUGAR', { color: 'black', fontFamily: 'pixel' })
+      .text(playButton.x, playButton.y, 'JUGAR', {
+        color: 'black', fontFamily: 'pixel'
+      })
       .setOrigin(0.5);
 
     // ScoreBoard button

@@ -31,6 +31,7 @@ export class GameService {
   }
 
   getId() {
+    this.id = this.cookieService.get('id')
     return this.id
   }
 
