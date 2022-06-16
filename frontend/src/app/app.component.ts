@@ -10,7 +10,7 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class AppComponent {
   title = 'front-end';
-  msg = ''
+  msg = 'Esta aplicación solo esta disponible en Ordenador'
 
   show: boolean = false
 

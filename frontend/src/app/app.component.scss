@@ -1,133 +1,155 @@
-body {
-  background-color: black;
-  color: white;
+@media only screen and (max-width: 800px) {
+
+  #infoDiv {
+    margin-left: auto;
+    margin-right: auto;
+    align-content: center;
+  }
+
+  #infoChip {
+    visibility: visible;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+  }
 }
 
+@media only screen and (min-width: 800px) {
 
-#black {
-  background-color: black;
-}
+  body {
+    background-color: black;
+    color: white;
+  }
 
-ul {
-  list-style-type: none;
-  border-radius: 15px;
-  margin-left: auto;
-  margin-right: auto;
+  #infoChip {
+    visibility: hidden;
+  }
 
-  // margin-top: 2%;
+  #black {
+    background-color: black;
+  }
 
-  padding: 0;
+  ul {
+    list-style-type: none;
+    border-radius: 15px;
+    margin-left: auto;
+    margin-right: auto;
 
-  overflow: hidden;
-  // background-color: #ffa500;
-  // background-color: lightblue;
+    // margin-top: 2%;
 
-  width: 800px;
-  display: flex;
-  justify-content: center;
-}
+    padding: 0;
 
-li {
-  display: list-item;
+    overflow: hidden;
+    // background-color: #ffa500;
+    // background-color: lightblue;
 
-}
+    width: 800px;
+    display: flex;
+    justify-content: center;
+  }
 
-li a {
-  display: inline-block;
-  color: white;
-  text-align: center;
-  font-family: 'Calibri';
-  font-size: 18px;
-  font-weight: bold;
+  li {
+    display: list-item;
 
-  text-decoration: none;
-}
+  }
 
-ul li {
-  height: 43px;
-}
+  li a {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    font-family: 'Calibri';
+    font-size: 18px;
+    font-weight: bold;
 
-.menu-item {
-  margin-top: 15px;
+    text-decoration: none;
+  }
 
+  ul li {
+    height: 43px;
+  }
 
-
-  margin-left: 10px;
-  margin-right: 10px;
-
-
-  text-align: center;
-
-  background-image: url(../assets/webImages/rightBarv1.png), url(../assets/webImages/leftBarv1.png), url(../assets/webImages/midBarv1.png);
-  background-position: right center, left center, center, ;
-  background-repeat: no-repeat, no-repeat, repeat;
-  border-radius: 10px;
-
-}
-
-.menu-item>a {
-  padding-top: 5px;
-  padding-left: auto;
-  padding-right: auto;
-  width: 120px;
-  height: 50px;
-}
-
-.separadorBot {
-  height: 7px;
-  width: 1000px;
-  padding: 0px;
-  margin-top: 5px;
-  margin-bottom: 2%;
-  margin-right: auto;
-  margin-left: auto;
-  background-color: #ffa500;
-}
-
-.separadorTop {
-  height: 7px;
-  padding: 0px;
-  margin-top: 10px;
-  // margin-bottom: 1%;
-  // margin-right: 10%;
-  // margin-left: auto;
-  background-color: #ffa500;
-}
-
-
-.chip {
-  position: fixed;
+  .menu-item {
+    margin-top: 15px;
 
 
 
-  margin-right: auto;
-  margin-left: 40%;
+    margin-left: 10px;
+    margin-right: 10px;
 
 
-  margin-top: 8%;
+    text-align: center;
 
-  display: inline-block;
-  padding: 0 25px;
-  height: 100px;
-  font-size: 32px;
-  line-height: 75px;
-  border-radius: 25px;
-  background-color: #edc84dcb;
+    background-image: url(../assets/webImages/rightBarv1.png), url(../assets/webImages/leftBarv1.png), url(../assets/webImages/midBarv1.png);
+    background-position: right center, left center, center, ;
+    background-repeat: no-repeat, no-repeat, repeat;
+    border-radius: 10px;
 
-  font-family: 'Calibri';
+  }
 
-}
+  .menu-item>a {
+    padding-top: 5px;
+    padding-left: auto;
+    padding-right: auto;
+    width: 120px;
+    height: 50px;
+  }
 
-.closebtn {
-  padding-left: 10px;
-  color: white#888;
-  font-weight: bold;
-  float: right;
-  font-size: 40px;
-  cursor: pointer;
+  .separadorBot {
+    height: 7px;
+    width: 1000px;
+    padding: 0px;
+    margin-top: 5px;
+    margin-bottom: 2%;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: #ffa500;
+  }
 
-}
+  .separadorTop {
+    height: 7px;
+    padding: 0px;
+    margin-top: 10px;
+    // margin-bottom: 1%;
+    // margin-right: 10%;
+    // margin-left: auto;
+    background-color: #ffa500;
+  }
 
-.closebtn:hover {
-  color: #000;
+
+  .chip {
+    position: fixed;
+
+
+
+    margin-right: auto;
+    margin-left: 40%;
+
+
+    margin-top: 8%;
+
+    display: inline-block;
+    padding: 0 25px;
+    height: 100px;
+    font-size: 32px;
+    line-height: 75px;
+    border-radius: 25px;
+    background-color: #edc84dcb;
+
+    font-family: 'Calibri';
+
+  }
+
+  .closebtn {
+    padding-left: 10px;
+    color: white#888;
+    font-weight: bold;
+    float: right;
+    font-size: 40px;
+    cursor: pointer;
+
+  }
+
+  .closebtn:hover {
+    color: #000;
+  }
 }

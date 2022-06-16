@@ -119,6 +119,9 @@ export default class GameOver extends Phaser.Scene {
             }).setOrigin(0.5, 0.5)
             this.container.add(this.defeatText)
 
+            let textBubble = this.add.image(this.defeatText.x - 230, this.defeatText.y - 165, "finalMsg")
+            this.container.add(textBubble)
+
             // Next Level
             this.retryButton = this.add.image(0, 80, 'menuButton-1')
             this.retryButton.setScale(0.8)

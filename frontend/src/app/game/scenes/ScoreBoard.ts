@@ -182,7 +182,9 @@ export class ScoreBoard extends Phaser.Scene {
         // header
         this.scoreText = this.add.text(this.width * 0.5, this.height - this.scale.height + 35, 'TOP 10 JUGADORES',
             {
-                color: 'WHITE', fontFamily: 'pixel', fontSize: '32px'
+                color: 'WHITE', fontFamily: 'pixel', fontSize: '32px',
+                stroke: '#0E0E0E',
+                strokeThickness: 5,
             }).setOrigin(0.5, 0.5)
 
         //top 10 players
@@ -192,7 +194,9 @@ export class ScoreBoard extends Phaser.Scene {
         //personal Score HEADER
         this.scoreText = this.add.text(this.width * 0.75, (this.scale.height * 0.2) + 50, 'PUNTUACION PERSONAL',
             {
-                color: 'WHITE', fontFamily: 'pixel', fontSize: '18px'
+                color: 'WHITE', fontFamily: 'pixel', fontSize: '18px',
+                stroke: '#0E0E0E',
+                strokeThickness: 5,
             }).setOrigin(0.5, 0.5)
 
         // personal score
@@ -202,19 +206,25 @@ export class ScoreBoard extends Phaser.Scene {
                 //Puntuacion
                 this.scoreText = this.add.text(this.width * 0.6, (this.scale.height * 0.2) + 100, (i + 1) + '.',
                     {
-                        color: 'WHITE', fontFamily: 'pixel', fontSize: '18px'
+                        color: 'WHITE', fontFamily: 'pixel', fontSize: '18px',
+                        stroke: '#0E0E0E',
+                        strokeThickness: 5,
                     }).setOrigin(0.5, 0.5)
 
                 //Nombre
                 this.scoreText = this.add.text(this.width * 0.68, (this.scale.height * 0.2) + 100, this.arrayUsuarios[i].nombre,
                     {
-                        color: 'WHITE', fontFamily: 'pixel', fontSize: '18px'
+                        color: 'WHITE', fontFamily: 'pixel', fontSize: '18px',
+                        stroke: '#0E0E0E',
+                        strokeThickness: 5,
                     }).setOrigin(0.5, 0.5)
 
                 //Score
                 this.scoreText = this.add.text(this.width * 0.85, (this.scale.height * 0.2) + 100, this.arrayUsuarios[i].record,
                     {
-                        color: 'WHITE', fontFamily: 'pixel', fontSize: '18px'
+                        color: 'WHITE', fontFamily: 'pixel', fontSize: '18px',
+                        stroke: '#0E0E0E',
+                        strokeThickness: 5,
                     }).setOrigin(0.5, 0.5)
 
             }
@@ -231,24 +241,92 @@ export class ScoreBoard extends Phaser.Scene {
 
         for (let i = 0; i < 10; i++) {
 
-            // Posicion
-            this.add.text(x, y, (i + 1) + '.',
-                {
-                    color: 'WHITE', fontFamily: 'pixel', fontSize: '24px',
 
-                }).setOrigin(0.5, 0.5)
-            // Nombre
-            this.add.text(this.width * 0.18, y, this.arrayUsuarios[i].nombre,
-                {
-                    color: 'WHITE', fontFamily: 'pixel', fontSize: '24px'
-                }).setOrigin(0.5, 0.5)
-            // Score
-            this.add.text(this.width * 0.35, y, this.arrayUsuarios[i].record,
-                {
-                    color: 'WHITE', fontFamily: 'pixel', fontSize: '24px'
-                }).setOrigin(0.5, 0.5)
+            if (i == 0) {
+                // Posicion
+                this.add.text(x, y, (i + 1) + '.',
+                    {
 
-            y += padding
+                        color: 'RED', fontFamily: 'pixel', fontSize: '24px',
+                        stroke: '#0E0E0E',
+                        strokeThickness: 5,
+
+                    }).setOrigin(0.5, 0.5)
+                // Nombre
+                this.add.text(this.width * 0.18, y, this.arrayUsuarios[i].nombre,
+                    {
+                        color: 'RED', fontFamily: 'pixel', fontSize: '24px', stroke: '#0E0E0E',
+                        strokeThickness: 5,
+                    }).setOrigin(0.5, 0.5)
+                // Score
+                this.add.text(this.width * 0.35, y, this.arrayUsuarios[i].record,
+                    {
+                        color: 'RED', fontFamily: 'pixel', fontSize: '24px',
+                        stroke: '#0E0E0E',
+                        strokeThickness: 5,
+                    }).setOrigin(0.5, 0.5)
+
+                let icon1 = this.add.image(this.width * 0.455, y - 10, "icono1")
+                icon1.setDisplaySize(icon1.width / 2, icon1.height / 2)
+                y += padding
+
+            }
+            else if (i == 1) {
+                // Posicion
+                this.add.text(x, y, (i + 1) + '.',
+                    {
+
+                        color: 'ORANGE', fontFamily: 'pixel', fontSize: '24px',
+                        stroke: '#0E0E0E',
+                        strokeThickness: 5,
+
+                    }).setOrigin(0.5, 0.5)
+                // Nombre
+                this.add.text(this.width * 0.18, y, this.arrayUsuarios[i].nombre,
+                    {
+                        color: 'ORANGE', fontFamily: 'pixel', fontSize: '24px', stroke: '#0E0E0E',
+                        strokeThickness: 5,
+                    }).setOrigin(0.5, 0.5)
+                // Score
+                this.add.text(this.width * 0.35, y, this.arrayUsuarios[i].record,
+                    {
+                        color: 'ORANGE', fontFamily: 'pixel', fontSize: '24px',
+                        stroke: '#0E0E0E',
+                        strokeThickness: 5,
+                    }).setOrigin(0.5, 0.5)
+
+                let icon2 = this.add.image(this.width * 0.45, y + 5, "icono2")
+                icon2.setDisplaySize(icon2.width * 0.8, icon2.height * 0.8)
+
+                y += padding
+            } else {
+                // Posicion
+                this.add.text(x, y, (i + 1) + '.',
+                    {
+
+                        color: 'WHITE', fontFamily: 'pixel', fontSize: '24px',
+                        stroke: '#0E0E0E',
+                        strokeThickness: 5,
+
+                    }).setOrigin(0.5, 0.5)
+                // Nombre
+                this.add.text(this.width * 0.18, y, this.arrayUsuarios[i].nombre,
+                    {
+                        color: 'WHITE', fontFamily: 'pixel', fontSize: '24px', stroke: '#0E0E0E',
+                        strokeThickness: 5,
+                    }).setOrigin(0.5, 0.5)
+                // Score
+                this.add.text(this.width * 0.35, y, this.arrayUsuarios[i].record,
+                    {
+                        color: 'WHITE', fontFamily: 'pixel', fontSize: '24px',
+                        stroke: '#0E0E0E',
+                        strokeThickness: 5,
+                    }).setOrigin(0.5, 0.5)
+
+                y += padding
+
+            }
+
         }
 
     }
