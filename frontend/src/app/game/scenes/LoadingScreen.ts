@@ -175,6 +175,18 @@ export class LoadingScreen extends Phaser.Scene {
       'assets/graphics/gameIcons/PNG/White/1x/return.png'
     );
 
+
+    this.load.image(
+      'icono1',
+      'assets/graphics/gameIcons/icono1.png'
+    );
+
+    this.load.image(
+      'icono2',
+      'assets/graphics/gameIcons/icono2.png'
+    );
+
+
     //Maps
     this.load.tilemapTiledJSON(Constants.MAPS.LEVELS.LEVEL1.TILEMAPJSON, 'assets/tileMaps/Level-1.json')
 
@@ -246,7 +258,8 @@ export class LoadingScreen extends Phaser.Scene {
 
 
     //Character Portrait
-    this.load.image('portrait', 'assets/Token/token3-reducido.png')
+    this.load.image('portrait', 'assets/Token/tokenNormal.png')
+    this.load.image('portraitWound', 'assets/Token/TokenHerido.png')
 
     // SpriteSheets del caballero
     this.load.spritesheet(
@@ -421,6 +434,22 @@ export class LoadingScreen extends Phaser.Scene {
       { frameWidth: 32, frameHeight: 32 }
     );
 
+    this.load.image(
+      'fruitTxT',
+      'assets/SpritesSheets/fruits/vidaText.png'
+    );
+    this.load.image(
+      'finalMsg',
+      'assets/SpritesSheets/fruits/mensajeFinal.png'
+    );
+    this.load.image(
+      'redOrb',
+      'assets/SpritesSheets/items/redOrb.png'
+    );
+    this.load.image(
+      'emerald',
+      'assets/SpritesSheets/items/emerald.png'
+    );
 
     this.load.spritesheet(
       'collected',

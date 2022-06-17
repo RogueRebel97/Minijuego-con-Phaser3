@@ -18,6 +18,8 @@ $nombre= $dato -> nombre;
 $password= $dato -> password;
 
 
+
+
 $stmt = $db -> prepare("SELECT * FROM users WHERE nombre = ? AND contrasena = ?");
 
 $stmt->bind_param("ss", $nombre, $password);

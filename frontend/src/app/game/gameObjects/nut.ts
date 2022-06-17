@@ -56,13 +56,29 @@ export default class Nut extends Phaser.Physics.Arcade.Sprite {
             this.eaten = true
             this.anims.stop()
             this.anims.play('collected')
+            let chatbubble = this.currentScene.add.image(this.x + 55, this.y - 55, "fruitTxT");
+            chatbubble.setDisplaySize(chatbubble.width / 2, chatbubble.height / 2)
             this.heal()
 
             this.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'collected', () => {
                 // console.log("recogido");
+
                 this.currentScene.physics.world.remove(this.body)
                 this.disableBody(true, true)
             })
+
+            this.currentScene.time.delayedCall(1500, () => {
+
+                this.currentScene.tweens.add({
+                    targets: chatbubble,
+                    alpha: { from: 1, to: 0 },
+                    ease: 'Sine.InOut',
+                    duration: 3000,
+
+                });
+
+            }, [], this);
+
 
         }
 

@@ -57,25 +57,32 @@ export class Credits extends Phaser.Scene {
         //animacion al pulsar
         this.animateButton(returnButton)
 
-
+        // logo
+        const logo = this.add.image(this.width * 0.15, this.height * 0.85, 'iMageCretive').setDisplaySize(160, 160).setAngle(10)
 
 
         // Texts
 
         // header
-        this.creditsTXT = this.add.text(this.width * 0.5, this.height - this.scale.height + 50, 'YO TE RETRO!',
+        this.creditsTXT = this.add.text(this.width * 0.5, this.height - this.scale.height + 100, 'YO TE RETRO!',
             {
-                color: 'WHITE', fontFamily: 'pixel', fontSize: '64px'
+                color: 'ORANGE', fontFamily: 'pixel', fontSize: '64px',
+                stroke: '#0E0E0E',
+                strokeThickness: 7,
             }).setOrigin(0.5, 0.5)
 
         // Text
-        this.txt1 = this.add.text(this.width * 0.5, this.creditsTXT.y + 200, '', {
-            color: 'WHITE', fontFamily: 'pixel', fontSize: '20PX'
+        this.txt1 = this.add.text(this.width * 0.5, this.creditsTXT.y + 225, '', {
+            color: 'WHITE', fontFamily: 'pixel', fontSize: '20PX',
+            stroke: '#0E0E0E',
+            strokeThickness: 5,
+
         }).setOrigin(0.5, 0.5)
-        // this.typewriteText(this.txt1, 'AN ORIGINAL IDEA OF', 200)
+
+        // Maquina de escribir:
         this.typewriteTextWrapped(this.txt1,
             '  UNA IDEA ORIGINAL DE \n    Adrian Ruiz Diaz \n \n    DISEÑADO Y DESARROLLADO POR \n    Adrian Ruiz Diaz \n \n   PRODUCIDO POR \n   iMageCreative.es \n \n   EN COLABORACION CON  \n     UnMundoEnMiniatura.es \n  \n  USANDO ASSETS GRATUITOS DE \n itch.io'
-            , 40)
+            , 25)
 
         const copyRigth = this.add.text(this.width * 0.63, this.height * 0.95, '2022.©iMageCreative ',
             {
@@ -83,9 +90,7 @@ export class Credits extends Phaser.Scene {
             }).setOrigin(0, 0)
 
 
-        // logo
 
-        const logo = this.add.image(this.width * 0.15, this.height * 0.85, 'iMageCretive').setDisplaySize(160, 160).setAngle(10)
 
 
     }
