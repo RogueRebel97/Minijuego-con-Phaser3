@@ -73,7 +73,7 @@ export default class SettingsMenu {
       (this.panel.x / 2, this.panel.y + 80, 'menuButton-1')
 
     this.resumeText = scene.add.text
-      (this.resumeButton.x / 2, this.resumeButton.y - 10, 'RESUME', {
+      (this.resumeButton.x / 2, this.resumeButton.y - 10, 'REANUDAR', {
         color: 'black', fontFamily: 'pixel', fontSize: '18px'
       }).setOrigin(0.5, 0);
 
@@ -82,7 +82,7 @@ export default class SettingsMenu {
       (this.panel.x / 2, this.resumeButton.y + 69, 'menuButton-1')
 
     this.optionText = scene.add.text
-      (this.optionButton.x / 2, this.optionButton.y - 10, 'OPTIONS', {
+      (this.optionButton.x / 2, this.optionButton.y - 10, 'OPCIONES', {
         color: 'black', fontFamily: 'pixel', fontSize: '18px'
       }).setOrigin(0.5, 0);
 
@@ -90,13 +90,13 @@ export default class SettingsMenu {
       (this.panel.x / 2, this.optionButton.y + 69, 'menuButton-1')
 
     this.backText = scene.add.text
-      (this.backToMenuButton.x / 2, this.backToMenuButton.y - 10, 'MAIN MENU', {
+      (this.backToMenuButton.x / 2, this.backToMenuButton.y - 10, 'MENU', {
         color: 'black', fontFamily: 'pixel', fontSize: '18px'
       }).setOrigin(0.5, 0);
 
     this.resetButton = scene.add.image
       (this.panel.x / 2, this.backToMenuButton.y + 69, 'menuButton-1')
-    this.resetText = scene.add.text(this.resetButton.x / 2, this.resetButton.y - 10, 'RESET', {
+    this.resetText = scene.add.text(this.resetButton.x / 2, this.resetButton.y - 10, 'REINICIAR', {
       color: 'black', fontFamily: 'pixel', fontSize: '18px'
     }).setOrigin(0.5, 0);
 
